@@ -7,14 +7,25 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, Arial, sans-serif; font-size: 14px; background: #f0f2f5; color: #1a2a3a; }
-.header { background: #003B6E; color: white; padding: 12px 16px; }
-.header h1 { font-size: 16px; font-weight: 700; }
+.header { background: #003B6E; color: white; padding: 12px 16px 10px; }
+.header h1 { font-size: 15px; font-weight: 700; }
+.progress-bar { position: sticky; top: 0; z-index: 100; background: white; border-bottom: 2px solid #eee; padding: 8px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+.prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.prog-pct { font-size: 16px; font-weight: 800; color: #003B6E; }
+.prog-count { font-size: 11px; color: #888; }
+.prog-track { background: #e8ecf0; border-radius: 4px; height: 6px; margin-bottom: 6px; }
+.prog-fill { background: #003B6E; height: 6px; border-radius: 4px; transition: width 0.3s; width: 0%; }
+.prog-counts { display: flex; gap: 12px; font-size: 11px; font-weight: 700; }
+.prog-yes { color: #27ae60; }
+.prog-no { color: #e74c3c; }
+.prog-na { color: #7f8c8d; }
+.save-indicator { font-size: 10px; color: #27ae60; opacity: 0; transition: opacity 0.3s; margin-left: auto; }
 .btn-row { display: flex; gap: 8px; padding: 12px; }
 .btn { flex: 1; padding: 11px; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; }
-.btn-save { background: #27ae60; color: white; }
 .btn-pdf { background: #e67e22; color: white; }
+.btn-new { background: #e8ecf0; color: #555; }
 .meta-card { background: white; margin: 0 12px 12px; padding: 12px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
-.meta-card h2 { font-size: 11px; text-transform: uppercase; color: #666; margin-bottom: 10px; letter-spacing: 0.5px; }
+.meta-card h2 { font-size: 11px; text-transform: uppercase; color: #666; margin-bottom: 10px; }
 .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .meta-field label { display: block; font-size: 10px; text-transform: uppercase; color: #888; margin-bottom: 3px; font-weight: 600; }
 .meta-field input, .meta-field select { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px 9px; font-size: 13px; }
@@ -35,41 +46,87 @@ body { font-family: -apple-system, Arial, sans-serif; font-size: 14px; backgroun
 .na-lbl { border-color: #7f8c8d; color: #7f8c8d; }
 .obs-row { margin-bottom: 6px; font-size: 12px; }
 textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px; font-size: 12px; resize: vertical; }
-.general-obs { margin: 0 12px 12px; background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); padding: 14px; }
+.photo-area { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 6px; }
+.photo-wrap { position: relative; display: inline-block; }
+.photo-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; }
+.photo-del { position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.btn-photo { display: inline-block; margin-top: 4px; padding: 6px 12px; background: #f0f5ff; border: 1px solid #003B6E; color: #003B6E; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.general-obs { margin: 0 12px 12px; background: white; border-radius: 8px; padding: 14px; }
 .general-obs h3 { font-size: 12px; text-transform: uppercase; color: #c0392b; font-weight: 700; margin-bottom: 8px; }
 .general-obs textarea { min-height: 80px; }
-.warning { margin: 0 12px 12px; background: #fff3cd; border-left: 4px solid #f0ad4e; padding: 10px 12px; border-radius: 0 6px 6px 0; font-size: 12px; color: #856404; }
+#pdf-title { display: none; }
+#pdf-summary { display: none; }
 @media print {
-  .btn-row, .warning { display: none; }
-  .header { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .progress-bar, .btn-row, .header, .btn-photo { display: none !important; }
+  body { background: white; font-size: 11px; }
+  #pdf-title { display: block; font-size: 13px; font-weight: 700; color: #003B6E; padding: 12px 16px; border-bottom: 2px solid #003B6E; margin-bottom: 10px; }
+  #pdf-summary { display: block; padding: 0 16px; page-break-after: always; }
+  .pdf-summary h2 { font-size: 13px; color: #003B6E; border-bottom: 2px solid #003B6E; padding-bottom: 5px; margin-bottom: 10px; }
+  .pdf-summary h3 { font-size: 11px; color: #003B6E; margin: 12px 0 5px; text-transform: uppercase; }
+  .summary-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; margin-bottom: 10px; font-size: 10px; }
+  .summary-stats { display: flex; gap: 14px; font-size: 11px; font-weight: 700; margin-bottom: 12px; padding: 7px; background: #f0f5ff; border-radius: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .stat-yes { color: #27ae60; }
+  .stat-no { color: #e74c3c; }
+  .stat-na { color: #7f8c8d; }
+  .stat-findings { color: #e67e22; }
+  .finding-block { border: 1px solid #ddd; border-radius: 4px; padding: 8px; margin-bottom: 8px; page-break-inside: avoid; }
+  .finding-header { display: flex; gap: 8px; margin-bottom: 4px; }
+  .finding-num { background: #003B6E; color: white; border-radius: 3px; padding: 1px 6px; font-size: 10px; font-weight: 700; white-space: nowrap; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .finding-text { font-size: 11px; font-weight: 600; }
+  .finding-comment { font-size: 10px; color: #555; margin: 4px 0; font-style: italic; }
+  .finding-photos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .finding-photo { width: 120px; height: 90px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
+  .no-findings { font-style: italic; color: #27ae60; font-size: 11px; }
+  .meta-card, .section, .general-obs { box-shadow: none; border: 1px solid #ddd; margin: 0 0 6px; border-radius: 4px; }
   .section-title { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  body { background: white; }
-  .meta-card, .section, .general-obs { box-shadow: none; border: 1px solid #ddd; margin: 0 0 8px; }
+  .q-num { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .guidance { background: #f0f5ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .photo-wrap { display: none; }
+  input[type=radio]:not(:checked) { display: none; }
+  .ans { border: none; padding: 0; font-size: 10px; }
+  .obs-row { font-size: 10px; }
+  textarea { border: none; font-size: 10px; padding: 0; min-height: unset; }
+}
+@media (max-width: 500px) {
+  .meta-grid { grid-template-columns: 1fr; }
+  .answer-row { flex-wrap: wrap; }
 }
 </style>
 </head>
 <body>
-<div class="header">
-  <h1>&#128686; Inspectare -- 500m Zone Vessel</h1>
+<div class="header"><h1>&#9875; Inspectare -- 500m Zone Vessel</h1></div>
+<div id="pdf-title"></div>
+<div id="pdf-summary"></div>
+<div class="progress-bar">
+  <div class="prog-top">
+    <span class="prog-pct" id="prog-pct">0%</span>
+    <span class="prog-count" id="prog-count">0 / 56</span>
+    <span class="save-indicator" id="save-indicator">&#10003; Saved</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="prog-bar-fill"></div></div>
+  <div class="prog-counts">
+    <span class="prog-yes">YES: <span id="prog-yes">0</span></span>
+    <span class="prog-no">NO: <span id="prog-no">0</span></span>
+    <span class="prog-na">N/A: <span id="prog-na">0</span></span>
+  </div>
 </div>
 <div class="btn-row">
-  <button class="btn btn-save" onclick="saveProgress()">&#128190; Save Progress</button>
-  <button class="btn btn-pdf" onclick="window.print()">&#128438; Export PDF</button>
+  <button class="btn btn-pdf" onclick="exportPDF()">&#128438; Export PDF</button>
+  <button class="btn btn-new" onclick="clearData()">&#8635; New Inspection</button>
 </div>
-<div class="warning">&#9888; Do not close this file without saving. All answers will be lost.</div>
 <div class="meta-card">
   <h2>Inspection Details</h2>
   <div class="meta-grid">
-    <div class="meta-field"><label>Vessel Name</label><input type="text" name="vessel" placeholder="e.g. Bourbon Evolution 805"></div>
-    <div class="meta-field"><label>Inspection Date</label><input type="date" name="insp_date"></div>
-    <div class="meta-field"><label>Inspector</label><input type="text" name="inspector" placeholder="Name"></div>
-    <div class="meta-field"><label>Operator</label><input type="text" name="operator" placeholder="Company"></div>
-    <div class="meta-field"><label>Flag State</label><input type="text" name="flag" placeholder="Flag"></div>
-    <div class="meta-field"><label>IMO Number</label><input type="text" name="imo" placeholder="IMO #"></div>
-    <div class="meta-field"><label>Port / Location</label><input type="text" name="port" placeholder="Location"></div>
-    <div class="meta-field"><label>Block / Field</label><input type="text" name="block" placeholder="e.g. Block 17"></div>
+    <div class="meta-field"><label>Vessel Name</label><input type="text" id="m-vessel" placeholder="e.g. Bourbon Evolution 805"></div>
+    <div class="meta-field"><label>Inspection Date</label><input type="date" id="m-insp_date"></div>
+    <div class="meta-field"><label>Inspector</label><input type="text" id="m-inspector" placeholder="Name"></div>
+    <div class="meta-field"><label>Operator</label><input type="text" id="m-operator" placeholder="Company"></div>
+    <div class="meta-field"><label>Flag State</label><input type="text" id="m-flag" placeholder="Flag"></div>
+    <div class="meta-field"><label>IMO Number</label><input type="text" id="m-imo" placeholder="IMO #"></div>
+    <div class="meta-field"><label>Port / Location</label><input type="text" id="m-port" placeholder="Location"></div>
+    <div class="meta-field"><label>Block / Field</label><input type="text" id="m-block" placeholder="e.g. Block 17"></div>
     <div class="meta-field full"><label>Inspection Status</label>
-      <select name="status"><option>In Progress</option><option>Completed</option><option>Suspended</option></select>
+      <select id="m-status"><option>In Progress</option><option>Completed</option><option>Suspended</option></select>
     </div>
   </div>
 </div>
@@ -77,987 +134,1486 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="section">
   <div class="section-title">1 -- Approach Passage & Pre-Entry</div>
   
-<div class="question">
+<div class="question" id="wrap-q1_1">
   <div class="q-header">
     <span class="q-num">1.1</span>
     <span class="q-text">Are the Bridge Team aware of maintaining a safe passing distance from installations and other operations when making a field transit through a multi-installation field?</span>
   </div>
   <div class="guidance">When passing through multi-installation fields the maximum passing distance shall ideally be 1Nm from installations and other operations.<div class="ref">GOMO Sect. 8.15</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_1" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_1" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_1" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_1" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_1" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_1" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_2">
   <div class="q-header">
     <span class="q-num">1.2</span>
     <span class="q-text">Are the Bridge Team aware of not utilising the co-ordinates of offshore installations as way points and is the final waypoint offset from the installation?</span>
   </div>
   <div class="guidance">Voyage planning shall not utilise the location of offshore installations as way points. This prevents vessel-offshore installation collision by auto pilot.<div class="ref">GOMO Sect. 8.4</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_2" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_2" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_2" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_2" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_2" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_2" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_3">
   <div class="q-header">
     <span class="q-num">1.3</span>
     <span class="q-text">Are the Bridge Team and Engine Room Team members suitably rested prior to 500m safety zone entry?</span>
   </div>
   <div class="guidance">Crew should not show obvious signs of fatigue potentially linked to excessive time on board, workload from previous operations or lack of organisation. A table with the shipboard working arrangements shall be posted in an easily accessible place and contain for every position at least the schedule of service at sea and service in port, and the maximum hours of work or the minimum hours of rest required by national laws, regulations or applicable collective agreements.<div class="ref">MLC 2006 Reg. 2.3</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_3" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_3" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_3" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_3" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_3" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_3" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_4">
   <div class="q-header">
     <span class="q-num">1.4</span>
     <span class="q-text">Are the Master/Bridge and Engine Control Room teams aware of Company's Stop Work Authority?</span>
   </div>
   <div class="guidance">When Company or contractor employees identify or perceive unsafe conditions due to an error, an oversight, a failure to enforce a rule or a situation that could potentially result in an accident, they use their Stop Card with the person(s) involved, in the way they deem appropriate. Crew should be able to give recent examples when Stop Work Authority was used.<div class="ref">GM-GR-HSE-122 Sect. 5.0</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_4" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_4" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_4" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_4" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_4" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_4" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_4" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_4" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_4" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_4" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_4"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_5">
   <div class="q-header">
     <span class="q-num">1.5</span>
     <span class="q-text">Did the crew ever perceive time or commercial pressure to commence or continue operations in 500m safety zone?</span>
   </div>
   <div class="guidance">Time pressure can be explicit, implicit, or perceived and can develop in serious incidents. Installations shall not apply time pressure on vessel, as it is Company policy to complete tasks with adequate safeguards and control measures. Crew shall clearly understand this policy, make sure that they don't apply themselves an undue time pressure and explain how pressure have been or would be resolved. If crew feels under pressure, Company shall facilitate discussion between parties for resolution.<div class="ref">Nautical Institute 'Time pressures in the maritime industry'</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_5" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_5" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_5" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_5" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_5" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_5" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_5" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_5" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_5" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_5" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_5"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_6">
   <div class="q-header">
     <span class="q-num">1.6</span>
     <span class="q-text">Are the Bridge and the Engine Control Room free of distractions?</span>
   </div>
   <div class="guidance">On the Bridge and in the Engine Control Room, particularly around conning positions, check for the presence of mobile phones, laptop computers, tablets, newspapers/magazines, books, manuals, folders, training course notes, plates, cups, cutlery. Background music, meetings, informal gatherings, and personnel on watch working on computers shall be prohibited on the Bridge. A high level of housekeeping shall be maintained.<div class="ref">GOMO Sect. 8.2.2</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_6" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_6" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_6" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_6" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_6" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_6" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_6" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_6" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_6" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_6" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_6"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_7">
   <div class="q-header">
     <span class="q-num">1.7</span>
     <span class="q-text">Are the last updated installations data cards and the adverse weather working policy available to the Bridge Team?</span>
   </div>
   
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_7" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_7" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_7" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_7" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_7" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_7" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_7" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_7" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_7" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_7" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_7"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_8">
   <div class="q-header">
     <span class="q-num">1.8</span>
     <span class="q-text">Does the vessel fill a pre-entry checklist and inform the installation of completion?</span>
   </div>
   <div class="guidance">Where laminated check lists are in use, an entry shall be made in the vessel's log of each such use, together with a summary of the outcomes.<div class="ref">GOMO Sect. 8.5</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_8" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_8" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_8" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_8" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_8" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_8" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_8" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_8" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_8" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_8" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_8"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_9">
   <div class="q-header">
     <span class="q-num">1.9</span>
     <span class="q-text">Does the pre-entry checklist include the minimum requirements listed in GOMO?</span>
   </div>
   <div class="guidance">Refer to GOMO checklists for vessels.<div class="ref">GOMO App. 8-A</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_9" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_9" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_9" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_9" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_9" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_9" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_9" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_9" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_9" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_9" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_9"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_10">
   <div class="q-header">
     <span class="q-num">1.10</span>
     <span class="q-text">Are the Company 500m Entry Lifesaving Checks conducted?</span>
   </div>
   <div class="guidance">Reference is made to the Life Saving Checks for the entry of a vessel within the 500m of an offshore installation.<div class="ref">TotalEnergies Life Saving Checks</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_10" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_10" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_10" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_10" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_10" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_10" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_10" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_10" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_10" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_10" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_10"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_11">
   <div class="q-header">
     <span class="q-num">1.11</span>
     <span class="q-text">Is the pre-entry checklist completed in a drift-off situation?</span>
   </div>
   <div class="guidance"><div class="ref">GOMO Sect. 8.3</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_11" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_11" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_11" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_11" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_11" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_11" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_11" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_11" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_11" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_11" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_11"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_12">
   <div class="q-header">
     <span class="q-num">1.12</span>
     <span class="q-text">In case of weather side working (drift on) or at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?</span>
   </div>
   <div class="guidance">If weather side is tide dependent, the operations should be postponed until the next suitable window. Mitigation measures shall include: Reduced use of engines power (e.g. <40%); Minimum level of Bridge Team experience; Reduced duration alongside; Prohibited SIMOPS (e.g. seismic, construction, drilling); Reduced waves criteria. Working on the weather side of the installation shall be prohibited if the drift or the close proximity of the vessel put unprotected risers at collision risk.<div class="ref">TotalEnergies Life Saving Checks</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_12" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_12" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_12" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_12" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_12" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_12" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_12" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_12" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_12" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_12" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_12"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_13">
   <div class="q-header">
     <span class="q-num">1.13</span>
     <span class="q-text">In case of working at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?</span>
   </div>
   <div class="guidance">Working at a distance below 10 meters from the installation shall only be considered during slack waters. The vessel shall only be handled in manual as DP footprint might result in excessive excursion incompatible with the close proximity. Working at less than 10 meters shall be prohibited if the drift or close proximity puts unprotected risers at collision risk.<div class="ref">TotalEnergies Life Saving Checks</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_13" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_13" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_13" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_13" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_13" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_13" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_13" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_13" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_13" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_13" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_13"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_14">
   <div class="q-header">
     <span class="q-num">1.14</span>
     <span class="q-text">Are the Bridge Team aware that changes of conning station are not permitted closer than 200m from the Installation?</span>
   </div>
   <div class="guidance">Bridge Team members shall not change the position of the control station (forward/aft on the Bridge or onto a Bridge wing) at a distance lower than 200m from the installation. However, vessels shall be encouraged to increase this distance to 500 meters.<div class="ref">Step Change in Safety - Marine Operations Safety Zone - Step 2 Approach</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_14" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_14" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_14" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_14" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_14" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_14" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_14" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_14" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_14" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_14" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_14"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_15">
   <div class="q-header">
     <span class="q-num">1.15</span>
     <span class="q-text">If station keeping in 500m zone will be done in DP, are the functional checks conducted in DP Auto Position prior to 500m entry?</span>
   </div>
   <div class="guidance">The intention is to verify the operation of the DP systems prior to entry. The checks shall include full functional checks of the operation of the thrusters, power generation, auto DP, IJS and manual controls. The checks also ensure that the DP system is set up correctly according to the DP operations manual and associated engine room and bridge checklists. The DP model will be built up at the setup position 200m from the installation.<div class="ref">IMCA M103 Sect. 3.4.4; IMCA M182 App. 6</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_15" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_15" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_15" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_15" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_15" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_15" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_15" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_15" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_15" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_15" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_15"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_16">
   <div class="q-header">
     <span class="q-num">1.16</span>
     <span class="q-text">Does the vessel maintain an Engine room watch during 500m safety zone operations?</span>
   </div>
   <div class="guidance">During DP operations, vessel's engine control room shall be manned by an STCW certified officer in charge of an engineering watch. Similar provision shall apply for vessel handled manually.<div class="ref">GS OT OPP 847 Sect. 7</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_16" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_16" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_16" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_16" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_16" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_16" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_16" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_16" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_16" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_16" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_16"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_17">
   <div class="q-header">
     <span class="q-num">1.17</span>
     <span class="q-text">Does the engineer on watch complete a vessel specific engine room checklist as part of the pre-entry checks?</span>
   </div>
   <div class="guidance">An engine room readiness for DP operations checklist shall be completed by the engineer on watch. The purpose of this checklist is to ensure that the engine room systems and equipment are set up correctly for DP with the correct redundancy and the appropriate equipment and switchboard configuration. Similar provision shall apply for vessel handled manually.<div class="ref">IMCA M103 Sect. 3.4.7</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_17" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_17" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_17" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_17" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_17" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_17" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_17" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_17" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_17" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_17" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_17"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_18">
   <div class="q-header">
     <span class="q-num">1.18</span>
     <span class="q-text">Is there evidence that the Bridge Team have been trained for handling the vessel?</span>
   </div>
   <div class="guidance">MSF Ship Handling Record Book can be used as a basis to demonstrate level of experience and competencies in handling the vessel. Masters should provide every opportunity for junior officers to practice ship handling when vessel/safety considerations allow.<div class="ref">MSF Ship Handling Record Book</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_18" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_18" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_18" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_18" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_18" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_18" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_18" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_18" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_18" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_18" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_18"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_19">
   <div class="q-header">
     <span class="q-num">1.19</span>
     <span class="q-text">Does the vessel conduct DP drills?</span>
   </div>
   <div class="guidance">DP drill matrix should include as a minimum: Black-out recovery; Transfer between operating stations (including joystick control and manual manoeuvring using independent lever control); Loss of thrusters, reference systems, and sensors; Loss of position, drift off, drive off.<div class="ref">GS OT OPP 847 Sect. 8.4</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_19" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_19" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_19" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_19" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_19" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_19" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_19" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_19" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_19" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_19" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_19"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_20">
   <div class="q-header">
     <span class="q-num">1.20</span>
     <span class="q-text">Can the Bridge Team demonstrate how to safely transfer between manual mode to DP mode and from DP Mode to manual mode?</span>
   </div>
   <div class="guidance">Personnel operating in DP mode must be able to demonstrate how they can switch from DP mode to manual to manoeuvre the vessel away from the installation in a controlled manner. Lack of understanding and awareness of the correct procedures for transferring modes of operation can lead to collision with the installation.<div class="ref">IMCA M182 Sect. 3.1</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_20" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_20" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_20" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_20" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_20" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_20" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_20" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_20" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_20" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_20" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_20"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_21">
   <div class="q-header">
     <span class="q-num">1.21</span>
     <span class="q-text">Does the Bridge Team understand when and how to utilise the DP Independent Joy Stick (IJS), and is the IJS appropriately marked?</span>
   </div>
   <div class="guidance">DP operators shall be able to operate the vessel utilising the IJS and this shall be documented in a Ship Handling Record Book. The IJS shall also be clearly marked to differentiate it from other joysticks (e.g. the DP Control System joystick or individual thruster controls).<div class="ref">IMCA M182 Sect. 3.1; IMCA M103 Sect 2.20.8</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_21" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_21" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_21" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_21" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_21" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_21" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_21" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_21" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_21" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_21" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_21"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_22">
   <div class="q-header">
     <span class="q-num">1.22</span>
     <span class="q-text">Does the Bridge Team understand that the DP IJS is a different joystick than the DP Control System joystick, and is the DP Control System joystick appropriately marked?</span>
   </div>
   <div class="guidance">DP operators shall be able to correctly identify the DP Control System joystick and the IJS and be aware that they are separate. The DP Control System joystick shall also be clearly marked to differentiate it from other joysticks.<div class="ref">IMCA M182 Sect. 3.1</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_22" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_22" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_22" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_22" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_22" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_22" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_22" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_22" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_22" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_22" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_22"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_23">
   <div class="q-header">
     <span class="q-num">1.23</span>
     <span class="q-text">Does the Bridge Team know what the gain setting of the joysticks (both IJS and DP) are?</span>
   </div>
   <div class="guidance">Gain setting shall be adjusted to the given environment and recorded in DP setup checklist.</div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_23" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_23" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_23" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_23" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_23" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_23" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_23" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_23" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_23" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_23" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_23"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_24">
   <div class="q-header">
     <span class="q-num">1.24</span>
     <span class="q-text">Does the vessel implement a vessel/operation/location specific ASOG and CAM?</span>
   </div>
   <div class="guidance">DP vessels must operate in accordance with an Activity Specific Operating Guidelines (ASOG) and, as relevant, in accordance with a Critical Activity Mode (CAM). An ASOG should be updated for each different type of activity and location where the vessel is to work and when the conditions differ. The CAM defines the most robust configuration of the DP system and identifies the equipment configuration and methods of operation that ensure the vessel meets its maximum level of redundancy.<div class="ref">IMCA M220 Sect 5.1 & 5.3; IMCA M109 Sect 4.4; IMCA M182 App. 9 & 10</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_24" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_24" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_24" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_24" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_24" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_24" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_24" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_24" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_24" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_24" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_24"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_25">
   <div class="q-header">
     <span class="q-num">1.25</span>
     <span class="q-text">Does the Bridge Team understand the limits defined in ASOG and CAM?</span>
   </div>
   <div class="guidance">DP operators shall have an ASOG and CAM readily available at the DP control station. The DPOs should be questioned on their understanding of the ASOG and CAM by reviewing some scenarios (e.g. what action to take if a thruster stops, what happens if a PRS is lost, etc).<div class="ref">IMCA M220 Sect 5.1 & 5.3; IMCA M109 Sect 4.4</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_25" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_25" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_25" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_25" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_25" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_25" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_25" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_25" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_25" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_25" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_25"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_26">
   <div class="q-header">
     <span class="q-num">1.26</span>
     <span class="q-text">For when vessel is handled manually, are station keeping limitations defined and does the Bridge Team understand them?</span>
   </div>
   <div class="guidance">Station keeping limitations shall include criteria for engine power limitations (allowing recovery in case of engine failure), loss of most effective thruster, waves conditions affecting tunnel thrusters' performance (i.e. aeration).</div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_26" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_26" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_26" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_26" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_26" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_26" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_26" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_26" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_26" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_26" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_26"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_27">
   <div class="q-header">
     <span class="q-num">1.27</span>
     <span class="q-text">Does the Bridge Team understand the WCFDI and what to do in the event of a WCF?</span>
   </div>
   <div class="guidance">DP operators shall understand the WCFDI from the DP FMEA and trials documentation and understand what to do in the event of a WCF through the vessel specific ASOG, CAM, and DP Operations Manual. The Worst Case Failure Design Intent (WCFDI) is used as the basis of the design. DP Operators shall ideally have signed to state that they have read and understood the DP FMEA and DP Operations Manual.<div class="ref">IMO MSC 1580 Sect 1.2; IMCA M220 Sect 3.2 & 3.6</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_27" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_27" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_27" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_27" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_27" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_27" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_27" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_27" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_27" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_27" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_27"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_28">
   <div class="q-header">
     <span class="q-num">1.28</span>
     <span class="q-text">Are DP footprints periodically undertaken on board?</span>
   </div>
   <div class="guidance">DP footprint plots measure the vessel's real station keeping performance (accuracy) in specific equipment configurations and environmental conditions. They determine the vessel's actual station keeping ability in various thruster configurations and environmental conditions and can be used for comparison with DP capability plots. All DPOs shall be capable to demonstrate how to record DP footprints.<div class="ref">IMCA M103 Sect. 3.6; IMCA M182 Sect. 2.5.6; MTS Operations Guidance Pt. 1 Sect. 4.5</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_28" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_28" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_28" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_28" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_28" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_28" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_28" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_28" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_28" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_28" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_28"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_29">
   <div class="q-header">
     <span class="q-num">1.29</span>
     <span class="q-text">Is the DP capability analysis for the area of operations available on board and is it understood by the Bridge Team?</span>
   </div>
   <div class="guidance">The purpose of DP capability plots or analysis, is to determine by calculation, based on assumed propulsive power, the position keeping ability of the vessel in fully intact, certain degraded conditions and in various environmental conditions. DP capability plots should be generated to DNV-ST-0111 standard and be area of operations specific (site level 2). Must be from OEM or recognized 3rd party for all modes including Intact, WCFDI, Loss of most effective thruster(s). Must include any power restrictions (kW) and be at the designated operational draught.<div class="ref">GS OT OPP 847 Sect. 6; IMO MSC 1580 Sect. 4.5; IMCA M109 Sect 4.2.10; IMCA M182 Sect 2.5.5</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_29" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_29" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_29" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_29" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_29" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_29" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_29" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_29" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_29" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_29" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_29"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_30">
   <div class="q-header">
     <span class="q-num">1.30</span>
     <span class="q-text">Is the DP Consequence Analysis function understood by the Bridge Team?</span>
   </div>
   <div class="guidance">A consequence analysis is a class requirement in all DP equipment class 2 and 3 DP control systems. A consequence analysis provides a warning if the vessel is not able to maintain position and/or heading after a predefined WCF has occurred during current operations and weather conditions. Additionally, the consequence analysis shall perform calculations to verify that in the event of a single fault there is sufficient thrust available to maintain position and/or heading. DP consequence analysis settings and alarms shall be included in the DP Operations Manual.<div class="ref">IMO MSC 1580 Sect. 3.4.2; IMCA M103 Sect. 2.20.5</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_30" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_30" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_30" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_30" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_30" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_30" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_30" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_30" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_30" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_30" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_30"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_31">
   <div class="q-header">
     <span class="q-num">1.31</span>
     <span class="q-text">Is there any previous occurrence of consequence analysis alarms occurring and/or being ignored?</span>
   </div>
   <div class="guidance">The DP log shall be checked to establish if consequence alarms have been activated during previous DP operations. DP Operators shall be questioned on previous consequence alarms. It shall be established if such alarms are routinely ignored.</div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_31" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_31" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_31" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_31" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_31" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_31" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_31" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_31" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_31" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_31" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_31"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_32">
   <div class="q-header">
     <span class="q-num">1.32</span>
     <span class="q-text">Does the Bridge Team know and understand the environmental forces impacting the vessel at the location of operation?</span>
   </div>
   <div class="guidance">The Bridge Team shall be aware of location specific tides and current, prevailing wind directions, sudden changes that may occur in wind or current, rip tides, the speed/onset of approaching weather fronts, typical wave and typical wind speeds. Awareness shall consider seasonal norms and maximum values exceeding the capability of the vessel.<div class="ref">IMCA M182 Sect. 4.6</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_32" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_32" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_32" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_32" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_32" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_32" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_32" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_32" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_32" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_32" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_32"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_33">
   <div class="q-header">
     <span class="q-num">1.33</span>
     <span class="q-text">Are the vessel personnel aware that they are not permitted to undertake maintenance activities inside the 500m safety zone?</span>
   </div>
   <div class="guidance">Maintenance activities shall be prohibited and remote access to DP software shall be isolated. These shall be referenced within the ASOG. Onboard engineering, electrical and electronics support team shall not conduct maintenance activities on DP systems whilst the vessel is in DP mode.<div class="ref">IMCA M182 Sect. 4.6</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_33" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_33" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_33" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_33" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_33" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_33" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_33" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_33" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_33" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_33" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_33"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_34">
   <div class="q-header">
     <span class="q-num">1.34</span>
     <span class="q-text">Do vessel personnel understand that they cannot undertake 500m safety zone entry/operations with the vessels systems and equipment in a degraded state?</span>
   </div>
   <div class="guidance">Vessel in a degraded state shall not enter the 500m safety zone. The degraded state for DP vessels is defined as any condition that is not within the green status of the ASOG. Green indicates normal operations where planned operations can be undertaken within agreed safe limits.<div class="ref">IMCA M182 Sect. 4.2.5.1</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_34" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_34" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_34" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_34" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_34" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_34" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_34" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_34" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_34" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_34" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_34"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_35">
   <div class="q-header">
     <span class="q-num">1.35</span>
     <span class="q-text">Does the Bridge Team understand the limitations of utilising absolute and relative DP Position Reference Systems?</span>
   </div>
   <div class="guidance">A minimum of two (2) relative PRS are required for floating installations, and fixed installations where shadowing occurs. A minimum of two (2) constellations/service providers are required for absolute positioning referencing (e.g. GPS and Glonass). Where multiple position references are in use by DP, the DPOs should monitor the weightings closely so as to ensure that no one system or set of systems is "hogging" the weighting.<div class="ref">GS OT OPP 847 Sect. 8; IMCA M252 Section 6; MTS Operations Guidance Pt. 1 Sect. 4.6</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_35" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_35" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_35" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_35" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_35" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_35" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_35" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_35" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_35" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_35" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_35"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_36">
   <div class="q-header">
     <span class="q-num">1.36</span>
     <span class="q-text">Does the bridge team activate the "follow target" mode when approaching in DP a weathervaning floating installation or another DP installation (e.g. drilling rig)?</span>
   </div>
   <div class="guidance">DPOs shall be aware of the implications of not using the "follow target" mode when approaching a weathervaning floating installation or another DP installation.</div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_36" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_36" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_36" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_36" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_36" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_36" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_36" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_36" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_36" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_36" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_36"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_37">
   <div class="q-header">
     <span class="q-num">1.37</span>
     <span class="q-text">Are the locations and status of the installation mounted PRS transponders/reflectors known prior to entry?</span>
   </div>
   <div class="guidance">Bridge Team personnel shall ensure PRS transponders/reflectors are fit for purpose. PRS transponders/reflectors shall be adequately maintained (clean and properly mounted), adequately charged, mounted in the position indicated on the Platform Data Card and it shall be established if there are PRS transponders/reflectors blind sectors or if masking of the PRS transponders/reflectors can occur.</div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_37" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_37" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_37" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_37" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_37" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_37" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_37" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_37" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_37" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_37" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_37"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_38">
   <div class="q-header">
     <span class="q-num">1.38</span>
     <span class="q-text">Are escape routes defined prior to entering the 500m safety zone?</span>
   </div>
   <div class="guidance">Escape routes shall be clearly highlighted by the Bridge team, (e.g. posted on white boards, using post it notes on the DP console). An escape route shall be identified providing a clear path for the vessel to follow when making a routine, or emergency departure from the installation. Other vessels shall stay clear of the escape route.<div class="ref">IMCA M182 Sect 4.6; GOMO Sect. 8.7</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_38" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_38" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_38" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_38" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_38" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_38" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_38" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_38" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_38" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_38" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_38"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q1_39">
   <div class="q-header">
     <span class="q-num">1.39</span>
     <span class="q-text">Do Bridge Team members discuss and agree on entry and close approach actions?</span>
   </div>
   <div class="guidance">Bridge Team members shall discuss and agree on 500m safety zone entry and installation close approach actions. Such discussions shall cover vessel heading, helicopter operations (with possible effect on the vessel's wind sensors), location of craneage, escape routes, location of PRS reflectors/transponders, riser locations, overboard discharges, undersea discharges, thrusters, mooring lines, installation rotation/excursion, bulk hoses/manifolds, etc.<div class="ref">GOMO Sect. 8.2.3</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q1_39" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q1_39" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q1_39" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q1_39" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q1_39" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q1_39" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q1_39" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q1_39" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q1_39" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q1_39" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q1_39"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
 </div>
 <div class="section">
   <div class="section-title">2 -- Approach (500m - 200m approx.)</div>
   
-<div class="question">
+<div class="question" id="wrap-q2_1">
   <div class="q-header">
     <span class="q-num">2.1</span>
     <span class="q-text">Does the vessel transfer from 500m to 200m at a speed below 3 knots and with an offset heading?</span>
   </div>
   <div class="guidance">Entry can be made in manual mode or DP mode. Entry and close approach shall be offset to avoid the vessel being on a direct collision course with the installation.<div class="ref">GOMO Sect. 8.3</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q2_1" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q2_1" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q2_1" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q2_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q2_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q2_1" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q2_1" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q2_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q2_1" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q2_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q2_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
 </div>
 <div class="section">
   <div class="section-title">3 -- Position Setup</div>
   
-<div class="question">
+<div class="question" id="wrap-q3_1">
   <div class="q-header">
     <span class="q-num">3.1</span>
     <span class="q-text">Is the position setup controlled with a DP location setup checklist?</span>
   </div>
   <div class="guidance">The purpose of these checks is to ensure that the vessel's station keeping performance at the position setup is satisfactory and, in particular, to ensure that the position reference systems are properly set up. The checks also confirm that the power and propulsion demands, and DP control parameters are within the ASOG/CAM criteria.<div class="ref">IMCA M103 Sect. 3.4.5</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q3_1" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q3_1" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q3_1" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q3_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q3_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q3_1" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q3_1" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q3_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q3_1" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q3_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q3_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q3_2">
   <div class="q-header">
     <span class="q-num">3.2</span>
     <span class="q-text">Is set-up for close approach to the installation conducted at a safe distance from the installation?</span>
   </div>
   <div class="guidance">This position shall be such that collision with installation is avoided if equipment failure occurs during set up checks. As a minimum it shall be: 1.5 x vessel length for drift off operations; 2.5 x vessel length for drift on operations.<div class="ref">GOMO Sect. 8.4; IMCA M182 Sect. 4.6</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q3_2" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q3_2" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q3_2" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q3_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q3_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q3_2" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q3_2" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q3_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q3_2" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q3_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q3_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q3_3">
   <div class="q-header">
     <span class="q-num">3.3</span>
     <span class="q-text">Does the vessel ensure station keeping is stable at the setup position prior to moving alongside?</span>
   </div>
   <div class="guidance">The following stabilisation periods are recommended depending on the mode of operation: Manual Mode -- 15~20 minutes; DP Mode -- 30 minutes for DP model build up and stabilisation.<div class="ref">IMCA M182 Sect. 4.6; GOMO Sect. 8.7</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q3_3" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q3_3" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q3_3" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q3_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q3_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q3_3" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q3_3" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q3_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q3_3" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q3_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q3_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
 </div>
 <div class="section">
   <div class="section-title">4 -- Final Approach (200m approx.) - Working Position & Alongside Working</div>
   
-<div class="question">
+<div class="question" id="wrap-q4_1">
   <div class="q-header">
     <span class="q-num">4.1</span>
     <span class="q-text">Does the Bridge Team implement an incremental stepped approach and a maximum speed during final approach?</span>
   </div>
   <div class="guidance">Vessels shall implement an incremental stepped approach from the setup position, initially 10m steps down to 1m steps, not exceeding 0.5knts. This shall be captured within the ASOG for DP vessels.<div class="ref">GOMO Sect. 8.7</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q4_1" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q4_1" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q4_1" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q4_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q4_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q4_1" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q4_1" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q4_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q4_1" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q4_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q4_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q4_2">
   <div class="q-header">
     <span class="q-num">4.2</span>
     <span class="q-text">Is the Bridge Team aware of forecast environmental conditions?</span>
   </div>
   <div class="guidance">The Bridge Team members shall monitor weather and sea state conditions using on board instrumentation and seamanship. The Bridge Team shall be aware of local metocean conditions (e.g. presence of rip tides, squalls) and what to do in the event of the onset of inclement weather and metocean conditions.<div class="ref">GOMO Sect. 8.2.5</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q4_2" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q4_2" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q4_2" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q4_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q4_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q4_2" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q4_2" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q4_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q4_2" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q4_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q4_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q4_3">
   <div class="q-header">
     <span class="q-num">4.3</span>
     <span class="q-text">Do the Bridge Team have situational awareness during close approach operations?</span>
   </div>
   <div class="guidance">Bridge Team members shall monitor the position of the vessel in relation to the installation and other vessels/operations installation close approach. The Bridge Team shall consider where the closest point of approach will be, the drive on/drift off risk of collision, the availability of escape routes, simultaneous operations (e.g. crew transfers, ERRV FRC close standby). The impact of environmental forces on DP systems shall also be closely monitored. Access to DP desk or control stations shall be restricted during 500m zone entry and alongside working.<div class="ref">GOMO Sect. 7.2, 8.9</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q4_3" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q4_3" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q4_3" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q4_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q4_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q4_3" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q4_3" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q4_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q4_3" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q4_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q4_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q4_4">
   <div class="q-header">
     <span class="q-num">4.4</span>
     <span class="q-text">For vessel handled manually, is the maximum time alongside defined and understood by Bridge Team?</span>
   </div>
   <div class="guidance">Working alongside an installation in manual mode require an unusually high level of concentration with the result that early on-set of fatigue is likely. Vessel shall share and discuss openly this criterion with the installation.</div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q4_4" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q4_4" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q4_4" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q4_4" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q4_4" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q4_4" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q4_4" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q4_4" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q4_4" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q4_4" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q4_4"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q4_5">
   <div class="q-header">
     <span class="q-num">4.5</span>
     <span class="q-text">Is there a suitable system for handover between Bridge and Engine room watches?</span>
   </div>
   <div class="guidance">Bridge and Engine Room Team members shall complete effective formal handovers. Handover shall include DP/manual operational modes, environmental conditions, ongoing work with the installation, working radio channels, incidents, delays, planned operations, etc. Bridge watches shall be staggered (e.g. one officer on 09.00-15.00hrs and the relieving officer on 12.00-18.00hrs). DP operators shall rotate, ensuring the time spent on the DP desk is shared (e.g. 1 hour at a time).<div class="ref">GOMO Sect. 8.2.6; IMCA M103 Sect. 3.4.6; IMCA M182 App. 7</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q4_5" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q4_5" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q4_5" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q4_5" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q4_5" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q4_5" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q4_5" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q4_5" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q4_5" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q4_5" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q4_5"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q4_6">
   <div class="q-header">
     <span class="q-num">4.6</span>
     <span class="q-text">Does the Bridge Team understand that the vessel must be steered out of the 500m safety zone in the event of a yellow condition in the ASOG?</span>
   </div>
   <div class="guidance">The vessel DP Operations Manual shall clearly state that the vessel is required to exit the 500m safety zone when the yellow condition is reached in the ASOG. Similar provision shall apply for vessel handled manually in case of equipment failure having an impact on station keeping capability.<div class="ref">GOMO Sect. 8.8</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q4_6" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q4_6" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q4_6" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q4_6" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q4_6" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q4_6" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q4_6" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q4_6" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q4_6" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q4_6" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q4_6"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q4_7">
   <div class="q-header">
     <span class="q-num">4.7</span>
     <span class="q-text">Does the Bridge Team understand that the length of time alongside shall be minimised, and in no case vessel shall remain idle/on standby alongside more than 30 minutes?</span>
   </div>
   <div class="guidance">Extended or protracted operations alongside increase the likelihood of a collision. After 30 minutes in idle/standby alongside, vessel shall notify the installation that it moves clear of the installation to a drift off position outside the 500m safety zone. The process of checks for 500m safety zone entry and setup need to be repeated prior to working alongside.<div class="ref">GOMO Sect. 8.12 & 8.13</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q4_7" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q4_7" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q4_7" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q4_7" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q4_7" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q4_7" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q4_7" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q4_7" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q4_7" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q4_7" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q4_7"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q4_8">
   <div class="q-header">
     <span class="q-num">4.8</span>
     <span class="q-text">Do the bridge team understand that the DP rotation point shall not be changed during operations alongside?</span>
   </div>
   <div class="guidance">Changing the DP rotation point during operations might affect the DP system and develop in station keeping issue. No change of DP rotation point shall occur unless done as part of a new DP position setup at 200m including 30 minutes for DP model build up and stabilisation.</div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q4_8" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q4_8" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q4_8" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q4_8" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q4_8" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q4_8" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q4_8" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q4_8" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q4_8" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q4_8" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q4_8"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q4_9">
   <div class="q-header">
     <span class="q-num">4.9</span>
     <span class="q-text">Does the Bridge Team return to the setup position (200m) when shifting vessel position/orientation alongside on the same side of the installation?</span>
   </div>
   <div class="guidance">Vessels must return to the setup position when changing vessel position/orientation on one side of the installation. Rotating the vessel or shifting the vessel longitudinally requires the vessel to return to the setup position, complete setup and return alongside.</div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q4_9" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q4_9" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q4_9" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q4_9" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q4_9" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q4_9" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q4_9" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q4_9" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q4_9" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q4_9" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q4_9"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q4_10">
   <div class="q-header">
     <span class="q-num">4.10</span>
     <span class="q-text">Does the Bridge Team exit the 500m safety zone and re-enter the 500m safety zone when changing working faces at the installation?</span>
   </div>
   <div class="guidance">Changing faces of the installations requires the vessel to exit and re-enter the 500m safety zone. The appropriate setting up location in relation to changing working faces as highlighted in GOMO shall be read as outside the 500m safety zone.<div class="ref">GOMO Sect. 8.10</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q4_10" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q4_10" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q4_10" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q4_10" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q4_10" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q4_10" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q4_10" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q4_10" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q4_10" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q4_10" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q4_10"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
 </div>
 <div class="section">
   <div class="section-title">5 -- Exiting Safety Zone</div>
   
-<div class="question">
+<div class="question" id="wrap-q5_1">
   <div class="q-header">
     <span class="q-num">5.1</span>
     <span class="q-text">Does the vessel remain in DP mode up to the 200m position when departing the installation?</span>
   </div>
   <div class="guidance">A safe exit route shall be selected, taking the vessel well clear of all hazards, including any other vessels and to leeward of the facility. In all cases, changes in operating mode shall not take place within 200m of the installation and/or in a drift on position.<div class="ref">GOMO Sect. 8.14</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q5_1" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q5_1" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q5_1" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q5_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q5_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q5_1" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q5_1" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q5_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q5_1" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q5_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q5_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q5_2">
   <div class="q-header">
     <span class="q-num">5.2</span>
     <span class="q-text">Does the vessel operate in manual mode between 200m and edge of the 500m safety zone?</span>
   </div>
   <div class="guidance">DP vessels operating in DP mode can, in most circumstances, be switched to joystick or manual mode after 200m, and be manoeuvred away from the offshore installation in a controlled manner.<div class="ref">IMCA M182 Sect. 3.1.2</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q5_2" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q5_2" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q5_2" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q5_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q5_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q5_2" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q5_2" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q5_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q5_2" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q5_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q5_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
-<div class="question">
+<div class="question" id="wrap-q5_3">
   <div class="q-header">
     <span class="q-num">5.3</span>
     <span class="q-text">Does the vessel change the conning position only outside the 500m safety zone?</span>
   </div>
   <div class="guidance">Bridge Team members shall not change the control station/position (forward/aft on the Bridge or onto a Bridge wing) inside the 500m safety zone.<div class="ref">GOMO Sect. 8.6</div></div>
   <div class="answer-row">
-    <label class="ans yes-lbl"><input type="radio" name="q5_3" value="YES"> &#10003; YES</label>
-    <label class="ans no-lbl"><input type="radio" name="q5_3" value="NO"> &#10007; NO</label>
-    <label class="ans na-lbl"><input type="radio" name="q5_3" value="NA"> N/A</label>
+    <label class="ans yes-lbl"><input type="radio" name="q5_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q5_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q5_3" value="NA" onchange="onAnswer()"> N/A</label>
   </div>
   <div class="obs-row">
-    <label><input type="checkbox" name="obs_q5_3" value="1"> &#9888; Observation / Finding</label>
+    <label><input type="checkbox" id="obs-q5_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
   </div>
-  <textarea name="cmt_q5_3" placeholder="Comment / Evidence..." rows="2"></textarea>
+  <textarea id="cmt-q5_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q5_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" capture="environment" onchange="addPhoto(event, + qid + )" style="display:none">
+  </label>
 </div>
 </div>
 <div class="general-obs">
   <h3>&#9888; General Observations / Additional Comments</h3>
-  <textarea name="general_obs" placeholder="Overall inspection notes, summary of findings, follow-up actions required..." rows="5"></textarea>
+  <textarea id="general-obs" placeholder="Overall inspection notes, summary of findings, follow-up actions required..." rows="5" oninput="onAnswer()"></textarea>
 </div>
 <div class="btn-row">
-  <button class="btn btn-save" onclick="saveProgress()">&#128190; Save Progress</button>
-  <button class="btn btn-pdf" onclick="window.print()">&#128438; Export PDF</button>
+  <button class="btn btn-pdf" onclick="exportPDF()">&#128438; Export PDF</button>
+  <button class="btn btn-new" onclick="clearData()">&#8635; New Inspection</button>
 </div>
 <script>
 
-function saveProgress() {
-  var html = document.documentElement.outerHTML;
-  // Injecter les valeurs des radios
-  var radios = document.querySelectorAll('input[type=radio]');
-  for (var i = 0; i < radios.length; i++) {
-    var r = radios[i];
-    if (r.checked) {
-      html = html.replace(
-        'name="' + r.name + '" value="' + r.value + '"',
-        'name="' + r.name + '" value="' + r.value + '" checked'
-      );
-    }
-  }
-  // Injecter les checkboxes
-  var checks = document.querySelectorAll('input[type=checkbox]');
-  for (var j = 0; j < checks.length; j++) {
-    var cb = checks[j];
-    if (cb.checked) {
-      html = html.replace(
-        'name="' + cb.name + '" value="1"',
-        'name="' + cb.name + '" value="1" checked'
-      );
-    }
-  }
-  // Injecter les valeurs des inputs texte et select
-  var inputs = document.querySelectorAll('input[type=text], input[type=date], select');
-  for (var k = 0; k < inputs.length; k++) {
-    var inp = inputs[k];
-    var val = inp.value.replace(/"/g, '&quot;');
-    if (val) {
-      // Remplacer placeholder ou valeur vide par value=
-      var tag = inp.outerHTML;
-      var newTag = tag.replace('>', ' value="' + val + '">');
-      if (inp.tagName === 'SELECT') {
-        // Pour select, marquer l'option selected
-        newTag = tag.replace('value="' + val + '"', 'value="' + val + '" selected');
-      }
-      html = html.replace(tag, newTag);
-    }
-  }
-  // Injecter les textareas
-  var tas = document.querySelectorAll('textarea');
-  for (var t = 0; t < tas.length; t++) {
-    var ta = tas[t];
-    if (ta.value) {
-      var oldTag = '<textarea name="' + ta.name + '" placeholder="' + ta.placeholder + '" rows="' + ta.rows + '"></textarea>';
-      var newTagTA = '<textarea name="' + ta.name + '" placeholder="' + ta.placeholder + '" rows="' + ta.rows + '">' + ta.value.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</textarea>';
-      html = html.replace(oldTag, newTagTA);
-    }
-  }
-  var blob = new Blob([html], {type: 'text/html'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'inspection_save.html';
-  a.click();
-  URL.revokeObjectURL(url);
+var STORAGE_KEY = "inspectare-500m";
+var ALL_IDS = ["q1_1", "q1_2", "q1_3", "q1_4", "q1_5", "q1_6", "q1_7", "q1_8", "q1_9", "q1_10", "q1_11", "q1_12", "q1_13", "q1_14", "q1_15", "q1_16", "q1_17", "q1_18", "q1_19", "q1_20", "q1_21", "q1_22", "q1_23", "q1_24", "q1_25", "q1_26", "q1_27", "q1_28", "q1_29", "q1_30", "q1_31", "q1_32", "q1_33", "q1_34", "q1_35", "q1_36", "q1_37", "q1_38", "q1_39", "q2_1", "q3_1", "q3_2", "q3_3", "q4_1", "q4_2", "q4_3", "q4_4", "q4_5", "q4_6", "q4_7", "q4_8", "q4_9", "q4_10", "q5_1", "q5_2", "q5_3"];
+var Q_TEXTS = {"q1_1": "Are the Bridge Team aware of maintaining a safe passing distance from installations and other operations when making a field transit through a multi-installation field?", "q1_2": "Are the Bridge Team aware of not utilising the co-ordinates of offshore installations as way points and is the final waypoint offset from the installation?", "q1_3": "Are the Bridge Team and Engine Room Team members suitably rested prior to 500m safety zone entry?", "q1_4": "Are the Master/Bridge and Engine Control Room teams aware of Company's Stop Work Authority?", "q1_5": "Did the crew ever perceive time or commercial pressure to commence or continue operations in 500m safety zone?", "q1_6": "Are the Bridge and the Engine Control Room free of distractions?", "q1_7": "Are the last updated installations data cards and the adverse weather working policy available to the Bridge Team?", "q1_8": "Does the vessel fill a pre-entry checklist and inform the installation of completion?", "q1_9": "Does the pre-entry checklist include the minimum requirements listed in GOMO?", "q1_10": "Are the Company 500m Entry Lifesaving Checks conducted?", "q1_11": "Is the pre-entry checklist completed in a drift-off situation?", "q1_12": "In case of weather side working (drift on) or at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?", "q1_13": "In case of working at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?", "q1_14": "Are the Bridge Team aware that changes of conning station are not permitted closer than 200m from the Installation?", "q1_15": "If station keeping in 500m zone will be done in DP, are the functional checks conducted in DP Auto Position prior to 500m entry?", "q1_16": "Does the vessel maintain an Engine room watch during 500m safety zone operations?", "q1_17": "Does the engineer on watch complete a vessel specific engine room checklist as part of the pre-entry checks?", "q1_18": "Is there evidence that the Bridge Team have been trained for handling the vessel?", "q1_19": "Does the vessel conduct DP drills?", "q1_20": "Can the Bridge Team demonstrate how to safely transfer between manual mode to DP mode and from DP Mode to manual mode?", "q1_21": "Does the Bridge Team understand when and how to utilise the DP Independent Joy Stick (IJS), and is the IJS appropriately marked?", "q1_22": "Does the Bridge Team understand that the DP IJS is a different joystick than the DP Control System joystick, and is the DP Control System joystick appropriately marked?", "q1_23": "Does the Bridge Team know what the gain setting of the joysticks (both IJS and DP) are?", "q1_24": "Does the vessel implement a vessel/operation/location specific ASOG and CAM?", "q1_25": "Does the Bridge Team understand the limits defined in ASOG and CAM?", "q1_26": "For when vessel is handled manually, are station keeping limitations defined and does the Bridge Team understand them?", "q1_27": "Does the Bridge Team understand the WCFDI and what to do in the event of a WCF?", "q1_28": "Are DP footprints periodically undertaken on board?", "q1_29": "Is the DP capability analysis for the area of operations available on board and is it understood by the Bridge Team?", "q1_30": "Is the DP Consequence Analysis function understood by the Bridge Team?", "q1_31": "Is there any previous occurrence of consequence analysis alarms occurring and/or being ignored?", "q1_32": "Does the Bridge Team know and understand the environmental forces impacting the vessel at the location of operation?", "q1_33": "Are the vessel personnel aware that they are not permitted to undertake maintenance activities inside the 500m safety zone?", "q1_34": "Do vessel personnel understand that they cannot undertake 500m safety zone entry/operations with the vessels systems and equipment in a degraded state?", "q1_35": "Does the Bridge Team understand the limitations of utilising absolute and relative DP Position Reference Systems?", "q1_36": "Does the bridge team activate the \"follow target\" mode when approaching in DP a weathervaning floating installation or another DP installation (e.g. drilling rig)?", "q1_37": "Are the locations and status of the installation mounted PRS transponders/reflectors known prior to entry?", "q1_38": "Are escape routes defined prior to entering the 500m safety zone?", "q1_39": "Do Bridge Team members discuss and agree on entry and close approach actions?", "q2_1": "Does the vessel transfer from 500m to 200m at a speed below 3 knots and with an offset heading?", "q3_1": "Is the position setup controlled with a DP location setup checklist?", "q3_2": "Is set-up for close approach to the installation conducted at a safe distance from the installation?", "q3_3": "Does the vessel ensure station keeping is stable at the setup position prior to moving alongside?", "q4_1": "Does the Bridge Team implement an incremental stepped approach and a maximum speed during final approach?", "q4_2": "Is the Bridge Team aware of forecast environmental conditions?", "q4_3": "Do the Bridge Team have situational awareness during close approach operations?", "q4_4": "For vessel handled manually, is the maximum time alongside defined and understood by Bridge Team?", "q4_5": "Is there a suitable system for handover between Bridge and Engine room watches?", "q4_6": "Does the Bridge Team understand that the vessel must be steered out of the 500m safety zone in the event of a yellow condition in the ASOG?", "q4_7": "Does the Bridge Team understand that the length of time alongside shall be minimised, and in no case vessel shall remain idle/on standby alongside more than 30 minutes?", "q4_8": "Do the bridge team understand that the DP rotation point shall not be changed during operations alongside?", "q4_9": "Does the Bridge Team return to the setup position (200m) when shifting vessel position/orientation alongside on the same side of the installation?", "q4_10": "Does the Bridge Team exit the 500m safety zone and re-enter the 500m safety zone when changing working faces at the installation?", "q5_1": "Does the vessel remain in DP mode up to the 200m position when departing the installation?", "q5_2": "Does the vessel operate in manual mode between 200m and edge of the 500m safety zone?", "q5_3": "Does the vessel change the conning position only outside the 500m safety zone?"};
+var Q_NUMS = {"q1_1": "1.1", "q1_2": "1.2", "q1_3": "1.3", "q1_4": "1.4", "q1_5": "1.5", "q1_6": "1.6", "q1_7": "1.7", "q1_8": "1.8", "q1_9": "1.9", "q1_10": "1.10", "q1_11": "1.11", "q1_12": "1.12", "q1_13": "1.13", "q1_14": "1.14", "q1_15": "1.15", "q1_16": "1.16", "q1_17": "1.17", "q1_18": "1.18", "q1_19": "1.19", "q1_20": "1.20", "q1_21": "1.21", "q1_22": "1.22", "q1_23": "1.23", "q1_24": "1.24", "q1_25": "1.25", "q1_26": "1.26", "q1_27": "1.27", "q1_28": "1.28", "q1_29": "1.29", "q1_30": "1.30", "q1_31": "1.31", "q1_32": "1.32", "q1_33": "1.33", "q1_34": "1.34", "q1_35": "1.35", "q1_36": "1.36", "q1_37": "1.37", "q1_38": "1.38", "q1_39": "1.39", "q2_1": "2.1", "q3_1": "3.1", "q3_2": "3.2", "q3_3": "3.3", "q4_1": "4.1", "q4_2": "4.2", "q4_3": "4.3", "q4_4": "4.4", "q4_5": "4.5", "q4_6": "4.6", "q4_7": "4.7", "q4_8": "4.8", "q4_9": "4.9", "q4_10": "4.10", "q5_1": "5.1", "q5_2": "5.2", "q5_3": "5.3"};
+var saveTimer = null;
+var photoStore = {};
+
+function compressImage(file, callback) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var maxW = 1200, maxH = 1200;
+      var w = img.width, h = img.height;
+      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+      if (h > maxH) { w = Math.round(w * maxH / h); h = maxH; }
+      canvas.width = w;
+      canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', 0.6));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
+
+function addPhoto(event, qid) {
+  var file = event.target.files[0];
+  if (!file) return;
+  compressImage(file, function(dataUrl) {
+    if (!photoStore[qid]) photoStore[qid] = [];
+    var idx = photoStore[qid].length;
+    photoStore[qid].push(dataUrl);
+    renderPhotos(qid);
+    onAnswer();
+  });
+  event.target.value = '';
+}
+
+function removePhoto(qid, idx) {
+  if (photoStore[qid]) {
+    photoStore[qid].splice(idx, 1);
+    renderPhotos(qid);
+    onAnswer();
+  }
+}
+
+function renderPhotos(qid) {
+  var area = document.getElementById('photos-' + qid);
+  if (!area) return;
+  area.innerHTML = '';
+  var photos = photoStore[qid] || [];
+  for (var i = 0; i < photos.length; i++) {
+    (function(idx) {
+      var wrap = document.createElement('div');
+      wrap.className = 'photo-wrap';
+      var img = document.createElement('img');
+      img.src = photos[idx];
+      img.className = 'photo-thumb';
+      var btn = document.createElement('button');
+      btn.className = 'photo-del';
+      btn.innerHTML = '&#10005;';
+      btn.onclick = function() { removePhoto(qid, idx); };
+      wrap.appendChild(img);
+      wrap.appendChild(btn);
+      area.appendChild(wrap);
+    })(i);
+  }
+}
+
+function onAnswer() {
+  updateProgress();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveData, 800);
+}
+
+function updateProgress() {
+  var yes = 0, no = 0, na = 0, total = ALL_IDS.length;
+  for (var i = 0; i < ALL_IDS.length; i++) {
+    var id = ALL_IDS[i];
+    var radios = document.querySelectorAll('input[name="' + id + '"]');
+    for (var j = 0; j < radios.length; j++) {
+      if (radios[j].checked) {
+        if (radios[j].value === 'YES') yes++;
+        else if (radios[j].value === 'NO') no++;
+        else if (radios[j].value === 'NA') na++;
+      }
+    }
+  }
+  var answered = yes + no + na;
+  var pct = total > 0 ? Math.round(answered / total * 100) : 0;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-count').textContent = answered + ' / ' + total;
+  document.getElementById('prog-yes').textContent = yes;
+  document.getElementById('prog-no').textContent = no;
+  document.getElementById('prog-na').textContent = na;
+  document.getElementById('prog-bar-fill').style.width = pct + '%';
+}
+
+function saveData() {
+  var data = { meta: {}, answers: {}, obs: {}, comments: {}, photos: photoStore };
+  var metaIds = ['vessel','insp_date','inspector','operator','flag','imo','port','block','status'];
+  for (var m = 0; m < metaIds.length; m++) {
+    var el = document.getElementById('m-' + metaIds[m]);
+    if (el) data.meta[metaIds[m]] = el.value;
+  }
+  for (var i = 0; i < ALL_IDS.length; i++) {
+    var id = ALL_IDS[i];
+    var radios = document.querySelectorAll('input[name="' + id + '"]');
+    for (var j = 0; j < radios.length; j++) {
+      if (radios[j].checked) data.answers[id] = radios[j].value;
+    }
+    var obs = document.getElementById('obs-' + id);
+    if (obs && obs.checked) data.obs[id] = true;
+    var cmt = document.getElementById('cmt-' + id);
+    if (cmt && cmt.value) data.comments[id] = cmt.value;
+  }
+  var gobs = document.getElementById('general-obs');
+  if (gobs) data.general_obs = gobs.value;
+  try {
+    var serialized = JSON.stringify(data);
+    var kb = Math.round(serialized.length / 1024);
+    localStorage.setItem(STORAGE_KEY, serialized);
+    var ind = document.getElementById('save-indicator');
+    if (ind) {
+      ind.textContent = '&#10003; Saved (' + kb + ' KB)';
+      ind.style.opacity = '1';
+      setTimeout(function(){ ind.style.opacity = '0'; }, 2000);
+    }
+  } catch(e) {
+    alert('Storage full. Remove some photos to continue saving.');
+  }
+}
+
+function loadData() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    if (data.meta) {
+      var metaIds = ['vessel','insp_date','inspector','operator','flag','imo','port','block','status'];
+      for (var m = 0; m < metaIds.length; m++) {
+        var el = document.getElementById('m-' + metaIds[m]);
+        if (el && data.meta[metaIds[m]]) el.value = data.meta[metaIds[m]];
+      }
+    }
+    if (data.answers) {
+      for (var id in data.answers) {
+        var radios = document.querySelectorAll('input[name="' + id + '"]');
+        for (var j = 0; j < radios.length; j++) {
+          if (radios[j].value === data.answers[id]) radios[j].checked = true;
+        }
+      }
+    }
+    if (data.obs) {
+      for (var oid in data.obs) {
+        var obs = document.getElementById('obs-' + oid);
+        if (obs) obs.checked = true;
+      }
+    }
+    if (data.comments) {
+      for (var cid in data.comments) {
+        var cmt = document.getElementById('cmt-' + cid);
+        if (cmt) cmt.value = data.comments[cid];
+      }
+    }
+    if (data.photos) {
+      photoStore = data.photos;
+      for (var pid in photoStore) { renderPhotos(pid); }
+    }
+    if (data.general_obs) {
+      var gobs = document.getElementById('general-obs');
+      if (gobs) gobs.value = data.general_obs;
+    }
+    updateProgress();
+  } catch(e) {}
+}
+
+function clearData() {
+  if (!confirm('Clear all answers and photos? This cannot be undone.')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  photoStore = {};
+  location.reload();
+}
+
+function getInitials(name) {
+  if (!name) return '';
+  var parts = name.trim().split(/\s+/);
+  var ini = '';
+  for (var i = 0; i < parts.length; i++) {
+    if (parts[i].length > 0) ini += parts[i][0].toUpperCase();
+  }
+  return ini;
+}
+
+function exportPDF() {
+  var vessel = document.getElementById('m-vessel').value || 'Unknown Vessel';
+  var inspector = document.getElementById('m-inspector').value || '';
+  var date = document.getElementById('m-insp_date').value || '';
+  var initials = getInitials(inspector);
+  var pdfTitle =  + title +  + ' | ' + vessel;
+  if (initials) pdfTitle += ' | ' + initials;
+  if (date) pdfTitle += ' | ' + date;
+  document.getElementById('pdf-title').textContent = pdfTitle;
+
+  var findings = [];
+  for (var i = 0; i < ALL_IDS.length; i++) {
+    var id = ALL_IDS[i];
+    var obs = document.getElementById('obs-' + id);
+    if (obs && obs.checked) {
+      var cmt = document.getElementById('cmt-' + id);
+      var photos = photoStore[id] || [];
+      findings.push({ num: Q_NUMS[id], text: Q_TEXTS[id], comment: cmt ? cmt.value : '', photos: photos });
+    }
+  }
+  var gobs = document.getElementById('general-obs');
+  var yes = parseInt(document.getElementById('prog-yes').textContent) || 0;
+  var no = parseInt(document.getElementById('prog-no').textContent) || 0;
+  var na = parseInt(document.getElementById('prog-na').textContent) || 0;
+
+  var summaryHtml = '<div class="pdf-summary">';
+  summaryHtml += '<h2>INSPECTION SUMMARY</h2>';
+  summaryHtml += '<div class="summary-meta">';
+  summaryHtml += '<p><strong>Vessel:</strong> ' + vessel + '</p>';
+  summaryHtml += '<p><strong>Inspector:</strong> ' + (inspector || '-') + '</p>';
+  summaryHtml += '<p><strong>Date:</strong> ' + (date || '-') + '</p>';
+  summaryHtml += '<p><strong>Operator:</strong> ' + (document.getElementById('m-operator').value || '-') + '</p>';
+  summaryHtml += '<p><strong>Flag:</strong> ' + (document.getElementById('m-flag').value || '-') + '</p>';
+  summaryHtml += '<p><strong>IMO:</strong> ' + (document.getElementById('m-imo').value || '-') + '</p>';
+  summaryHtml += '<p><strong>Location:</strong> ' + (document.getElementById('m-port').value || '-') + '</p>';
+  summaryHtml += '<p><strong>Block/Field:</strong> ' + (document.getElementById('m-block').value || '-') + '</p>';
+  summaryHtml += '</div>';
+  summaryHtml += '<div class="summary-stats">';
+  summaryHtml += '<span class="stat-yes">YES: ' + yes + '</span>';
+  summaryHtml += '<span class="stat-no">NO: ' + no + '</span>';
+  summaryHtml += '<span class="stat-na">N/A: ' + na + '</span>';
+  summaryHtml += '<span class="stat-findings">Findings: ' + findings.length + '</span>';
+  summaryHtml += '</div>';
+
+  if (findings.length > 0) {
+    summaryHtml += '<h3>OBSERVATIONS / FINDINGS (' + findings.length + ')</h3>';
+    for (var f = 0; f < findings.length; f++) {
+      var fi = findings[f];
+      summaryHtml += '<div class="finding-block">';
+      summaryHtml += '<div class="finding-header"><span class="finding-num">' + fi.num + '</span><span class="finding-text">' + fi.text + '</span></div>';
+      if (fi.comment) summaryHtml += '<div class="finding-comment">' + fi.comment + '</div>';
+      if (fi.photos.length > 0) {
+        summaryHtml += '<div class="finding-photos">';
+        for (var p = 0; p < fi.photos.length; p++) {
+          summaryHtml += '<img src="' + fi.photos[p] + '" class="finding-photo">';
+        }
+        summaryHtml += '</div>';
+      }
+      summaryHtml += '</div>';
+    }
+  } else {
+    summaryHtml += '<p class="no-findings">No observations / findings recorded.</p>';
+  }
+
+  if (gobs && gobs.value) {
+    summaryHtml += '<h3>GENERAL OBSERVATIONS</h3><p>' + gobs.value + '</p>';
+  }
+  summaryHtml += '</div>';
+  document.getElementById('pdf-summary').innerHTML = summaryHtml;
+  window.print();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadData();
+  var metaEls = document.querySelectorAll('.meta-field input, .meta-field select');
+  for (var i = 0; i < metaEls.length; i++) {
+    metaEls[i].addEventListener('change', function(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveData, 800); });
+    metaEls[i].addEventListener('input', function(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveData, 800); });
+  }
+});
 
 </script>
 </body>
