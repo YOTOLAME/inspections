@@ -3071,6 +3071,8 @@ function exportPDF() {
   var inspector = document.getElementById('m-inspector').value || '';
   var date = document.getElementById('m-insp_date').value || '';
   var initials = getInitials(inspector);
+  var fileTitle = 'Inspectare-Crew-Boat-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
+  document.title = fileTitle;
   var pdfTitle = 'Inspectare - Crew Boat' + ' | ' + vessel;
   if (initials) pdfTitle += ' | ' + initials;
   if (date) pdfTitle += ' | ' + date;

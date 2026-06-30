@@ -1,4 +1,4 @@
-const CACHE_NAME = 'inspectare-v2';
+const CACHE_NAME = 'inspectare-v3';
 const FILES = [
   '/inspections/',
   '/inspections/index.html',

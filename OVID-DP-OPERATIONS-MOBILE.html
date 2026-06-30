@@ -1220,6 +1220,8 @@ function exportPDF() {
   var inspector = document.getElementById('m-inspector').value || '';
   var date = document.getElementById('m-insp_date').value || '';
   var initials = getInitials(inspector);
+  var fileTitle = 'OVID-DP-Operations-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
+  document.title = fileTitle;
   var pdfTitle = 'OVID - DP Operations (OVIQ4 Ch.15)' + ' | ' + vessel;
   if (initials) pdfTitle += ' | ' + initials;
   if (date) pdfTitle += ' | ' + date;
