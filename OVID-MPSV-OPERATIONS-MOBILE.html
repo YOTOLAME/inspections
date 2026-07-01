@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVID -- MPSV Operations (ROV, Well Servicing, Helicopter)</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, Arial, sans-serif; font-size: 14px; background: #f0f2f5; color: #1a2a3a; }
+.header { background: #003B6E; color: white; padding: 12px 16px 10px; }
+.header h1 { font-size: 15px; font-weight: 700; }
+.header p { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+.progress-bar { position: sticky; top: 0; z-index: 100; background: white; border-bottom: 2px solid #eee; padding: 8px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+.prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.prog-pct { font-size: 16px; font-weight: 800; color: #003B6E; }
+.prog-count { font-size: 11px; color: #888; }
+.prog-track { background: #e8ecf0; border-radius: 4px; height: 6px; margin-bottom: 6px; }
+.prog-fill { background: #003B6E; height: 6px; border-radius: 4px; transition: width 0.3s; width: 0%; }
+.prog-counts { display: flex; gap: 12px; font-size: 11px; font-weight: 700; }
+.prog-yes { color: #27ae60; }
+.prog-no { color: #e74c3c; }
+.prog-na { color: #7f8c8d; }
+.save-indicator { font-size: 10px; color: #27ae60; opacity: 0; transition: opacity 0.3s; margin-left: auto; }
+.btn-row { display: flex; gap: 8px; padding: 12px; }
+.btn { flex: 1; padding: 11px; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-pdf { background: #e67e22; color: white; }
+.btn-new { background: #e8ecf0; color: #555; }
+.nav-links { display: flex; gap: 8px; padding: 0 12px 12px; }
+.nav-links a { flex: 1; text-align: center; padding: 9px; background: #eef3fb; color: #003B6E; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; border: 1px solid #cddcef; }
+.meta-card { background: white; margin: 0 12px 12px; padding: 12px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+.meta-card h2 { font-size: 11px; text-transform: uppercase; color: #666; margin-bottom: 10px; }
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.meta-field label { display: block; font-size: 10px; text-transform: uppercase; color: #888; margin-bottom: 3px; font-weight: 600; }
+.meta-field input, .meta-field select { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px 9px; font-size: 13px; }
+.meta-field.full { grid-column: 1 / -1; }
+.section { margin: 0 12px 12px; background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); overflow: hidden; }
+.section-title { background: #003B6E; color: white; padding: 10px 14px; font-size: 13px; font-weight: 700; }
+.question { border-bottom: 1px solid #eef1f5; padding: 14px; }
+.question:last-child { border-bottom: none; }
+.q-header { display: flex; gap: 10px; margin-bottom: 8px; }
+.q-num { background: #003B6E; color: white; border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 700; white-space: nowrap; align-self: flex-start; margin-top: 1px; }
+.q-text { font-size: 13px; line-height: 1.5; font-weight: 600; }
+.guidance { font-size: 11px; color: #555; background: #f0f5ff; border-left: 3px solid #003B6E; padding: 7px 10px; border-radius: 0 4px 4px 0; margin-bottom: 8px; line-height: 1.4; }
+.ref { font-size: 10px; color: #003B6E; font-weight: 700; margin-top: 4px; }
+.answer-row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.ans { display: flex; align-items: center; gap: 5px; padding: 7px 12px; border: 2px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.yes-lbl { border-color: #27ae60; color: #27ae60; }
+.no-lbl { border-color: #e74c3c; color: #e74c3c; }
+.na-lbl { border-color: #7f8c8d; color: #7f8c8d; }
+.obs-row { margin-bottom: 6px; font-size: 12px; }
+textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px; font-size: 12px; resize: vertical; }
+.photo-area { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 6px; }
+.photo-wrap { position: relative; display: inline-block; }
+.photo-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; }
+.photo-del { position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.btn-photo { display: inline-block; margin-top: 4px; padding: 6px 12px; background: #f0f5ff; border: 1px solid #003B6E; color: #003B6E; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.general-obs { margin: 0 12px 12px; background: white; border-radius: 8px; padding: 14px; }
+.general-obs h3 { font-size: 12px; text-transform: uppercase; color: #c0392b; font-weight: 700; margin-bottom: 8px; }
+.general-obs textarea { min-height: 80px; }
+#pdf-title { display: none; }
+#pdf-summary { display: none; }
+@media print {
+  .progress-bar, .btn-row, .header, .btn-photo, .nav-links { display: none !important; }
+  body { background: white; font-size: 11px; padding: 1.2cm 1.2cm 0.8cm; }
+  #pdf-title { display: block; font-size: 13px; font-weight: 700; color: #003B6E; padding: 12px 16px; border-bottom: 2px solid #003B6E; margin-bottom: 10px; }
+  #pdf-summary { display: block; padding: 0 16px; page-break-after: always; }
+  .pdf-summary h2 { font-size: 13px; color: #003B6E; border-bottom: 2px solid #003B6E; padding-bottom: 5px; margin-bottom: 10px; }
+  .pdf-summary h3 { font-size: 11px; color: #003B6E; margin: 12px 0 5px; text-transform: uppercase; }
+  .summary-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; margin-bottom: 10px; font-size: 10px; }
+  .summary-stats { display: flex; gap: 14px; font-size: 11px; font-weight: 700; margin-bottom: 12px; padding: 7px; background: #f0f5ff; border-radius: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .stat-yes { color: #27ae60; }
+  .stat-no { color: #e74c3c; }
+  .stat-na { color: #7f8c8d; }
+  .stat-findings { color: #e67e22; }
+  .finding-block { border: 1px solid #ddd; border-radius: 4px; padding: 8px; margin-bottom: 8px; page-break-inside: avoid; }
+  .finding-header { display: flex; gap: 8px; margin-bottom: 4px; }
+  .finding-num { background: #003B6E; color: white; border-radius: 3px; padding: 1px 6px; font-size: 10px; font-weight: 700; white-space: nowrap; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .finding-text { font-size: 11px; font-weight: 600; }
+  .finding-comment { font-size: 10px; color: #555; margin: 4px 0; font-style: italic; }
+  .finding-photos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .finding-photo { width: 120px; height: 90px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
+  .no-findings { font-style: italic; color: #27ae60; font-size: 11px; }
+  .meta-card, .section, .general-obs { box-shadow: none; border: 1px solid #ddd; margin: 0 0 6px; border-radius: 4px; }
+  .section-title { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .q-num { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .guidance { background: #f0f5ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .photo-wrap { display: none; }
+  input[type=radio]:not(:checked) { display: none; }
+  .ans { border: none; padding: 0; font-size: 10px; }
+  .obs-row { font-size: 10px; }
+  textarea { border: none; font-size: 10px; padding: 0; min-height: unset; }
+  @page { margin: 0; }
+}
+@media (max-width: 500px) {
+  .meta-grid { grid-template-columns: 1fr; }
+  .answer-row { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+<div class="header"><h1>&#128269; OVID -- MPSV Operations (ROV, Well Servicing, Helicopter)</h1></div>
+<div id="pdf-title"></div>
+<div id="pdf-summary"></div>
+<div class="progress-bar">
+  <div class="prog-top">
+    <span class="prog-pct" id="prog-pct">0%</span>
+    <span class="prog-count" id="prog-count">0 / 69</span>
+    <span class="save-indicator" id="save-indicator">&#10003; Saved</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="prog-bar-fill"></div></div>
+  <div class="prog-counts">
+    <span class="prog-yes">YES: <span id="prog-yes">0</span></span>
+    <span class="prog-no">NO: <span id="prog-no">0</span></span>
+    <span class="prog-na">N/A: <span id="prog-na">0</span></span>
+  </div>
+</div>
+<div class="btn-row">
+  <button class="btn btn-pdf" onclick="exportPDF()">&#128438; Export PDF</button>
+  <button class="btn btn-new" onclick="clearData()">&#8635; New Inspection</button>
+</div>
+<div class="nav-links"><a href="index.html">&#8592; Retour a la liste des formulaires</a></div>
+<div class="meta-card">
+  <h2>Inspection Details</h2>
+  <div class="meta-grid">
+    <div class="meta-field"><label>Vessel Name</label><input type="text" id="m-vessel" placeholder="e.g. Bourbon Liberty 303"></div>
+    <div class="meta-field"><label>Inspection Date</label><input type="date" id="m-insp_date"></div>
+    <div class="meta-field"><label>Inspector</label><input type="text" id="m-inspector" placeholder="Name"></div>
+    <div class="meta-field"><label>Operator</label><input type="text" id="m-operator" placeholder="Company"></div>
+    <div class="meta-field"><label>Flag State</label><input type="text" id="m-flag" placeholder="Flag"></div>
+    <div class="meta-field"><label>IMO Number</label><input type="text" id="m-imo" placeholder="IMO #"></div>
+    <div class="meta-field"><label>Port / Location</label><input type="text" id="m-port" placeholder="Location"></div>
+    <div class="meta-field"><label>Block / Field</label><input type="text" id="m-block" placeholder="e.g. Block 17"></div>
+    <div class="meta-field full"><label>Inspection Status</label>
+      <select id="m-status"><option>In Progress</option><option>Completed</option><option>Suspended</option></select>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">8.14 -- ROV operations</div>
+<div class="question" id="wrap-q8_14_1">
+  <div class="q-header">
+    <span class="q-num">8.14.1</span>
+    <span class="q-text">Is there evidence that risk assessments are carried out for all specific tasks related to ROV operations?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_1" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_1')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_2">
+  <div class="q-header">
+    <span class="q-num">8.14.2</span>
+    <span class="q-text">If the vessel has been modified to carry out ROV Operations, have the additional weights been included in the vessel&#x27;s stability information?</span>
+  </div>
+  <div class="guidance">Inspector should review MOC provided ensuring changes to stability information to have Class approval and this should be evident in the vessel&#x27;s stability booklet. Check that any limitations have been documented and that key personnel are aware of them. Example limitations may include restrictions on the number of slack tanks and/or requirements to have tanks full or empty during ROV operations.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_2" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_2')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_3">
+  <div class="q-header">
+    <span class="q-num">8.14.3</span>
+    <span class="q-text">If obstructions exist that impact on the views of ongoing operations from the vessels bridge, have CCTV cameras been installed?</span>
+  </div>
+  <div class="guidance">The CCTV cameras shall be positioned such that the area obstructed by the ROV or supporting equipment is now visible on a TV screen which is clearly visible from the conning positions. Inspectors should make note in other comments section if recording functionality is not available.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_3" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_3')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_4">
+  <div class="q-header">
+    <span class="q-num">8.14.4</span>
+    <span class="q-text">Is there a system, including back-up, to ensure effective verbal communication between the navigating bridge and ROV control station?</span>
+  </div>
+  <div class="guidance">Primary and back up communication systems must be independent of each other (a single VHF unit with a primary and back up channel does not meet this requirement)</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_4" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_4" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_4" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_4" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_4" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_4"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_4')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_5">
+  <div class="q-header">
+    <span class="q-num">8.14.5</span>
+    <span class="q-text">Are protection rails fitted around the ROV work site?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_5" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_5" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_5" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_5" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_5" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_5"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_5')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_6">
+  <div class="q-header">
+    <span class="q-num">8.14.6</span>
+    <span class="q-text">Are operational procedures for ROV operations included in the vessel&#x27;s SMS or specific operations manual?</span>
+  </div>
+  <div class="guidance">Do these procedures specify minimum manning in all departments while conducting ROV operations? Do these procedures specify maximum environmental limits for launching, recovery and operations? Where the ROV is operated by a third party how are their operating procedures approved and included within the vessels operating procedures?</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_6" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_6" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_6" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_6" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_6" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_6"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_6')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_7">
+  <div class="q-header">
+    <span class="q-num">8.14.7</span>
+    <span class="q-text">Does the vessel/unit have a crew competence/training matrix that addresses ROV operations?</span>
+  </div>
+  <div class="guidance">Spot check training, experience and certification records carried by personnel/crew.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_7" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_7" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_7" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_7" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_7" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_7"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_7')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_8">
+  <div class="q-header">
+    <span class="q-num">8.14.8</span>
+    <span class="q-text">Does the vessel/unit have a competence matrix that addresses maintenance activities associated with the ROV equipment?</span>
+  </div>
+  <div class="guidance">Spot check training, experience and certification records carried by personnel/crew.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_8" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_8" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_8" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_8" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_8" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_8"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_8')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_9">
+  <div class="q-header">
+    <span class="q-num">8.14.9</span>
+    <span class="q-text">Does the vessel have contingency plans in place that address ROV operations?</span>
+  </div>
+  <div class="guidance">The contingency plans may include for example, Loss of ROV, failure of communications or positioning, secondary recovery methods, recovery in adverse conditions, entanglement of ROV umbilical.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_9" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_9" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_9" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_9" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_9" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_9"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_9')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_10">
+  <div class="q-header">
+    <span class="q-num">8.14.10</span>
+    <span class="q-text">Are sea state limits clearly specified for the launching and recovery of ROV equipment?</span>
+  </div>
+  <div class="guidance">Where more than one ROV is fitted limits may differ depending on type (work/observation) of ROV and whether launch and recovery is over the side or through a moonpool.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_10" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_10" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_10" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_10" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_10" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_10"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_10')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_11">
+  <div class="q-header">
+    <span class="q-num">8.14.11</span>
+    <span class="q-text">Do the operational procedures address ROV operations within anchor patterns, during diving operations or close to subsea obstructions?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_11" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_11" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_11" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_11" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_11" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_11"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_11')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_12">
+  <div class="q-header">
+    <span class="q-num">8.14.12</span>
+    <span class="q-text">Is the ROV system integrated and/or connected with vessel/unit&#x27;s bridge to show the ROV position in relation to the vessel/unit?</span>
+  </div>
+  <div class="guidance">Do navigators/DPOs have displays showing operational status in relation to vessel/unit&#x27;s position, and do ROV personnel have full information on vessel/unit&#x27;s track and propulsion status?</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_12" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_12" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_12" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_12" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_12" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_12"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_12')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_13">
+  <div class="q-header">
+    <span class="q-num">8.14.13</span>
+    <span class="q-text">Are suitable safety arrangements in place on ROV spread around moving machinery and high voltage equipment?</span>
+  </div>
+  <div class="guidance">This could include procedural barriers, physical barriers and signage</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_13" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_13" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_13" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_13" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_13" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_13"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_13')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_14">
+  <div class="q-header">
+    <span class="q-num">8.14.14</span>
+    <span class="q-text">Are local emergency stops for the ROV system available, in good order and regularly tested?</span>
+  </div>
+  <div class="guidance">Check test records.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_14" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_14" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_14" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_14" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_14" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_14"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_14')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_14_15">
+  <div class="q-header">
+    <span class="q-num">8.14.15</span>
+    <span class="q-text">Are ROV Umbilical excursion charts available on the bridge at the conning position, are they used within the risk assessment process of operational planning of vessel station keeping?</span>
+  </div>
+  <div class="guidance">Inspections should review location ROV umbilical excursion charts, comment should be made if not available with vicinity of conning station.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_14_15" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_14_15" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_14_15" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_14_15" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_14_15" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_14_15"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_14_15')" style="display:none">
+  </label>
+</div>
+</div>
+<div class="section">
+  <div class="section-title">8.16 -- Well servicing and sub-sea operations</div>
+<div class="question" id="wrap-q8_16_1">
+  <div class="q-header">
+    <span class="q-num">8.16.1</span>
+    <span class="q-text">Are there documented procedures and general safety arrangements in place for activities on the exposed working decks, including moonpools if fitted?</span>
+  </div>
+  <div class="guidance">Including requirements for PPE, lifejackets, lifebuoys. Check safety signage and availability of fall arrestor equipment for more than one person to use in exposed areas. CCTV monitoring of working areas should feed to bridge and operations control room.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_1" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_1')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_2">
+  <div class="q-header">
+    <span class="q-num">8.16.2</span>
+    <span class="q-text">Where a moonpool is fitted, is a gas detection system available to cover this area?</span>
+  </div>
+  <div class="guidance">Gas detection systems should be function tested and records maintained. System should be calibrated on an annual basis</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_2" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_2')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_3">
+  <div class="q-header">
+    <span class="q-num">8.16.3</span>
+    <span class="q-text">Are risk assessments carried out for all subsea operations?</span>
+  </div>
+  <div class="guidance">Check that assessments include equipment deployment and recovery operations.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_3" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_3')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_4">
+  <div class="q-header">
+    <span class="q-num">8.16.4</span>
+    <span class="q-text">Are communications, including backup systems, suitable for operations on the working deck?</span>
+  </div>
+  <div class="guidance">Check communication equipment (intercoms, telephones and UHV/VHF hand-held radios) including backup arrangements for: Communications between the working deck and the Operations Control Room operators; Communication between the bridge and Operations Control Room.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_4" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_4" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_4" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_4" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_4" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_4"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_4')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_5">
+  <div class="q-header">
+    <span class="q-num">8.16.5</span>
+    <span class="q-text">Does the vessel/unit have a competence/training matrix that addresses well servicing and sub- sea operations?</span>
+  </div>
+  <div class="guidance">Spot check training, experience and certification records.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_5" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_5" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_5" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_5" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_5" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_5"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_5')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_6">
+  <div class="q-header">
+    <span class="q-num">8.16.6</span>
+    <span class="q-text">Does the vessel/unit have a competence/training matrix that addresses maintenance activities associated with the well servicing and sub-sea equipment?</span>
+  </div>
+  <div class="guidance">Spot check training, experience and certification records.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_6" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_6" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_6" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_6" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_6" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_6"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_6')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_7">
+  <div class="q-header">
+    <span class="q-num">8.16.7</span>
+    <span class="q-text">Do the emergency procedures cover additional risks associated with the vessel/unit&#x27;s operations?</span>
+  </div>
+  <div class="guidance">e.g. loss of stability/watertight integrity, loss of moorings/station keeping, emergency disconnect, helicopter accidents, severe weather, tidal waves, tsunami, solitons. Procedures to be available onboard, evidence that personnel are familiar with them.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_7" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_7" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_7" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_7" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_7" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_7"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_7')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_8">
+  <div class="q-header">
+    <span class="q-num">8.16.8</span>
+    <span class="q-text">Do all overboard cable and umbilical chutes appear in good order and are they properly secured?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_8" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_8" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_8" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_8" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_8" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_8"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_8')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_9">
+  <div class="q-header">
+    <span class="q-num">8.16.9</span>
+    <span class="q-text">If carried, are deck generators and/or gas and chemical tanks secured on suitable decks with appropriate secondary containment in place?</span>
+  </div>
+  <div class="guidance">Decks should assessed and have sufficient strength for specific equipment and should be surrounded by containment arrangements in case of leaks.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_9" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_9" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_9" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_9" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_9" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_9"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_9')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_10">
+  <div class="q-header">
+    <span class="q-num">8.16.10</span>
+    <span class="q-text">Is there a person in charge of ballast control and stability calculations?</span>
+  </div>
+  <div class="guidance">Where applicable, person should be qualified under STCW95. All personnel involved in ballast control operations should be trained and certified in line with IMO Resolution A.1079(28), includes, Barge Supervisor and Ballast Control Operator.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_10" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_10" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_10" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_10" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_10" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_10"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_10')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_11">
+  <div class="q-header">
+    <span class="q-num">8.16.11</span>
+    <span class="q-text">Can the Ballast Control Operators (BCO&#x27;s) demonstrate knowledge of the vessel/unit&#x27;s ballast system, the control of free surface effects and the consequences of inadvertent ballast shift?</span>
+  </div>
+  <div class="guidance">Demonstrated via induction and vessel specific training records. If semi-submersible, to be capable of taking unit to survival draft if required. BCO&#x27;s should know the operating inclination limits of the ballast control system, this should be stated in onboard documentation.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_11" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_11" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_11" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_11" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_11" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_11"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_11')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_12">
+  <div class="q-header">
+    <span class="q-num">8.16.12</span>
+    <span class="q-text">Is the stress and stability information included with the plan for current operations; have stability and where applicable, stress calculations been performed for the current operation and do the BCO&#x27;s understand any limitations?</span>
+  </div>
+  <div class="guidance">Inspectors should determine that prior to specific operations involving the transfer of weights, calculations have been made for stress and stability conditions for the start, interim and completion of operations. Regular monitoring of stress and stability should be taking place throughout the operation to ensure that the conditions have been maintained within design limits.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_12" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_12" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_12" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_12" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_12" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_12"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_12')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_13">
+  <div class="q-header">
+    <span class="q-num">8.16.13</span>
+    <span class="q-text">Is there an inclinometer located near the ballast control panel?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_13" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_13" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_13" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_13" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_13" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_13"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_13')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_14">
+  <div class="q-header">
+    <span class="q-num">8.16.14</span>
+    <span class="q-text">If fitted, are draft gauges operating correctly?</span>
+  </div>
+  <div class="guidance">Procedure for calibration and cross reference to visual and loading computer values.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_14" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_14" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_14" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_14" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_14" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_14"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_14')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_15">
+  <div class="q-header">
+    <span class="q-num">8.16.15</span>
+    <span class="q-text">Is there a system for managing manual inputs into the stability programme?</span>
+  </div>
+  <div class="guidance">System of cross checking should be in place to assure accurate weights and CoG of materials placed subsea or recovered from seabed, are manually input to keep stability model accurate. Inspector to verify that sample inventories of variable weights appear reasonable and accurate.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_15" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_15" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_15" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_15" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_15" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_15"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_15')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_16">
+  <div class="q-header">
+    <span class="q-num">8.16.16</span>
+    <span class="q-text">Is there a system for recording changes to the vessel/unit&#x27;s lightweight condition?</span>
+  </div>
+  <div class="guidance">Documented procedure with record sheets showing additions/deletions since last inclining experiment conducted.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_16" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_16" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_16" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_16" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_16" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_16"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_16')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_17">
+  <div class="q-header">
+    <span class="q-num">8.16.17</span>
+    <span class="q-text">Are the ballast and bilge systems covered by an FME(C)A?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_17" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_17" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_17" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_17" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_17" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_17"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_17')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_18">
+  <div class="q-header">
+    <span class="q-num">8.16.18</span>
+    <span class="q-text">Is there a system for controlling the override of bilge and ballast system alarms?</span>
+  </div>
+  <div class="guidance">To be covered in procedures and documented.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_18" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_18" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_18" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_18" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_18" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_18"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_18')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_19">
+  <div class="q-header">
+    <span class="q-num">8.16.19</span>
+    <span class="q-text">Is access to the ballast control panel restricted?</span>
+  </div>
+  <div class="guidance">System to be in place to prevent unauthorised operation of bilge and ballast system.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_19" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_19" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_19" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_19" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_19" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_19"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_19')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_20">
+  <div class="q-header">
+    <span class="q-num">8.16.20</span>
+    <span class="q-text">Is the ballast control position attended continuously during sub-sea operations?</span>
+  </div>
+  <div class="guidance">Ballast station to be manned continuously to ensure prompt action can be taken when required.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_20" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_20" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_20" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_20" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_20" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_20"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_20')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_21">
+  <div class="q-header">
+    <span class="q-num">8.16.21</span>
+    <span class="q-text">Are all watertight doors, hatches and other openings in good order?</span>
+  </div>
+  <div class="guidance">Seals, locking devices and remote indicators should be in good order and fully functional.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_21" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_21" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_21" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_21" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_21" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_21"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_21')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_22">
+  <div class="q-header">
+    <span class="q-num">8.16.22</span>
+    <span class="q-text">Is there a system for monitoring crane status during use and when stowed?</span>
+  </div>
+  <div class="guidance">Crane should be regularly checked to see if slewing or rocking motions are controlled in a seaway; tension monitoring equipment should be operational</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_22" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_22" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_22" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_22" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_22" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_22"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_22')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_23">
+  <div class="q-header">
+    <span class="q-num">8.16.23</span>
+    <span class="q-text">If Column Stabilised unit are there at least two ballast pumps available to pump out each ballast tank?</span>
+  </div>
+  <div class="guidance">If column stabilised, the pumps should be physically separated so that loss or damage to one pump will not adversely affect the other pump. To be confirmed by FME(C)A.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_23" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_23" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_23" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_23" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_23" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_23"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_23')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_24">
+  <div class="q-header">
+    <span class="q-num">8.16.24</span>
+    <span class="q-text">Are pumproom emergency bilge suction valves clearly marked, fitted with a position indicator and capable of remote operation?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_24" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_24" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_24" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_24" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_24" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_24"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_24')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_25">
+  <div class="q-header">
+    <span class="q-num">8.16.25</span>
+    <span class="q-text">Is the vessel/unit equipped with service cranes covering all anticipated operations?</span>
+  </div>
+  <div class="guidance">Located to minimise blind sectors.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_25" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_25" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_25" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_25" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_25" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_25"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_25')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_26">
+  <div class="q-header">
+    <span class="q-num">8.16.26</span>
+    <span class="q-text">Are all cement silos and associated valves, pumps, vents and air supplies fully tested and in good order?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_26" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_26" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_26" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_26" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_26" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_26"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_26')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_27">
+  <div class="q-header">
+    <span class="q-num">8.16.27</span>
+    <span class="q-text">Are all mud and brine tanks, pumps, valves and pipeline systems in good order and fully tested?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_27" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_27" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_27" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_27" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_27" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_27"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_27')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_28">
+  <div class="q-header">
+    <span class="q-num">8.16.28</span>
+    <span class="q-text">Is all deck mounted equipment, control skids and storage containers in good order and provided with appropriate cautionary signage?</span>
+  </div>
+  <div class="guidance">Exhausts, dangerous chemicals, hot pipes, pressurised pipes, radioactive sources should all be identified and managed within the vessel/unit&#x27;s SMS.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_28" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_28" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_28" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_28" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_28" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_28"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_28')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_29">
+  <div class="q-header">
+    <span class="q-num">8.16.29</span>
+    <span class="q-text">Are all connections and deck pipework for bulk products, such as water and fuel, colour coded and clearly marked at loading stations?</span>
+  </div>
+  <div class="guidance">Includes all bulk products, both liquid and non-liquid.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_29" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_29" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_29" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_29" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_29" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_29"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_29')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_30">
+  <div class="q-header">
+    <span class="q-num">8.16.30</span>
+    <span class="q-text">If carried, are hydrocarbon and/or chemical hoses fitted with dry break couplings?</span>
+  </div>
+  <div class="guidance">Best practice is to adhere to industry GOMO, i.e. do procedures exist for marine transfer operations including emergency stops?</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_30" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_30" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_30" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_30" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_30" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_30"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_30')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_31">
+  <div class="q-header">
+    <span class="q-num">8.16.31</span>
+    <span class="q-text">Are Material Safety Data Sheets (MSDS) on board for all the products being carried and are all officers familiar with their content?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_31" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_31" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_31" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_31" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_31" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_31"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_31')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_32">
+  <div class="q-header">
+    <span class="q-num">8.16.32</span>
+    <span class="q-text">If carried, are the hoses and connections used for the transfer of bulk liquids free of defects?</span>
+  </div>
+  <div class="guidance">Focus on hydraulic fracture applications and other speciality services. Also applicable to OSV&#x27;s which supply all or part of the hose string for transfer operations.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_32" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_32" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_32" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_32" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_32" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_32"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_32')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_33">
+  <div class="q-header">
+    <span class="q-num">8.16.33</span>
+    <span class="q-text">If carried, are all transfer hoses routinely tested?</span>
+  </div>
+  <div class="guidance">Records to be sighted confirming regular tests for pressure. Confirm there is a process of routine inspection of hoses. During operations, inspection of hoses is primarily by &#x27;close visual inspection&#x27; of the entire hose length, paying particular attention to the end terminations. Close visual inspection means a visual check of the entire external area of the flexible hose assembly paying particular attention to blisters, deep lacerations or abrasions exposing inner core or fabric, unravelling of the outer cover, surface cracking and misalignment of coupling paint marks. Floatation collars should be secure and in the correct position. Water should be used to carry out leak tests wherever possible. Leak testing should be conducted on the complete hose assembly wherever possible and should consist of: hose assembly hung off or laid on deck; blank end cap fitted at one end; hose filled with water; pressurise to circa five (5) bar sufficient to indicate a leak; hold for five minutes and visually inspect complete length; if all okay, drain assembly to oily drains system; repair or replace as needed, re-test and return to service. The use of compressed gas such as air or nitrogen for any form of leak or pressure test is not permissible because: large volumes of pressurised gases are dangerous; hoses are not designed for pressurised gas; leaks in hydrocarbon hoses can produce a flammable mist; pinhole leaks are not always detected.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_33" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_33" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_33" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_33" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_33" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_33"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_33')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_34">
+  <div class="q-header">
+    <span class="q-num">8.16.34</span>
+    <span class="q-text">Are transfer hoses fitted with lifting saddles and stowed in racks?</span>
+  </div>
+  <div class="guidance">Bulk transfer hoses include hoses used for well servicing and sub sea operations. If bulk hoses are stored on reels, Inspector is to make a comment in this section. All hoses should be suspended in arrangements that avoid sharp bends and protrusions wherever possible. Where fitted, the saddle and rack arrangement should be a permanent structure with appropriate foundations. All lifting gear used in the hose arrangement should be certified and inspected on a periodic basis. Inspector to mark NO to the question if the hose saddles/lifting gear is rig fabricated and lacks a load test SWL certification. Reference: Step Change &#x27;Bulk Hose Best Practice Guidelines&#x27; Check for inclusion of the hose collar/hanging arrangement being included as an item of certified lifting equipment.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_34" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_34" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_34" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_34" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_34" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_34"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_34')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q8_16_35">
+  <div class="q-header">
+    <span class="q-num">8.16.35</span>
+    <span class="q-text">If carried on board, are transfer hoses fitted with flotation collars?</span>
+  </div>
+  <div class="guidance">Bulk transfer hoses include hoses used for well servicing and sub sea operations. Check also fitted with reflective tape. Number and distribution of floatation collars to be in accordance with guidance contained in GOMO.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q8_16_35" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q8_16_35" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q8_16_35" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q8_16_35" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q8_16_35" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q8_16_35"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q8_16_35')" style="display:none">
+  </label>
+</div>
+</div>
+<div class="section">
+  <div class="section-title">14.1 -- General</div>
+<div class="question" id="wrap-q14_1_1">
+  <div class="q-header">
+    <span class="q-num">14.1.1</span>
+    <span class="q-text">Is there documentary evidence to confirm that the helideck meets the requirements of CAP437?</span>
+  </div>
+  <div class="guidance">Helideck is usually Approved/Certificated by CAA; FAA; or equivalent. Specify applicable jurisdiction/region for certification in Comments. Add regions/jurisdictions previously worked as a Comment. Helidecks may be issued a letter from its classification society attesting to construction in conformance to CAP437. In such cases has an audit been conducted to confirm continued conformance to CAP437? Are the results of that audit available for review and have the findings been actioned.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_1_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_1_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_1_1" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_1_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_1_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_1_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_1_1')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_1_2">
+  <div class="q-header">
+    <span class="q-num">14.1.2</span>
+    <span class="q-text">If the vessel/unit has re-fuelling facilities, are they certified?</span>
+  </div>
+  <div class="guidance">Inspector to identify the body/company issuing the certification and date of issue of certification. Records of inspection and certification should be checked to determine if recommendations made at the time of survey have been completed.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_1_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_1_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_1_2" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_1_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_1_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_1_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_1_2')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_1_3">
+  <div class="q-header">
+    <span class="q-num">14.1.3</span>
+    <span class="q-text">Are appropriate publications for helicopter operations available on board?</span>
+  </div>
+  <div class="guidance">These may include, for example: - CAP 437; (Inspector to comment if not on-board) - IATA/ICAO IAMSAR Manual; - IATA Regulations; - ICAO Heliport Manual; - ICAO Convention on International Civil Aviation - Annex 14 Vol II (Heliports) and Annex 6 Part III (International Operations - Helicopters); - IMO Resolution A.855(20) Standards for On-board Helicopter Facilities</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_1_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_1_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_1_3" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_1_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_1_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_1_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_1_3')" style="display:none">
+  </label>
+</div>
+</div>
+<div class="section">
+  <div class="section-title">14.2 -- Operational procedures</div>
+<div class="question" id="wrap-q14_2_1">
+  <div class="q-header">
+    <span class="q-num">14.2.1</span>
+    <span class="q-text">Do on-board marine operations procedures address helicopter operations?</span>
+  </div>
+  <div class="guidance">The operations procedures should include strict controls on work authorisation/management and communication protocols between crane drivers, deck workers, helideck staff, navigators, engine room staff and any other groups whose work may affect equipment moves, atmosphere changes, or personnel proximity to helideck. Normally, the HLO should have working authority to control. Procedures should also include specifying control of heliops when meteorological conditions change substantially.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_2_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_2_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_2_1" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_2_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_2_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_2_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_2_1')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_2_2">
+  <div class="q-header">
+    <span class="q-num">14.2.2</span>
+    <span class="q-text">Do helideck crew have appropriate PPE?</span>
+  </div>
+  <div class="guidance">Appropriate PPE and identification tabards should be provided and used. This would normally include HLO and HDAs wearing flame retardant overalls or proximity suits with safety helmet/visor or goggles, and the fire monitor crew with the same dress.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_2_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_2_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_2_2" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_2_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_2_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_2_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_2_2')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_2_3">
+  <div class="q-header">
+    <span class="q-num">14.2.3</span>
+    <span class="q-text">Are documented procedures in place for checking helideck, net tension, and inspecting helideck for debris prior to aircraft arriving?</span>
+  </div>
+  <div class="guidance">Procedures should include issues such as: - checking that helideck is taut (not possible to lift any part more than 250mm clear of deck, with a vertical pull by hand); - all lighting should be functioning (perimeter and floodlights); - perimeter nets should not be taut; - helideck needs to be checked for loose objects and any such items removed.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_2_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_2_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_2_3" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_2_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_2_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_2_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_2_3')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_2_4">
+  <div class="q-header">
+    <span class="q-num">14.2.4</span>
+    <span class="q-text">Are documented procedures in place for controlling passenger access/egress at helideck?</span>
+  </div>
+  <div class="guidance">All passenger routes to/from helideck should be well marked and final access to helideck should be positively controlled by helideck crew (e.g. gate or traffic light).</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_2_4" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_2_4" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_2_4" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_2_4" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_2_4" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_2_4"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_2_4')" style="display:none">
+  </label>
+</div>
+</div>
+<div class="section">
+  <div class="section-title">14.3 -- Crew training</div>
+<div class="question" id="wrap-q14_3_1">
+  <div class="q-header">
+    <span class="q-num">14.3.1</span>
+    <span class="q-text">Are formally qualified Helicopter Landing Officers (HLOs) available on board as required?</span>
+  </div>
+  <div class="guidance">Formal training/certification should be available on board.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_3_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_3_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_3_1" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_3_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_3_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_3_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_3_1')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_3_2">
+  <div class="q-header">
+    <span class="q-num">14.3.2</span>
+    <span class="q-text">Are formally qualified Helideck Assistants (HDAs) available on board as required?</span>
+  </div>
+  <div class="guidance">Formal training/certification should be available on board.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_3_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_3_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_3_2" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_3_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_3_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_3_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_3_2')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_3_3">
+  <div class="q-header">
+    <span class="q-num">14.3.3</span>
+    <span class="q-text">Are all heli-ops radio users trained and appropriately certificated?</span>
+  </div>
+  <div class="guidance">All personnel involved in transmitting or receiving radio messages from helicopters shall carry appropriate radio licence as issued by Local NCAA for area of operation e.g. UK Restricted Radio operators certificate of competency (ROCC)</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_3_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_3_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_3_3" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_3_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_3_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_3_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_3_3')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_3_4">
+  <div class="q-header">
+    <span class="q-num">14.3.4</span>
+    <span class="q-text">Is the helideck monitoring system fully operational?</span>
+  </div>
+  <div class="guidance">Weather observing, report assessment, movement monitoring should be conducted by trained and experienced personnel, in most cases the navigating officers on the vessel/unit. Where used, state details of Helideck Monitoring System (HMS). Inspector should note approving civil aviation authority for HMS system</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_3_4" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_3_4" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_3_4" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_3_4" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_3_4" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_3_4"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_3_4')" style="display:none">
+  </label>
+</div>
+</div>
+<div class="section">
+  <div class="section-title">14.4 -- Emergency response</div>
+<div class="question" id="wrap-q14_4_1">
+  <div class="q-header">
+    <span class="q-num">14.4.1</span>
+    <span class="q-text">Is the vessel/unit equipped with dedicated airband transceivers?</span>
+  </div>
+  <div class="guidance">Must allow both operating frequency spacing required use for normal communicating with the aircraft and watch/emergency frequencies for flight watch and following. E.g. 8.33 Khz spacing.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_4_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_4_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_4_1" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_4_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_4_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_4_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_4_1')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_4_2">
+  <div class="q-header">
+    <span class="q-num">14.4.2</span>
+    <span class="q-text">Does the vessel/unit have dedicated flight following/watch personnel &amp; procedures?</span>
+  </div>
+  <div class="guidance">Qualified radio operating personnel should be available. Formal flightwatch/following instructions and records should be confirmed in place and correctly logged. Where this performed by an onshore organisation the inspector is requested to identify who performs this role.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_4_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_4_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_4_2" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_4_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_4_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_4_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_4_2')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_4_3">
+  <div class="q-header">
+    <span class="q-num">14.4.3</span>
+    <span class="q-text">Is the helideck firefighting and emergency equipment in good order and available for immediate use?</span>
+  </div>
+  <div class="guidance">Equipment should include an AFFF foam system to helideck and foam monitors designed to knock out a fire within 30 seconds of activation; fireman&#x27;s outfits (including breathing apparatus); crash box (hammers, bolt-croppers, hatchets, etc.); powder and CO2 extinguishers (including a unit with lance to reach engine intakes, should that be required by pilot).</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_4_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_4_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_4_3" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_4_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_4_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_4_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_4_3')" style="display:none">
+  </label>
+</div>
+</div>
+<div class="section">
+  <div class="section-title">14.5 -- Passenger/cargo management</div>
+<div class="question" id="wrap-q14_5_1">
+  <div class="q-header">
+    <span class="q-num">14.5.1</span>
+    <span class="q-text">Is there a formal documented procedure for briefing passengers?</span>
+  </div>
+  <div class="guidance">Briefing details/CD&#x27;s of helicopter types should be available to include danger areas; boarding/exiting procedure; emergency procedures; use of seat belts; no loose objects/clothing; prohibited goods; documentation needs, etc.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_5_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_5_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_5_1" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_5_1" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_5_1" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_5_1"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_5_1')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_5_2">
+  <div class="q-header">
+    <span class="q-num">14.5.2</span>
+    <span class="q-text">Are baggage scales formally calibrated and fully operational?</span>
+  </div>
+  <div class="guidance">Check calibration records for consistency. Sample freight/baggage manifests for completeness, calibration should be undertaken by on shore 3rd party independent vendor at intervals not exceeding manufacturer&#x27;s recommended practice.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_5_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_5_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_5_2" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_5_2" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_5_2" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_5_2"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_5_2')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_5_3">
+  <div class="q-header">
+    <span class="q-num">14.5.3</span>
+    <span class="q-text">Is there a secure area for handling/storing checked freight/baggage?</span>
+  </div>
+  <div class="guidance">Should be under the direct control of one appointed person - aspects of this may come under the vessel/unit&#x27;s Security Plan, which the Inspector should be made aware of, but review of the SSP is not permitted.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_5_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_5_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_5_3" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_5_3" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_5_3" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_5_3"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_5_3')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_5_4">
+  <div class="q-header">
+    <span class="q-num">14.5.4</span>
+    <span class="q-text">Are all helideck lights functioning?</span>
+  </div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_5_4" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_5_4" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_5_4" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_5_4" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_5_4" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_5_4"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_5_4')" style="display:none">
+  </label>
+</div>
+<div class="question" id="wrap-q14_5_5">
+  <div class="q-header">
+    <span class="q-num">14.5.5</span>
+    <span class="q-text">Are wind sock(s) provided?</span>
+  </div>
+  <div class="guidance">Wind sock(s) shall be illuminated and installed in sufficient number or location so that the air flow through at least one wind sock is not obstructed by MO(D)U structure.</div>
+  <div class="answer-row">
+    <label class="ans yes-lbl"><input type="radio" name="q14_5_5" value="YES" onchange="onAnswer()"> &#10003; YES</label>
+    <label class="ans no-lbl"><input type="radio" name="q14_5_5" value="NO" onchange="onAnswer()"> &#10007; NO</label>
+    <label class="ans na-lbl"><input type="radio" name="q14_5_5" value="NA" onchange="onAnswer()"> N/A</label>
+  </div>
+  <div class="obs-row">
+    <label><input type="checkbox" id="obs-q14_5_5" onchange="onAnswer()"> &#9888; Observation / Finding</label>
+  </div>
+  <textarea id="cmt-q14_5_5" placeholder="Comment / Evidence..." rows="2" oninput="onAnswer()"></textarea>
+  <div class="photo-area" id="photos-q14_5_5"></div>
+  <label class="btn-photo">
+    &#128247; Add Photo
+    <input type="file" accept="image/*" onchange="addPhoto(event,'q14_5_5')" style="display:none">
+  </label>
+</div>
+</div>
+
+<div class="general-obs">
+  <h3>&#9888; General Observations</h3>
+  <textarea id="general-obs" placeholder="General remarks about this inspection..." oninput="onAnswer()"></textarea>
+</div>
+
+<script>
+
+var STORAGE_KEY = "ovid-mpsv-ops";
+var ALL_IDS = ["q8_14_1", "q8_14_2", "q8_14_3", "q8_14_4", "q8_14_5", "q8_14_6", "q8_14_7", "q8_14_8", "q8_14_9", "q8_14_10", "q8_14_11", "q8_14_12", "q8_14_13", "q8_14_14", "q8_14_15", "q8_16_1", "q8_16_2", "q8_16_3", "q8_16_4", "q8_16_5", "q8_16_6", "q8_16_7", "q8_16_8", "q8_16_9", "q8_16_10", "q8_16_11", "q8_16_12", "q8_16_13", "q8_16_14", "q8_16_15", "q8_16_16", "q8_16_17", "q8_16_18", "q8_16_19", "q8_16_20", "q8_16_21", "q8_16_22", "q8_16_23", "q8_16_24", "q8_16_25", "q8_16_26", "q8_16_27", "q8_16_28", "q8_16_29", "q8_16_30", "q8_16_31", "q8_16_32", "q8_16_33", "q8_16_34", "q8_16_35", "q14_1_1", "q14_1_2", "q14_1_3", "q14_2_1", "q14_2_2", "q14_2_3", "q14_2_4", "q14_3_1", "q14_3_2", "q14_3_3", "q14_3_4", "q14_4_1", "q14_4_2", "q14_4_3", "q14_5_1", "q14_5_2", "q14_5_3", "q14_5_4", "q14_5_5"];
+var Q_TEXTS = {"q8_14_1": "Is there evidence that risk assessments are carried out for all specific tasks related to ROV operations?", "q8_14_2": "If the vessel has been modified to carry out ROV Operations, have the additional weights been included in the vessel's stability information?", "q8_14_3": "If obstructions exist that impact on the views of ongoing operations from the vessels bridge, have CCTV cameras been installed?", "q8_14_4": "Is there a system, including back-up, to ensure effective verbal communication between the navigating bridge and ROV control station?", "q8_14_5": "Are protection rails fitted around the ROV work site?", "q8_14_6": "Are operational procedures for ROV operations included in the vessel's SMS or specific operations manual?", "q8_14_7": "Does the vessel/unit have a crew competence/training matrix that addresses ROV operations?", "q8_14_8": "Does the vessel/unit have a competence matrix that addresses maintenance activities associated with the ROV equipment?", "q8_14_9": "Does the vessel have contingency plans in place that address ROV operations?", "q8_14_10": "Are sea state limits clearly specified for the launching and recovery of ROV equipment?", "q8_14_11": "Do the operational procedures address ROV operations within anchor patterns, during diving operations or close to subsea obstructions?", "q8_14_12": "Is the ROV system integrated and/or connected with vessel/unit's bridge to show the ROV position in relation to the vessel/unit?", "q8_14_13": "Are suitable safety arrangements in place on ROV spread around moving machinery and high voltage equipment?", "q8_14_14": "Are local emergency stops for the ROV system available, in good order and regularly tested?", "q8_14_15": "Are ROV Umbilical excursion charts available on the bridge at the conning position, are they used within the risk assessment process of operational planning of vessel station keeping?", "q8_16_1": "Are there documented procedures and general safety arrangements in place for activities on the exposed working decks, including moonpools if fitted?", "q8_16_2": "Where a moonpool is fitted, is a gas detection system available to cover this area?", "q8_16_3": "Are risk assessments carried out for all subsea operations?", "q8_16_4": "Are communications, including backup systems, suitable for operations on the working deck?", "q8_16_5": "Does the vessel/unit have a competence/training matrix that addresses well servicing and sub- sea operations?", "q8_16_6": "Does the vessel/unit have a competence/training matrix that addresses maintenance activities associated with the well servicing and sub-sea equipment?", "q8_16_7": "Do the emergency procedures cover additional risks associated with the vessel/unit's operations?", "q8_16_8": "Do all overboard cable and umbilical chutes appear in good order and are they properly secured?", "q8_16_9": "If carried, are deck generators and/or gas and chemical tanks secured on suitable decks with appropriate secondary containment in place?", "q8_16_10": "Is there a person in charge of ballast control and stability calculations?", "q8_16_11": "Can the Ballast Control Operators (BCO's) demonstrate knowledge of the vessel/unit's ballast system, the control of free surface effects and the consequences of inadvertent ballast shift?", "q8_16_12": "Is the stress and stability information included with the plan for current operations; have stability and where applicable, stress calculations been performed for the current operation and do the BCO's understand any limitations?", "q8_16_13": "Is there an inclinometer located near the ballast control panel?", "q8_16_14": "If fitted, are draft gauges operating correctly?", "q8_16_15": "Is there a system for managing manual inputs into the stability programme?", "q8_16_16": "Is there a system for recording changes to the vessel/unit's lightweight condition?", "q8_16_17": "Are the ballast and bilge systems covered by an FME(C)A?", "q8_16_18": "Is there a system for controlling the override of bilge and ballast system alarms?", "q8_16_19": "Is access to the ballast control panel restricted?", "q8_16_20": "Is the ballast control position attended continuously during sub-sea operations?", "q8_16_21": "Are all watertight doors, hatches and other openings in good order?", "q8_16_22": "Is there a system for monitoring crane status during use and when stowed?", "q8_16_23": "If Column Stabilised unit are there at least two ballast pumps available to pump out each ballast tank?", "q8_16_24": "Are pumproom emergency bilge suction valves clearly marked, fitted with a position indicator and capable of remote operation?", "q8_16_25": "Is the vessel/unit equipped with service cranes covering all anticipated operations?", "q8_16_26": "Are all cement silos and associated valves, pumps, vents and air supplies fully tested and in good order?", "q8_16_27": "Are all mud and brine tanks, pumps, valves and pipeline systems in good order and fully tested?", "q8_16_28": "Is all deck mounted equipment, control skids and storage containers in good order and provided with appropriate cautionary signage?", "q8_16_29": "Are all connections and deck pipework for bulk products, such as water and fuel, colour coded and clearly marked at loading stations?", "q8_16_30": "If carried, are hydrocarbon and/or chemical hoses fitted with dry break couplings?", "q8_16_31": "Are Material Safety Data Sheets (MSDS) on board for all the products being carried and are all officers familiar with their content?", "q8_16_32": "If carried, are the hoses and connections used for the transfer of bulk liquids free of defects?", "q8_16_33": "If carried, are all transfer hoses routinely tested?", "q8_16_34": "Are transfer hoses fitted with lifting saddles and stowed in racks?", "q8_16_35": "If carried on board, are transfer hoses fitted with flotation collars?", "q14_1_1": "Is there documentary evidence to confirm that the helideck meets the requirements of CAP437?", "q14_1_2": "If the vessel/unit has re-fuelling facilities, are they certified?", "q14_1_3": "Are appropriate publications for helicopter operations available on board?", "q14_2_1": "Do on-board marine operations procedures address helicopter operations?", "q14_2_2": "Do helideck crew have appropriate PPE?", "q14_2_3": "Are documented procedures in place for checking helideck, net tension, and inspecting helideck for debris prior to aircraft arriving?", "q14_2_4": "Are documented procedures in place for controlling passenger access/egress at helideck?", "q14_3_1": "Are formally qualified Helicopter Landing Officers (HLOs) available on board as required?", "q14_3_2": "Are formally qualified Helideck Assistants (HDAs) available on board as required?", "q14_3_3": "Are all heli-ops radio users trained and appropriately certificated?", "q14_3_4": "Is the helideck monitoring system fully operational?", "q14_4_1": "Is the vessel/unit equipped with dedicated airband transceivers?", "q14_4_2": "Does the vessel/unit have dedicated flight following/watch personnel & procedures?", "q14_4_3": "Is the helideck firefighting and emergency equipment in good order and available for immediate use?", "q14_5_1": "Is there a formal documented procedure for briefing passengers?", "q14_5_2": "Are baggage scales formally calibrated and fully operational?", "q14_5_3": "Is there a secure area for handling/storing checked freight/baggage?", "q14_5_4": "Are all helideck lights functioning?", "q14_5_5": "Are wind sock(s) provided?"};
+var Q_NUMS = {"q8_14_1": "8.14.1", "q8_14_2": "8.14.2", "q8_14_3": "8.14.3", "q8_14_4": "8.14.4", "q8_14_5": "8.14.5", "q8_14_6": "8.14.6", "q8_14_7": "8.14.7", "q8_14_8": "8.14.8", "q8_14_9": "8.14.9", "q8_14_10": "8.14.10", "q8_14_11": "8.14.11", "q8_14_12": "8.14.12", "q8_14_13": "8.14.13", "q8_14_14": "8.14.14", "q8_14_15": "8.14.15", "q8_16_1": "8.16.1", "q8_16_2": "8.16.2", "q8_16_3": "8.16.3", "q8_16_4": "8.16.4", "q8_16_5": "8.16.5", "q8_16_6": "8.16.6", "q8_16_7": "8.16.7", "q8_16_8": "8.16.8", "q8_16_9": "8.16.9", "q8_16_10": "8.16.10", "q8_16_11": "8.16.11", "q8_16_12": "8.16.12", "q8_16_13": "8.16.13", "q8_16_14": "8.16.14", "q8_16_15": "8.16.15", "q8_16_16": "8.16.16", "q8_16_17": "8.16.17", "q8_16_18": "8.16.18", "q8_16_19": "8.16.19", "q8_16_20": "8.16.20", "q8_16_21": "8.16.21", "q8_16_22": "8.16.22", "q8_16_23": "8.16.23", "q8_16_24": "8.16.24", "q8_16_25": "8.16.25", "q8_16_26": "8.16.26", "q8_16_27": "8.16.27", "q8_16_28": "8.16.28", "q8_16_29": "8.16.29", "q8_16_30": "8.16.30", "q8_16_31": "8.16.31", "q8_16_32": "8.16.32", "q8_16_33": "8.16.33", "q8_16_34": "8.16.34", "q8_16_35": "8.16.35", "q14_1_1": "14.1.1", "q14_1_2": "14.1.2", "q14_1_3": "14.1.3", "q14_2_1": "14.2.1", "q14_2_2": "14.2.2", "q14_2_3": "14.2.3", "q14_2_4": "14.2.4", "q14_3_1": "14.3.1", "q14_3_2": "14.3.2", "q14_3_3": "14.3.3", "q14_3_4": "14.3.4", "q14_4_1": "14.4.1", "q14_4_2": "14.4.2", "q14_4_3": "14.4.3", "q14_5_1": "14.5.1", "q14_5_2": "14.5.2", "q14_5_3": "14.5.3", "q14_5_4": "14.5.4", "q14_5_5": "14.5.5"};
+var META_IDS = ["vessel", "insp_date", "inspector", "operator", "flag", "imo", "port", "block", "status"];
+var saveTimer = null;
+var photoStore = {};
+
+function compressImage(file, callback) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var maxW = 1200, maxH = 1200;
+      var w = img.width, h = img.height;
+      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+      if (h > maxH) { w = Math.round(w * maxH / h); h = maxH; }
+      canvas.width = w;
+      canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', 0.6));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function addPhoto(event, qid) {
+  var file = event.target.files[0];
+  if (!file) return;
+  compressImage(file, function(dataUrl) {
+    if (!photoStore[qid]) photoStore[qid] = [];
+    photoStore[qid].push(dataUrl);
+    renderPhotos(qid);
+    onAnswer();
+  });
+  event.target.value = '';
+}
+
+function removePhoto(qid, idx) {
+  if (photoStore[qid]) {
+    photoStore[qid].splice(idx, 1);
+    renderPhotos(qid);
+    onAnswer();
+  }
+}
+
+function renderPhotos(qid) {
+  var area = document.getElementById('photos-' + qid);
+  if (!area) return;
+  area.innerHTML = '';
+  var photos = photoStore[qid] || [];
+  for (var i = 0; i < photos.length; i++) {
+    (function(idx) {
+      var wrap = document.createElement('div');
+      wrap.className = 'photo-wrap';
+      var img = document.createElement('img');
+      img.src = photos[idx];
+      img.className = 'photo-thumb';
+      var btn = document.createElement('button');
+      btn.className = 'photo-del';
+      btn.innerHTML = '&#10005;';
+      btn.onclick = function() { removePhoto(qid, idx); };
+      wrap.appendChild(img);
+      wrap.appendChild(btn);
+      area.appendChild(wrap);
+    })(i);
+  }
+}
+
+function onAnswer() {
+  updateProgress();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveData, 800);
+}
+
+function updateProgress() {
+  var yes = 0, no = 0, na = 0, total = ALL_IDS.length;
+  for (var i = 0; i < ALL_IDS.length; i++) {
+    var id = ALL_IDS[i];
+    var radios = document.querySelectorAll('input[name="' + id + '"]');
+    for (var j = 0; j < radios.length; j++) {
+      if (radios[j].checked) {
+        if (radios[j].value === 'YES') yes++;
+        else if (radios[j].value === 'NO') no++;
+        else if (radios[j].value === 'NA') na++;
+      }
+    }
+  }
+  var answered = yes + no + na;
+  var pct = total > 0 ? Math.round(answered / total * 100) : 0;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-count').textContent = answered + ' / ' + total;
+  document.getElementById('prog-yes').textContent = yes;
+  document.getElementById('prog-no').textContent = no;
+  document.getElementById('prog-na').textContent = na;
+  document.getElementById('prog-bar-fill').style.width = pct + '%';
+}
+
+function saveData() {
+  var data = { meta: {}, answers: {}, obs: {}, comments: {}, photos: photoStore };
+  for (var m = 0; m < META_IDS.length; m++) {
+    var el = document.getElementById('m-' + META_IDS[m]);
+    if (el) data.meta[META_IDS[m]] = el.value;
+  }
+  for (var i = 0; i < ALL_IDS.length; i++) {
+    var id = ALL_IDS[i];
+    var radios = document.querySelectorAll('input[name="' + id + '"]');
+    for (var j = 0; j < radios.length; j++) {
+      if (radios[j].checked) data.answers[id] = radios[j].value;
+    }
+    var obs = document.getElementById('obs-' + id);
+    if (obs && obs.checked) data.obs[id] = true;
+    var cmt = document.getElementById('cmt-' + id);
+    if (cmt && cmt.value) data.comments[id] = cmt.value;
+  }
+  var gobs = document.getElementById('general-obs');
+  if (gobs) data.general_obs = gobs.value;
+  try {
+    var serialized = JSON.stringify(data);
+    var kb = Math.round(serialized.length / 1024);
+    localStorage.setItem(STORAGE_KEY, serialized);
+    var ind = document.getElementById('save-indicator');
+    if (ind) {
+      ind.textContent = '&#10003; Saved (' + kb + ' KB)';
+      ind.style.opacity = '1';
+      setTimeout(function(){ ind.style.opacity = '0'; }, 2000);
+    }
+  } catch(e) {
+    alert('Storage full. Remove some photos to continue saving.');
+  }
+}
+
+function loadData() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    if (data.meta) {
+      for (var m = 0; m < META_IDS.length; m++) {
+        var el = document.getElementById('m-' + META_IDS[m]);
+        if (el && data.meta[META_IDS[m]]) el.value = data.meta[META_IDS[m]];
+      }
+    }
+    if (data.answers) {
+      for (var id in data.answers) {
+        var radios = document.querySelectorAll('input[name="' + id + '"]');
+        for (var j = 0; j < radios.length; j++) {
+          if (radios[j].value === data.answers[id]) radios[j].checked = true;
+        }
+      }
+    }
+    if (data.obs) {
+      for (var oid in data.obs) {
+        var obs = document.getElementById('obs-' + oid);
+        if (obs) obs.checked = true;
+      }
+    }
+    if (data.comments) {
+      for (var cid in data.comments) {
+        var cmt = document.getElementById('cmt-' + cid);
+        if (cmt) cmt.value = data.comments[cid];
+      }
+    }
+    if (data.photos) {
+      photoStore = data.photos;
+      for (var pid in photoStore) { renderPhotos(pid); }
+    }
+    if (data.general_obs) {
+      var gobs = document.getElementById('general-obs');
+      if (gobs) gobs.value = data.general_obs;
+    }
+    updateProgress();
+  } catch(e) {}
+}
+
+function clearData() {
+  if (!confirm('Clear all answers and photos? This cannot be undone.')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  photoStore = {};
+  location.reload();
+}
+
+function getInitials(name) {
+  if (!name) return '';
+  var parts = name.trim().split(/\s+/);
+  var ini = '';
+  for (var i = 0; i < parts.length; i++) {
+    if (parts[i].length > 0) ini += parts[i][0].toUpperCase();
+  }
+  return ini;
+}
+
+function exportPDF() {
+  var vessel = document.getElementById('m-vessel').value || 'Unknown';
+  var inspector = document.getElementById('m-inspector').value || '';
+  var date = document.getElementById('m-insp_date').value || '';
+  var initials = getInitials(inspector);
+  var fileTitle = "ovid-mpsv-ops" + '-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
+  document.title = fileTitle;
+  var pdfTitle = "OVID -- MPSV Operations (ROV, Well Servicing, Helicopter)" + ' | ' + vessel;
+  if (initials) pdfTitle += ' | ' + initials;
+  if (date) pdfTitle += ' | ' + date;
+  document.getElementById('pdf-title').textContent = pdfTitle;
+
+  var findings = [];
+  for (var i = 0; i < ALL_IDS.length; i++) {
+    var id = ALL_IDS[i];
+    var obs = document.getElementById('obs-' + id);
+    var photos = photoStore[id] || [];
+    if ((obs && obs.checked) || photos.length > 0) {
+      var cmt = document.getElementById('cmt-' + id);
+      findings.push({ num: Q_NUMS[id], text: Q_TEXTS[id], comment: cmt ? cmt.value : '', photos: photos });
+    }
+  }
+  var gobs = document.getElementById('general-obs');
+  var yes = parseInt(document.getElementById('prog-yes').textContent) || 0;
+  var no = parseInt(document.getElementById('prog-no').textContent) || 0;
+  var na = parseInt(document.getElementById('prog-na').textContent) || 0;
+
+  var summaryHtml = '<div class="pdf-summary">';
+  summaryHtml += '<h2>INSPECTION SUMMARY</h2>';
+  summaryHtml += '<div class="summary-meta">';
+  for (var m2 = 0; m2 < META_IDS.length; m2++) {
+    var mid2 = META_IDS[m2];
+    var el2 = document.getElementById('m-' + mid2);
+    var lbl2 = el2 && el2.previousElementSibling ? el2.previousElementSibling.textContent : mid2;
+    summaryHtml += '<p><strong>' + lbl2 + ':</strong> ' + ((el2 && el2.value) || '-') + '</p>';
+  }
+  summaryHtml += '</div>';
+  summaryHtml += '<div class="summary-stats">';
+  summaryHtml += '<span class="stat-yes">YES: ' + yes + '</span>';
+  summaryHtml += '<span class="stat-no">NO: ' + no + '</span>';
+  summaryHtml += '<span class="stat-na">N/A: ' + na + '</span>';
+  summaryHtml += '<span class="stat-findings">Findings: ' + findings.length + '</span>';
+  summaryHtml += '</div>';
+
+  if (findings.length > 0) {
+    summaryHtml += '<h3>OBSERVATIONS / FINDINGS (' + findings.length + ')</h3>';
+    for (var f = 0; f < findings.length; f++) {
+      var fi = findings[f];
+      summaryHtml += '<div class="finding-block">';
+      summaryHtml += '<div class="finding-header"><span class="finding-num">' + fi.num + '</span><span class="finding-text">' + fi.text + '</span></div>';
+      if (fi.comment) summaryHtml += '<div class="finding-comment">' + fi.comment + '</div>';
+      if (fi.photos.length > 0) {
+        summaryHtml += '<div class="finding-photos">';
+        for (var p = 0; p < fi.photos.length; p++) {
+          summaryHtml += '<img src="' + fi.photos[p] + '" class="finding-photo">';
+        }
+        summaryHtml += '</div>';
+      }
+      summaryHtml += '</div>';
+    }
+  } else {
+    summaryHtml += '<p class="no-findings">No observations / findings recorded.</p>';
+  }
+
+  if (gobs && gobs.value) {
+    summaryHtml += '<h3>GENERAL OBSERVATIONS</h3><p>' + gobs.value + '</p>';
+  }
+  summaryHtml += '</div>';
+  document.getElementById('pdf-summary').innerHTML = summaryHtml;
+  window.print();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadData();
+  var metaEls = document.querySelectorAll('.meta-field input, .meta-field select');
+  for (var i = 0; i < metaEls.length; i++) {
+    metaEls[i].addEventListener('change', function(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveData, 800); });
+    metaEls[i].addEventListener('input', function(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveData, 800); });
+  }
+});
+
+</script>
+
+</body>
+</html>
