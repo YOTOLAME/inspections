@@ -1551,9 +1551,9 @@ function exportPDF() {
   for (var i = 0; i < ALL_IDS.length; i++) {
     var id = ALL_IDS[i];
     var obs = document.getElementById('obs-' + id);
-    if (obs && obs.checked) {
+    var photos = photoStore[id] || [];
+    if ((obs && obs.checked) || photos.length > 0) {
       var cmt = document.getElementById('cmt-' + id);
-      var photos = photoStore[id] || [];
       findings.push({ num: Q_NUMS[id], text: Q_TEXTS[id], comment: cmt ? cmt.value : '', photos: photos });
     }
   }
