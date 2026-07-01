@@ -1,11 +1,13 @@
-const CACHE_NAME = 'inspectare-v3';
+const CACHE_NAME = 'inspectare-v6';
 const FILES = [
   '/inspections/',
   '/inspections/index.html',
   '/inspections/INSPECTARE-500M-MOBILE.html',
   '/inspections/INSPECTARE-CREWBOAT-MOBILE.html',
   '/inspections/INSPECTARE-PSV-MOBILE.html',
-  '/inspections/OVID-DP-OPERATIONS-MOBILE.html'
+  '/inspections/OVID-DP-OPERATIONS-MOBILE.html',
+  '/inspections/OVID-CREWBOAT-PART1-MOBILE.html',
+  '/inspections/OVID-CREWBOAT-PART2-MOBILE.html'
 ];
 
 self.addEventListener('install', function(e) {

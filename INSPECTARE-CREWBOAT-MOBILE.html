@@ -58,7 +58,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 #pdf-summary { display: none; }
 @media print {
   .progress-bar, .btn-row, .header, .btn-photo { display: none !important; }
-  body { background: white; font-size: 11px; }
+  body { background: white; font-size: 11px; padding: 1.2cm 1.2cm 0.8cm; }
   #pdf-title { display: block; font-size: 13px; font-weight: 700; color: #003B6E; padding: 12px 16px; border-bottom: 2px solid #003B6E; margin-bottom: 10px; }
   #pdf-summary { display: block; padding: 0 16px; page-break-after: always; }
   .pdf-summary h2 { font-size: 13px; color: #003B6E; border-bottom: 2px solid #003B6E; padding-bottom: 5px; margin-bottom: 10px; }
@@ -86,6 +86,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
   .ans { border: none; padding: 0; font-size: 10px; }
   .obs-row { font-size: 10px; }
   textarea { border: none; font-size: 10px; padding: 0; min-height: unset; }
+  @page { margin: 0; }
 }
 @media (max-width: 500px) {
   .meta-grid { grid-template-columns: 1fr; }
