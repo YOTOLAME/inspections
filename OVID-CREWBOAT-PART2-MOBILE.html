@@ -9,6 +9,7 @@
 body { font-family: -apple-system, Arial, sans-serif; font-size: 14px; background: #f0f2f5; color: #1a2a3a; }
 .header { background: #003B6E; color: white; padding: 12px 16px 10px; }
 .header h1 { font-size: 15px; font-weight: 700; }
+.header p { font-size: 11px; opacity: 0.75; margin-top: 3px; }
 .progress-bar { position: sticky; top: 0; z-index: 100; background: white; border-bottom: 2px solid #eee; padding: 8px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
 .prog-pct { font-size: 16px; font-weight: 800; color: #003B6E; }
@@ -59,36 +60,62 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 #pdf-title { display: none; }
 #pdf-summary { display: none; }
 @media print {
+  @page { margin: 0; size: A4; }
+  html, body { margin: 0 !important; }
   .progress-bar, .btn-row, .header, .btn-photo, .nav-links { display: none !important; }
-  body { background: white; font-size: 11px; padding: 1.2cm 1.2cm 0.8cm; }
-  #pdf-title { display: block; font-size: 13px; font-weight: 700; color: #003B6E; padding: 12px 16px; border-bottom: 2px solid #003B6E; margin-bottom: 10px; }
-  #pdf-summary { display: block; padding: 0 16px; page-break-after: always; }
-  .pdf-summary h2 { font-size: 13px; color: #003B6E; border-bottom: 2px solid #003B6E; padding-bottom: 5px; margin-bottom: 10px; }
-  .pdf-summary h3 { font-size: 11px; color: #003B6E; margin: 12px 0 5px; text-transform: uppercase; }
-  .summary-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; margin-bottom: 10px; font-size: 10px; }
-  .summary-stats { display: flex; gap: 14px; font-size: 11px; font-weight: 700; margin-bottom: 12px; padding: 7px; background: #f0f5ff; border-radius: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .stat-yes { color: #27ae60; }
-  .stat-no { color: #e74c3c; }
-  .stat-na { color: #7f8c8d; }
-  .stat-findings { color: #e67e22; }
-  .finding-block { border: 1px solid #ddd; border-radius: 4px; padding: 8px; margin-bottom: 8px; page-break-inside: avoid; }
-  .finding-header { display: flex; gap: 8px; margin-bottom: 4px; }
-  .finding-num { background: #003B6E; color: white; border-radius: 3px; padding: 1px 6px; font-size: 10px; font-weight: 700; white-space: nowrap; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .finding-text { font-size: 11px; font-weight: 600; }
-  .finding-comment { font-size: 10px; color: #555; margin: 4px 0; font-style: italic; }
-  .finding-photos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-  .finding-photo { width: 120px; height: 90px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
-  .no-findings { font-style: italic; color: #27ae60; font-size: 11px; }
-  .meta-card, .section, .general-obs { box-shadow: none; border: 1px solid #ddd; margin: 0 0 6px; border-radius: 4px; }
-  .section-title { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: white; font-size: 10.5px; padding: 1.4cm 1.4cm 1.2cm; }
+  #pdf-title { display: block; font-size: 15px; font-weight: 800; color: #003B6E; padding: 0 0 8px; border-bottom: 3px solid #003B6E; margin-bottom: 12px; }
+
+  /* ---- Page 1 : synthese ---- */
+  #pdf-summary { display: block; page-break-after: always; }
+  .summary-block { border: 1px solid #ccd6e0; border-radius: 6px; margin-bottom: 12px; overflow: hidden; page-break-inside: avoid; }
+  .summary-block-title { background: #003B6E; color: white; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 6px 10px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+  .summary-table td { padding: 5px 10px; border-bottom: 1px solid #eef1f5; }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .st-label { width: 38%; color: #667; font-weight: 700; text-transform: uppercase; font-size: 9px; }
+  .summary-stats { display: flex; gap: 10px; margin-bottom: 12px; }
+  .stat-box { flex: 1; text-align: center; border-radius: 6px; padding: 8px 4px; border: 1px solid #ddd; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .stat-n { font-size: 20px; font-weight: 800; }
+  .stat-l { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; }
+  .stat-yes { background: #eafaf1; color: #1e8449; border-color: #1e8449; }
+  .stat-no { background: #fdecea; color: #c0392b; border-color: #c0392b; }
+  .stat-na { background: #f2f3f4; color: #566573; border-color: #99a3ad; }
+  .stat-findings { background: #fff4e0; color: #b8630a; border-color: #b8630a; }
+  .finding-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; }
+  .finding-chip { background: #b8630a; color: white; border-radius: 4px; padding: 3px 9px; font-size: 11px; font-weight: 800; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .finding-note { font-size: 9px; color: #888; font-style: italic; padding: 0 10px 8px; }
+  .no-findings { font-style: italic; color: #1e8449; font-size: 11px; padding: 10px; }
+  .gen-obs-text { padding: 10px; font-size: 10.5px; white-space: pre-wrap; }
+
+  /* ---- Corps du rapport ---- */
+  .meta-card { display: none; } /* deja en page 1 */
+  .guidance { background: #f0f5ff !important; font-size: 9px; padding: 4px 8px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section { box-shadow: none; border: none; margin: 0 0 8px; border-radius: 0; }
+  .section-title { background: #003B6E !important; border-radius: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; page-break-after: avoid; }
+  .question { padding: 7px 4px; border-bottom: 1px solid #e4e8ee; page-break-inside: avoid; }
   .q-num { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .guidance { background: #f0f5ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .photo-wrap { display: none; }
-  input[type=radio]:not(:checked) { display: none; }
-  .ans { border: none; padding: 0; font-size: 10px; }
-  .obs-row { font-size: 10px; }
-  textarea { border: none; font-size: 10px; padding: 0; min-height: unset; }
-  @page { margin: 0; }
+  .q-text { font-size: 10.5px; }
+  /* Marquage FINDING sur la question concernee */
+  .question.is-finding { border-left: 4px solid #b8630a; background: #fffaf2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .question.is-finding .q-num { background: #b8630a !important; }
+  .obs-row { display: none; }
+  .question.is-finding .obs-row { display: block; font-size: 9px; color: #b8630a; font-weight: 800; }
+  .question.is-finding .obs-row input { display: none; }
+  /* Reponses : seule la cochee reste */
+  input[type=radio] { display: none; }
+  .ans { display: none; }
+  .ans.checked { display: inline-block; border: none; padding: 0 4px; font-size: 10px; font-weight: 800; }
+  .answer-row { margin-bottom: 2px; }
+  /* Commentaire : masque si vide */
+  textarea { border: none; font-size: 10px; padding: 0; min-height: unset; width: 100%; }
+  .question.no-comment textarea { display: none; }
+  /* Photos = evidence, imprimees avec leur question */
+  .photo-area { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 2px; }
+  .photo-wrap { display: inline-block; }
+  .photo-thumb { width: 150px; height: 112px; object-fit: cover; border-radius: 4px; border: 1px solid #ccd6e0; }
+  .photo-del { display: none; }
+  .general-obs { display: none; } /* deja en page 1 */
 }
 @media (max-width: 500px) {
   .meta-grid { grid-template-columns: 1fr; }
@@ -117,11 +144,11 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
   <button class="btn btn-pdf" onclick="exportPDF()">&#128438; Export PDF</button>
   <button class="btn btn-new" onclick="clearData()">&#8635; New Inspection</button>
 </div>
-<div class="nav-links"><a href="OVID-CREWBOAT-PART1-MOBILE.html">&#8592; Partie 1/2 : Certification, Crew, Navigation, Safety, Pollution, Structure</a></div>
+<div class="nav-links"><a href="index.html">&#8592; Retour a la liste des formulaires</a></div>
 <div class="meta-card">
   <h2>Inspection Details</h2>
   <div class="meta-grid">
-    <div class="meta-field"><label>Vessel Name</label><input type="text" id="m-vessel" placeholder="e.g. IFCB / Mamolinos"></div>
+    <div class="meta-field"><label>Vessel Name</label><input type="text" id="m-vessel" placeholder="e.g. Bourbon Liberty 303"></div>
     <div class="meta-field"><label>Inspection Date</label><input type="date" id="m-insp_date"></div>
     <div class="meta-field"><label>Inspector</label><input type="text" id="m-inspector" placeholder="Name"></div>
     <div class="meta-field"><label>Operator</label><input type="text" id="m-operator" placeholder="Company"></div>
@@ -137,7 +164,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 
 <div class="section">
   <div class="section-title">8.18 -- Crew Transfer Vessel</div>
-
 <div class="question" id="wrap-q8_18_1">
   <div class="q-header">
     <span class="q-num">8.18.1</span>
@@ -162,7 +188,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="question" id="wrap-q8_18_2">
   <div class="q-header">
     <span class="q-num">8.18.2</span>
-    <span class="q-text">If registered as a High Speed Craft, does the vessel have a copy of the company's 'Permit to Operate High-Speed Craft'?</span>
+    <span class="q-text">If registered as a High Speed Craft, does the vessel have a copy of the company&#x27;s &#x27;Permit to Operate High-Speed Craft&#x27;?</span>
   </div>
   <div class="guidance">State HSC Code issuing authority.</div>
   <div class="answer-row">
@@ -332,7 +358,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.18.10</span>
     <span class="q-text">Are passengers given a pre-embarkation and pre-disembarkation briefing?</span>
   </div>
-  <div class="guidance">Covering do's and don'ts, signs posted, and method of disembarkation (e.g. surfer landing, frog, Billy Pugh, pilot ladder etc.).</div>
+  <div class="guidance">Covering do&#x27;s and don&#x27;ts, signs posted, and method of disembarkation (e.g. surfer landing, frog, Billy Pugh, pilot ladder etc.).</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_18_10" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_18_10" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -496,7 +522,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">9.1 -- General</div>
-
 <div class="question" id="wrap-q9_1_1">
   <div class="q-header">
     <span class="q-num">9.1.1</span>
@@ -521,7 +546,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">9.2 -- Mooring procedures</div>
-
 <div class="question" id="wrap-q9_2_1">
   <div class="q-header">
     <span class="q-num">9.2.1</span>
@@ -587,7 +611,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">9.3 -- Equipment</div>
-
 <div class="question" id="wrap-q9_3_1">
   <div class="q-header">
     <span class="q-num">9.3.1</span>
@@ -652,7 +675,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">10.1 -- General</div>
-
 <div class="question" id="wrap-q10_1_1">
   <div class="q-header">
     <span class="q-num">10.1.1</span>
@@ -696,7 +718,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">10.2 -- Equipment</div>
-
 <div class="question" id="wrap-q10_2_1">
   <div class="q-header">
     <span class="q-num">10.2.1</span>
@@ -763,11 +784,10 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">11.1 -- Policies, procedures and documentation</div>
-
 <div class="question" id="wrap-q11_1_1">
   <div class="q-header">
     <span class="q-num">11.1.1</span>
-    <span class="q-text">Is the vessel/unit provided with operator's instructions, documented procedures and operating manuals for machinery onboard?</span>
+    <span class="q-text">Is the vessel/unit provided with operator&#x27;s instructions, documented procedures and operating manuals for machinery onboard?</span>
   </div>
   <div class="guidance">Machinery procedures should include at least: guidelines on engine room operations; manufacturer documentation; procedures to restart critical equipment; reporting equipment deficiencies; engine room emergency preparedness; planned maintenance and control of critical spare parts; bunker transfer procedures.</div>
   <div class="answer-row">
@@ -809,7 +829,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">11.3 -- Planned maintenance</div>
-
 <div class="question" id="wrap-q11_3_1">
   <div class="q-header">
     <span class="q-num">11.3.1</span>
@@ -855,7 +874,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">11.4 -- Safety management</div>
-
 <div class="question" id="wrap-q11_4_1">
   <div class="q-header">
     <span class="q-num">11.4.1</span>
@@ -923,7 +941,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">11.4.4</span>
     <span class="q-text">Do records indicate the regular testing of emergency equipment?</span>
   </div>
-  <div class="guidance">Emergency equipment will include, where fitted: emergency air compressor; emergency generator; emergency steering; quick closing valves; emergency stops; engineers' alarms; bilge pumping equipment; emergency fire pump.</div>
+  <div class="guidance">Emergency equipment will include, where fitted: emergency air compressor; emergency generator; emergency steering; quick closing valves; emergency stops; engineers&#x27; alarms; bilge pumping equipment; emergency fire pump.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q11_4_4" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q11_4_4" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1129,7 +1147,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">11.5 -- Machinery status</div>
-
 <div class="question" id="wrap-q11_5_1">
   <div class="q-header">
     <span class="q-num">11.5.1</span>
@@ -1196,7 +1213,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">11.6 -- Emergency steering</div>
-
 <div class="question" id="wrap-q11_6_1">
   <div class="q-header">
     <span class="q-num">11.6.1</span>
@@ -1221,7 +1237,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">12.1 -- Hull, superstructure and external weather decks</div>
-
 <div class="question" id="wrap-q12_1_1">
   <div class="q-header">
     <span class="q-num">12.1.1</span>
@@ -1329,7 +1344,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">12.2 -- Electrical equipment</div>
-
 <div class="question" id="wrap-q12_2_1">
   <div class="q-header">
     <span class="q-num">12.2.1</span>
@@ -1374,7 +1388,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">12.4 -- Accommodation Areas</div>
-
 <div class="question" id="wrap-q12_4_1">
   <div class="q-header">
     <span class="q-num">12.4.1</span>
@@ -1399,10 +1412,9 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 
 <div class="general-obs">
-  <h3>General Observations</h3>
-  <textarea id="general-obs" placeholder="Overall inspection notes, summary of findings, follow-up actions required..." rows="5" oninput="onAnswer()"></textarea>
+  <h3>&#9888; General Observations</h3>
+  <textarea id="general-obs" placeholder="General remarks about this inspection..." oninput="onAnswer()"></textarea>
 </div>
-
 
 <script>
 
@@ -1410,8 +1422,54 @@ var STORAGE_KEY = "ovid-crewboat-p2";
 var ALL_IDS = ["q8_18_1", "q8_18_2", "q8_18_3", "q8_18_4", "q8_18_5", "q8_18_6", "q8_18_7", "q8_18_8", "q8_18_9", "q8_18_10", "q8_18_11", "q8_18_12", "q8_18_13", "q8_18_14", "q8_18_15", "q8_18_16", "q8_18_17", "q9_1_1", "q9_2_1", "q9_2_2", "q9_2_3", "q9_3_1", "q9_3_2", "q9_3_3", "q10_1_1", "q10_1_2", "q10_2_1", "q10_2_2", "q10_2_3", "q11_1_1", "q11_1_2", "q11_3_1", "q11_3_2", "q11_4_1", "q11_4_2", "q11_4_3", "q11_4_4", "q11_4_5", "q11_4_6", "q11_4_7", "q11_4_8", "q11_4_9", "q11_4_10", "q11_4_11", "q11_4_12", "q11_4_13", "q11_5_1", "q11_5_2", "q11_5_3", "q11_6_1", "q12_1_1", "q12_1_2", "q12_1_3", "q12_1_4", "q12_1_5", "q12_2_1", "q12_2_2", "q12_4_1"];
 var Q_TEXTS = {"q8_18_1": "Is the vessel registered as a High Speed Craft (HSC) as defined in SOLAS or other Code?", "q8_18_2": "If registered as a High Speed Craft, does the vessel have a copy of the company's 'Permit to Operate High-Speed Craft'?", "q8_18_3": "Have noise levels been assessed?", "q8_18_4": "Are crew specifically trained for crew boat operations?", "q8_18_5": "Are effective security documented procedures in place?", "q8_18_6": "Do documented procedures exist for personnel transfer and transit operations and define safe access routes?", "q8_18_7": "Is there a gated bulwark in way of personnel transfer areas?", "q8_18_8": "Are there lifebuoys and a formal system to alert in case of man-overboard, on the personnel transfer deck?", "q8_18_9": "Are sufficient immersion suits or thermal protective aids carried?", "q8_18_10": "Are passengers given a pre-embarkation and pre-disembarkation briefing?", "q8_18_11": "If a Passenger Evacuation System is fitted, is it in good order?", "q8_18_12": "Has a passenger evacuation exercise been conducted?", "q8_18_13": "Are emergency alarms audible in the passenger accommodation areas?", "q8_18_14": "Do all crewmembers have dedicated bunks in the vessel accommodation cabins?", "q8_18_15": "Are passenger safety briefings carried out?", "q8_18_16": "Are passenger areas clean and maintained in good order?", "q8_18_17": "Are searchlight(s) available and in good order?", "q9_1_1": "Are the ropes, wires and equipment in good order and are there records of the inspection and maintenance available?", "q9_2_1": "Are mooring lines secured to bitts turned up correctly?", "q9_2_2": "Are all mooring lines stowed neatly to minimise tripping hazards and are mooring areas clear and unobstructed?", "q9_2_3": "Is the general condition of fixed and temporary fenders on hull satisfactory with no metal protrusion on the ship side?", "q9_3_1": "If fitted, are all mooring winches in good order?", "q9_3_2": "Are all bollards, fairleads and chocks maintained in good order, free of grooving and marked with SWL?", "q9_3_3": "Does the vessel have an anchor and is there sufficient anchor cable for the proposed area of operation?", "q10_1_1": "Can crew demonstrate a satisfactory understanding of how to operate communications equipment in an emergency?", "q10_1_2": "Is a continuous listening watch maintained on VHF channel 16?", "q10_2_1": "Is the communications equipment in good order?", "q10_2_2": "Is the vessel/unit equipped with sufficient portable radios for use?", "q10_2_3": "If applicable, are there documented procedures for the use of communications equipment within 500 m safety zones?", "q11_1_1": "Is the vessel/unit provided with operator's instructions, documented procedures and operating manuals for machinery onboard?", "q11_1_2": "If applicable, is the engine logbook maintained up to date?", "q11_3_1": "Is a planned maintenance system in place, being followed and is it up to date?", "q11_3_2": "Is an up to date inventory of critical spare parts being maintained?", "q11_4_1": "Are emergency escape routes, where applicable, clearly marked, unobstructed and lit?", "q11_4_2": "Is the level of lighting in the machinery spaces satisfactory?", "q11_4_3": "Is the engine exhaust in good condition and where applicable, fitted with spark arrestors?", "q11_4_4": "Do records indicate the regular testing of emergency equipment?", "q11_4_5": "Are machinery emergency stops and shut offs clearly marked and do records indicate that they have been regularly tested?", "q11_4_6": "Are diesel engine exhausts and other hot surfaces in the vicinity of fuel, diesel, lubricating and hydraulic oil pipes protected against spray?", "q11_4_7": "Are the main switchboard, alternators and other electrical equipment satisfactorily protected from water spray?", "q11_4_8": "Are all items of moving machinery which may present a hazard provided with guards?", "q11_4_9": "Is all loose gear in the machinery spaces, stores and steering compartment properly secured?", "q11_4_10": "Are chemicals properly stowed and are Safety Data Sheets (SDS) available?", "q11_4_11": "Are machinery spaces clean and free from obvious leaks and is the overall standard of housekeeping satisfactory?", "q11_4_12": "Are bilges free of oil, rubbish and sediment and is the pumping system operational?", "q11_4_13": "If fitted, are bilge high level alarm systems operational, regularly tested and are records maintained?", "q11_5_1": "Are all items of main, auxiliary and emergency plant in good order and reported to be fully operational?", "q11_5_2": "Where applicable, is the emergency generator fuel tank provided with sufficient fuel?", "q11_5_3": "Where an emergency generator is not fitted, are engine room emergency batteries in good order and fully charged?", "q11_6_1": "If applicable, is the emergency steering system in good order, tested periodically and are crews familiar with its operation?", "q12_1_1": "Is the general condition, visual appearance and cleanliness of the hull, superstructure and weather decks including non-slip surfaces in working areas satisfactory?", "q12_1_2": "Where applicable, are hull markings clearly indicated and correctly placed?", "q12_1_3": "Is the general condition of service pipework satisfactory and is it free from significant corrosion and pitting and soft patches or other temporary repairs?", "q12_1_4": "Are all deck openings (including watertight doors, weathertight doors and portholes) in a satisfactory condition and capable of being properly secured?", "q12_1_5": "Are all the vent pipes for fuel tanks protected against flame ingress by a suitable gauze diaphragm and protected against water ingress by a goose neck or other efficient means?", "q12_2_1": "Is the level of lighting in accommodation spaces and working areas on main deck satisfactory?", "q12_2_2": "Is the general condition of electrical equipment, including light fittings, conduits and wiring, satisfactory?", "q12_4_1": "Where applicable, are public spaces, including smoke rooms, common toilets, mess rooms, sanitary areas, storerooms, food handling spaces, refrigerated spaces, galleys and pantries clean and in a hygienic condition?"};
 var Q_NUMS = {"q8_18_1": "8.18.1", "q8_18_2": "8.18.2", "q8_18_3": "8.18.3", "q8_18_4": "8.18.4", "q8_18_5": "8.18.5", "q8_18_6": "8.18.6", "q8_18_7": "8.18.7", "q8_18_8": "8.18.8", "q8_18_9": "8.18.9", "q8_18_10": "8.18.10", "q8_18_11": "8.18.11", "q8_18_12": "8.18.12", "q8_18_13": "8.18.13", "q8_18_14": "8.18.14", "q8_18_15": "8.18.15", "q8_18_16": "8.18.16", "q8_18_17": "8.18.17", "q9_1_1": "9.1.1", "q9_2_1": "9.2.1", "q9_2_2": "9.2.2", "q9_2_3": "9.2.3", "q9_3_1": "9.3.1", "q9_3_2": "9.3.2", "q9_3_3": "9.3.3", "q10_1_1": "10.1.1", "q10_1_2": "10.1.2", "q10_2_1": "10.2.1", "q10_2_2": "10.2.2", "q10_2_3": "10.2.3", "q11_1_1": "11.1.1", "q11_1_2": "11.1.2", "q11_3_1": "11.3.1", "q11_3_2": "11.3.2", "q11_4_1": "11.4.1", "q11_4_2": "11.4.2", "q11_4_3": "11.4.3", "q11_4_4": "11.4.4", "q11_4_5": "11.4.5", "q11_4_6": "11.4.6", "q11_4_7": "11.4.7", "q11_4_8": "11.4.8", "q11_4_9": "11.4.9", "q11_4_10": "11.4.10", "q11_4_11": "11.4.11", "q11_4_12": "11.4.12", "q11_4_13": "11.4.13", "q11_5_1": "11.5.1", "q11_5_2": "11.5.2", "q11_5_3": "11.5.3", "q11_6_1": "11.6.1", "q12_1_1": "12.1.1", "q12_1_2": "12.1.2", "q12_1_3": "12.1.3", "q12_1_4": "12.1.4", "q12_1_5": "12.1.5", "q12_2_1": "12.2.1", "q12_2_2": "12.2.2", "q12_4_1": "12.4.1"};
+var META_IDS = ["vessel", "insp_date", "inspector", "operator", "flag", "imo", "port", "block", "status"];
 var saveTimer = null;
 var photoStore = {};
+
+/* ---- IndexedDB pour les photos (localStorage = 5MB max, insuffisant) ---- */
+var DB_NAME = 'inspectare-photos';
+var idb = null;
+function openDB() {
+  return new Promise(function(resolve, reject) {
+    if (idb) return resolve(idb);
+    var req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = function(e) {
+      e.target.result.createObjectStore('photos');
+    };
+    req.onsuccess = function(e) { idb = e.target.result; resolve(idb); };
+    req.onerror = function(e) { reject(e); };
+  });
+}
+function idbSavePhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction('photos', 'readwrite');
+      tx.objectStore('photos').put(photoStore, STORAGE_KEY);
+      tx.oncomplete = resolve;
+      tx.onerror = reject;
+    });
+  });
+}
+function idbLoadPhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction('photos', 'readonly');
+      var req = tx.objectStore('photos').get(STORAGE_KEY);
+      req.onsuccess = function() { resolve(req.result || {}); };
+      req.onerror = function() { resolve({}); };
+    });
+  });
+}
+function idbClearPhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction('photos', 'readwrite');
+      tx.objectStore('photos').delete(STORAGE_KEY);
+      tx.oncomplete = resolve;
+      tx.onerror = resolve;
+    });
+  });
+}
 
 function compressImage(file, callback) {
   var reader = new FileReader();
@@ -1507,11 +1565,10 @@ function updateProgress() {
 }
 
 function saveData() {
-  var data = { meta: {}, answers: {}, obs: {}, comments: {}, photos: photoStore };
-  var metaIds = ['vessel','insp_date','inspector','operator','flag','imo','port','block','status'];
-  for (var m = 0; m < metaIds.length; m++) {
-    var el = document.getElementById('m-' + metaIds[m]);
-    if (el) data.meta[metaIds[m]] = el.value;
+  var data = { meta: {}, answers: {}, obs: {}, comments: {} };
+  for (var m = 0; m < META_IDS.length; m++) {
+    var el = document.getElementById('m-' + META_IDS[m]);
+    if (el) data.meta[META_IDS[m]] = el.value;
   }
   for (var i = 0; i < ALL_IDS.length; i++) {
     var id = ALL_IDS[i];
@@ -1537,8 +1594,11 @@ function saveData() {
       setTimeout(function(){ ind.style.opacity = '0'; }, 2000);
     }
   } catch(e) {
-    alert('Storage full. Remove some photos to continue saving.');
+    alert('Storage error while saving answers.');
   }
+  idbSavePhotos().catch(function() {
+    alert('Photo storage error. Photo may not be saved.');
+  });
 }
 
 function loadData() {
@@ -1547,10 +1607,9 @@ function loadData() {
     if (!raw) return;
     var data = JSON.parse(raw);
     if (data.meta) {
-      var metaIds = ['vessel','insp_date','inspector','operator','flag','imo','port','block','status'];
-      for (var m = 0; m < metaIds.length; m++) {
-        var el = document.getElementById('m-' + metaIds[m]);
-        if (el && data.meta[metaIds[m]]) el.value = data.meta[metaIds[m]];
+      for (var m = 0; m < META_IDS.length; m++) {
+        var el = document.getElementById('m-' + META_IDS[m]);
+        if (el && data.meta[META_IDS[m]]) el.value = data.meta[META_IDS[m]];
       }
     }
     if (data.answers) {
@@ -1573,15 +1632,27 @@ function loadData() {
         if (cmt) cmt.value = data.comments[cid];
       }
     }
-    if (data.photos) {
-      photoStore = data.photos;
-      for (var pid in photoStore) { renderPhotos(pid); }
-    }
     if (data.general_obs) {
       var gobs = document.getElementById('general-obs');
       if (gobs) gobs.value = data.general_obs;
     }
     updateProgress();
+    // Photos : IDB, avec migration depuis l'ancien format localStorage
+    var legacyPhotos = data.photos || null;
+    idbLoadPhotos().then(function(stored) {
+      photoStore = stored;
+      if (legacyPhotos) {
+        for (var lp in legacyPhotos) {
+          if (!photoStore[lp]) photoStore[lp] = legacyPhotos[lp];
+        }
+        idbSavePhotos().then(function() {
+          // retirer les photos du localStorage pour liberer le quota
+          delete data.photos;
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+        });
+      }
+      for (var pid in photoStore) { renderPhotos(pid); }
+    });
   } catch(e) {}
 }
 
@@ -1589,7 +1660,7 @@ function clearData() {
   if (!confirm('Clear all answers and photos? This cannot be undone.')) return;
   try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
   photoStore = {};
-  location.reload();
+  idbClearPhotos().then(function() { location.reload(); });
 }
 
 function getInitials(name) {
@@ -1602,26 +1673,91 @@ function getInitials(name) {
   return ini;
 }
 
+function shrinkDataUrl(dataUrl, maxDim, quality) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload = function() {
+      var w = img.width, h = img.height;
+      if (w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+      if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+      var c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(c.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = function() { resolve(dataUrl); };
+    img.src = dataUrl;
+  });
+}
+
+function shrinkForBudget(dataUrl, perPhotoBudget) {
+  var steps = [[1000, 0.55], [800, 0.45], [650, 0.35], [500, 0.3]];
+  function tryStep(i) {
+    if (i >= steps.length) return shrinkDataUrl(dataUrl, 500, 0.3);
+    return shrinkDataUrl(dataUrl, steps[i][0], steps[i][1]).then(function(out) {
+      if (out.length <= perPhotoBudget) return out;
+      return tryStep(i + 1);
+    });
+  }
+  if (dataUrl.length <= perPhotoBudget) return Promise.resolve(dataUrl);
+  return tryStep(0);
+}
+
+function preparePrintPhotos() {
+  // budget total ~3.5MB de base64 pour viser un PDF < 5MB
+  var thumbs = document.querySelectorAll('.photo-thumb');
+  if (thumbs.length === 0) return Promise.resolve();
+  var perPhoto = Math.floor(3500000 / thumbs.length);
+  var jobs = [];
+  for (var i = 0; i < thumbs.length; i++) {
+    (function(el) {
+      jobs.push(shrinkForBudget(el.src, perPhoto).then(function(small) {
+        el.setAttribute('data-full', el.src);
+        el.src = small;
+      }));
+    })(thumbs[i]);
+  }
+  return Promise.all(jobs);
+}
+
+function restorePhotos() {
+  var thumbs = document.querySelectorAll('.photo-thumb[data-full]');
+  for (var i = 0; i < thumbs.length; i++) {
+    thumbs[i].src = thumbs[i].getAttribute('data-full');
+    thumbs[i].removeAttribute('data-full');
+  }
+}
+
 function exportPDF() {
-  var vessel = document.getElementById('m-vessel').value || 'Unknown Vessel';
+  var vessel = document.getElementById('m-vessel').value || 'Unknown';
   var inspector = document.getElementById('m-inspector').value || '';
   var date = document.getElementById('m-insp_date').value || '';
   var initials = getInitials(inspector);
-  var fileTitle = 'OVID-CTV-Part2-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
+  var fileTitle = "ovid-crewboat-p2" + '-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
   document.title = fileTitle;
-  var pdfTitle = 'OVID -- Crew Transfer Vessel (2/2)' + ' | ' + vessel;
+  var pdfTitle = "OVID -- Crew Transfer Vessel (2/2)" + ' | ' + vessel;
   if (initials) pdfTitle += ' | ' + initials;
   if (date) pdfTitle += ' | ' + date;
   document.getElementById('pdf-title').textContent = pdfTitle;
 
-  var findings = [];
+  // Findings = ONLY questions with the Observation checkbox ticked.
+  // Photos are evidence attached to answers, they do NOT make a finding.
+  var findingNums = [];
   for (var i = 0; i < ALL_IDS.length; i++) {
     var id = ALL_IDS[i];
+    var wrap = document.getElementById('wrap-' + id);
     var obs = document.getElementById('obs-' + id);
-    var photos = photoStore[id] || [];
-    if ((obs && obs.checked) || photos.length > 0) {
-      var cmt = document.getElementById('cmt-' + id);
-      findings.push({ num: Q_NUMS[id], text: Q_TEXTS[id], comment: cmt ? cmt.value : '', photos: photos });
+    var cmt = document.getElementById('cmt-' + id);
+    var isFinding = obs && obs.checked;
+    if (isFinding) findingNums.push(Q_NUMS[id]);
+    if (wrap) {
+      wrap.classList.toggle('is-finding', !!isFinding);
+      wrap.classList.toggle('no-comment', !(cmt && cmt.value.trim()));
+      var labels = wrap.querySelectorAll('.ans');
+      for (var L = 0; L < labels.length; L++) {
+        var r = labels[L].querySelector('input');
+        labels[L].classList.toggle('checked', !!(r && r.checked));
+      }
     }
   }
   var gobs = document.getElementById('general-obs');
@@ -1630,50 +1766,47 @@ function exportPDF() {
   var na = parseInt(document.getElementById('prog-na').textContent) || 0;
 
   var summaryHtml = '<div class="pdf-summary">';
-  summaryHtml += '<h2>INSPECTION SUMMARY</h2>';
-  summaryHtml += '<div class="summary-meta">';
-  summaryHtml += '<p><strong>Vessel:</strong> ' + vessel + '</p>';
-  summaryHtml += '<p><strong>Inspector:</strong> ' + (inspector || '-') + '</p>';
-  summaryHtml += '<p><strong>Date:</strong> ' + (date || '-') + '</p>';
-  summaryHtml += '<p><strong>Operator:</strong> ' + (document.getElementById('m-operator').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Flag:</strong> ' + (document.getElementById('m-flag').value || '-') + '</p>';
-  summaryHtml += '<p><strong>IMO:</strong> ' + (document.getElementById('m-imo').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Location:</strong> ' + (document.getElementById('m-port').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Block/Field:</strong> ' + (document.getElementById('m-block').value || '-') + '</p>';
-  summaryHtml += '</div>';
+  summaryHtml += '<div class="summary-block"><div class="summary-block-title">Inspection Details</div><table class="summary-table">';
+  for (var m2 = 0; m2 < META_IDS.length; m2++) {
+    var mid2 = META_IDS[m2];
+    var el2 = document.getElementById('m-' + mid2);
+    var lbl2 = el2 && el2.previousElementSibling ? el2.previousElementSibling.textContent : mid2;
+    summaryHtml += '<tr><td class="st-label">' + lbl2 + '</td><td>' + ((el2 && el2.value) || '-') + '</td></tr>';
+  }
+  summaryHtml += '</table></div>';
+
   summaryHtml += '<div class="summary-stats">';
-  summaryHtml += '<span class="stat-yes">YES: ' + yes + '</span>';
-  summaryHtml += '<span class="stat-no">NO: ' + no + '</span>';
-  summaryHtml += '<span class="stat-na">N/A: ' + na + '</span>';
-  summaryHtml += '<span class="stat-findings">Findings: ' + findings.length + '</span>';
+  summaryHtml += '<div class="stat-box stat-yes"><div class="stat-n">' + yes + '</div><div class="stat-l">YES</div></div>';
+  summaryHtml += '<div class="stat-box stat-no"><div class="stat-n">' + no + '</div><div class="stat-l">NO</div></div>';
+  summaryHtml += '<div class="stat-box stat-na"><div class="stat-n">' + na + '</div><div class="stat-l">N/A</div></div>';
+  summaryHtml += '<div class="stat-box stat-findings"><div class="stat-n">' + findingNums.length + '</div><div class="stat-l">FINDINGS</div></div>';
   summaryHtml += '</div>';
 
-  if (findings.length > 0) {
-    summaryHtml += '<h3>OBSERVATIONS / FINDINGS (' + findings.length + ')</h3>';
-    for (var f = 0; f < findings.length; f++) {
-      var fi = findings[f];
-      summaryHtml += '<div class="finding-block">';
-      summaryHtml += '<div class="finding-header"><span class="finding-num">' + fi.num + '</span><span class="finding-text">' + fi.text + '</span></div>';
-      if (fi.comment) summaryHtml += '<div class="finding-comment">' + fi.comment + '</div>';
-      if (fi.photos.length > 0) {
-        summaryHtml += '<div class="finding-photos">';
-        for (var p = 0; p < fi.photos.length; p++) {
-          summaryHtml += '<img src="' + fi.photos[p] + '" class="finding-photo">';
-        }
-        summaryHtml += '</div>';
-      }
-      summaryHtml += '</div>';
+  summaryHtml += '<div class="summary-block"><div class="summary-block-title">Observations / Findings</div>';
+  if (findingNums.length > 0) {
+    summaryHtml += '<div class="finding-chips">';
+    for (var f = 0; f < findingNums.length; f++) {
+      summaryHtml += '<span class="finding-chip">' + findingNums[f] + '</span>';
     }
+    summaryHtml += '</div><p class="finding-note">See flagged questions in the report body for details and photo evidence.</p>';
   } else {
     summaryHtml += '<p class="no-findings">No observations / findings recorded.</p>';
   }
+  summaryHtml += '</div>';
 
-  if (gobs && gobs.value) {
-    summaryHtml += '<h3>GENERAL OBSERVATIONS</h3><p>' + gobs.value + '</p>';
+  if (gobs && gobs.value.trim()) {
+    summaryHtml += '<div class="summary-block"><div class="summary-block-title">General Observations</div><p class="gen-obs-text">' + gobs.value + '</p></div>';
   }
+
   summaryHtml += '</div>';
   document.getElementById('pdf-summary').innerHTML = summaryHtml;
-  window.print();
+  var ind = document.getElementById('save-indicator');
+  if (ind) { ind.textContent = 'Preparing PDF...'; ind.style.opacity = '1'; }
+  preparePrintPhotos().then(function() {
+    if (ind) ind.style.opacity = '0';
+    window.print();
+    setTimeout(restorePhotos, 1000);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', function() {

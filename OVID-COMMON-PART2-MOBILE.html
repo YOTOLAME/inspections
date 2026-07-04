@@ -9,6 +9,7 @@
 body { font-family: -apple-system, Arial, sans-serif; font-size: 14px; background: #f0f2f5; color: #1a2a3a; }
 .header { background: #003B6E; color: white; padding: 12px 16px 10px; }
 .header h1 { font-size: 15px; font-weight: 700; }
+.header p { font-size: 11px; opacity: 0.75; margin-top: 3px; }
 .progress-bar { position: sticky; top: 0; z-index: 100; background: white; border-bottom: 2px solid #eee; padding: 8px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
 .prog-pct { font-size: 16px; font-weight: 800; color: #003B6E; }
@@ -59,36 +60,62 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 #pdf-title { display: none; }
 #pdf-summary { display: none; }
 @media print {
+  @page { margin: 0; size: A4; }
+  html, body { margin: 0 !important; }
   .progress-bar, .btn-row, .header, .btn-photo, .nav-links { display: none !important; }
-  body { background: white; font-size: 11px; padding: 1.2cm 1.2cm 0.8cm; }
-  #pdf-title { display: block; font-size: 13px; font-weight: 700; color: #003B6E; padding: 12px 16px; border-bottom: 2px solid #003B6E; margin-bottom: 10px; }
-  #pdf-summary { display: block; padding: 0 16px; page-break-after: always; }
-  .pdf-summary h2 { font-size: 13px; color: #003B6E; border-bottom: 2px solid #003B6E; padding-bottom: 5px; margin-bottom: 10px; }
-  .pdf-summary h3 { font-size: 11px; color: #003B6E; margin: 12px 0 5px; text-transform: uppercase; }
-  .summary-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; margin-bottom: 10px; font-size: 10px; }
-  .summary-stats { display: flex; gap: 14px; font-size: 11px; font-weight: 700; margin-bottom: 12px; padding: 7px; background: #f0f5ff; border-radius: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .stat-yes { color: #27ae60; }
-  .stat-no { color: #e74c3c; }
-  .stat-na { color: #7f8c8d; }
-  .stat-findings { color: #e67e22; }
-  .finding-block { border: 1px solid #ddd; border-radius: 4px; padding: 8px; margin-bottom: 8px; page-break-inside: avoid; }
-  .finding-header { display: flex; gap: 8px; margin-bottom: 4px; }
-  .finding-num { background: #003B6E; color: white; border-radius: 3px; padding: 1px 6px; font-size: 10px; font-weight: 700; white-space: nowrap; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .finding-text { font-size: 11px; font-weight: 600; }
-  .finding-comment { font-size: 10px; color: #555; margin: 4px 0; font-style: italic; }
-  .finding-photos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-  .finding-photo { width: 120px; height: 90px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
-  .no-findings { font-style: italic; color: #27ae60; font-size: 11px; }
-  .meta-card, .section, .general-obs { box-shadow: none; border: 1px solid #ddd; margin: 0 0 6px; border-radius: 4px; }
-  .section-title { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: white; font-size: 10.5px; padding: 1.4cm 1.4cm 1.2cm; }
+  #pdf-title { display: block; font-size: 15px; font-weight: 800; color: #003B6E; padding: 0 0 8px; border-bottom: 3px solid #003B6E; margin-bottom: 12px; }
+
+  /* ---- Page 1 : synthese ---- */
+  #pdf-summary { display: block; page-break-after: always; }
+  .summary-block { border: 1px solid #ccd6e0; border-radius: 6px; margin-bottom: 12px; overflow: hidden; page-break-inside: avoid; }
+  .summary-block-title { background: #003B6E; color: white; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 6px 10px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+  .summary-table td { padding: 5px 10px; border-bottom: 1px solid #eef1f5; }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .st-label { width: 38%; color: #667; font-weight: 700; text-transform: uppercase; font-size: 9px; }
+  .summary-stats { display: flex; gap: 10px; margin-bottom: 12px; }
+  .stat-box { flex: 1; text-align: center; border-radius: 6px; padding: 8px 4px; border: 1px solid #ddd; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .stat-n { font-size: 20px; font-weight: 800; }
+  .stat-l { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; }
+  .stat-yes { background: #eafaf1; color: #1e8449; border-color: #1e8449; }
+  .stat-no { background: #fdecea; color: #c0392b; border-color: #c0392b; }
+  .stat-na { background: #f2f3f4; color: #566573; border-color: #99a3ad; }
+  .stat-findings { background: #fff4e0; color: #b8630a; border-color: #b8630a; }
+  .finding-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; }
+  .finding-chip { background: #b8630a; color: white; border-radius: 4px; padding: 3px 9px; font-size: 11px; font-weight: 800; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .finding-note { font-size: 9px; color: #888; font-style: italic; padding: 0 10px 8px; }
+  .no-findings { font-style: italic; color: #1e8449; font-size: 11px; padding: 10px; }
+  .gen-obs-text { padding: 10px; font-size: 10.5px; white-space: pre-wrap; }
+
+  /* ---- Corps du rapport ---- */
+  .meta-card { display: none; } /* deja en page 1 */
+  .guidance { background: #f0f5ff !important; font-size: 9px; padding: 4px 8px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section { box-shadow: none; border: none; margin: 0 0 8px; border-radius: 0; }
+  .section-title { background: #003B6E !important; border-radius: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; page-break-after: avoid; }
+  .question { padding: 7px 4px; border-bottom: 1px solid #e4e8ee; page-break-inside: avoid; }
   .q-num { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .guidance { background: #f0f5ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .photo-wrap { display: none; }
-  input[type=radio]:not(:checked) { display: none; }
-  .ans { border: none; padding: 0; font-size: 10px; }
-  .obs-row { font-size: 10px; }
-  textarea { border: none; font-size: 10px; padding: 0; min-height: unset; }
-  @page { margin: 0; }
+  .q-text { font-size: 10.5px; }
+  /* Marquage FINDING sur la question concernee */
+  .question.is-finding { border-left: 4px solid #b8630a; background: #fffaf2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .question.is-finding .q-num { background: #b8630a !important; }
+  .obs-row { display: none; }
+  .question.is-finding .obs-row { display: block; font-size: 9px; color: #b8630a; font-weight: 800; }
+  .question.is-finding .obs-row input { display: none; }
+  /* Reponses : seule la cochee reste */
+  input[type=radio] { display: none; }
+  .ans { display: none; }
+  .ans.checked { display: inline-block; border: none; padding: 0 4px; font-size: 10px; font-weight: 800; }
+  .answer-row { margin-bottom: 2px; }
+  /* Commentaire : masque si vide */
+  textarea { border: none; font-size: 10px; padding: 0; min-height: unset; width: 100%; }
+  .question.no-comment textarea { display: none; }
+  /* Photos = evidence, imprimees avec leur question */
+  .photo-area { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 2px; }
+  .photo-wrap { display: inline-block; }
+  .photo-thumb { width: 150px; height: 112px; object-fit: cover; border-radius: 4px; border: 1px solid #ccd6e0; }
+  .photo-del { display: none; }
+  .general-obs { display: none; } /* deja en page 1 */
 }
 @media (max-width: 500px) {
   .meta-grid { grid-template-columns: 1fr; }
@@ -117,11 +144,11 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
   <button class="btn btn-pdf" onclick="exportPDF()">&#128438; Export PDF</button>
   <button class="btn btn-new" onclick="clearData()">&#8635; New Inspection</button>
 </div>
-<div class="nav-links"><a href="OVID-COMMON-PART1-MOBILE.html">&#8592; Partie 1/4</a><a href="OVID-COMMON-PART3-MOBILE.html">Partie 3/4 &#8594;</a></div>
+<div class="nav-links"><a href="index.html">&#8592; Retour a la liste des formulaires</a></div>
 <div class="meta-card">
   <h2>Inspection Details</h2>
   <div class="meta-grid">
-    <div class="meta-field"><label>Vessel Name</label><input type="text" id="m-vessel" placeholder="e.g. IFCB / Mamolinos"></div>
+    <div class="meta-field"><label>Vessel Name</label><input type="text" id="m-vessel" placeholder="e.g. Bourbon Liberty 303"></div>
     <div class="meta-field"><label>Inspection Date</label><input type="date" id="m-insp_date"></div>
     <div class="meta-field"><label>Inspector</label><input type="text" id="m-inspector" placeholder="Name"></div>
     <div class="meta-field"><label>Operator</label><input type="text" id="m-operator" placeholder="Company"></div>
@@ -137,7 +164,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 
 <div class="section">
   <div class="section-title">5.1 -- General</div>
-
 <div class="question" id="wrap-q5_1_1">
   <div class="q-header">
     <span class="q-num">5.1.1</span>
@@ -184,7 +210,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.1.3</span>
     <span class="q-text">Is personal protective equipment provided and available spares on board?</span>
   </div>
-  <div class="guidance">Note: PPE may include as boiler suits, safety footwear, gloves, eye and ear protection, safety harnesses, fall arrestors, and chemical protective equipment etc. Procedures should include the company's requirements for the inspection and replacement of PPE.</div>
+  <div class="guidance">Note: PPE may include as boiler suits, safety footwear, gloves, eye and ear protection, safety harnesses, fall arrestors, and chemical protective equipment etc. Procedures should include the company&#x27;s requirements for the inspection and replacement of PPE.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_1_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_1_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -392,7 +418,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">5.2 -- Medical</div>
-
 <div class="question" id="wrap-q5_2_1">
   <div class="q-header">
     <span class="q-num">5.2.1</span>
@@ -605,7 +630,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">5.3 -- Management of change</div>
-
 <div class="question" id="wrap-q5_3_1">
   <div class="q-header">
     <span class="q-num">5.3.1</span>
@@ -651,7 +675,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="question" id="wrap-q5_3_3">
   <div class="q-header">
     <span class="q-num">5.3.3</span>
-    <span class="q-text">If any equipment required by operations is retro-fitted or temporarily installed, is there a formal process for assessing the integrity of connections to the vessel/unit's systems?</span>
+    <span class="q-text">If any equipment required by operations is retro-fitted or temporarily installed, is there a formal process for assessing the integrity of connections to the vessel/unit&#x27;s systems?</span>
   </div>
   <div class="guidance">May include the requirement for Class approval. Vessel/unit systems could include hydraulic, electrical, air, water, drainage and safety systems, such as fire detection.</div>
   <div class="answer-row">
@@ -672,7 +696,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">5.4 -- Drills, training and familiarisation</div>
-
 <div class="question" id="wrap-q5_4_1">
   <div class="q-header">
     <span class="q-num">5.4.1</span>
@@ -781,13 +804,12 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">5.5 -- Ship security</div>
-
 <div class="question" id="wrap-q5_5_1">
   <div class="q-header">
     <span class="q-num">5.5.1</span>
     <span class="q-text">Does the vessel/unit have an approved Ships Security Plan (SSP)?</span>
   </div>
-  <div class="guidance">If the vessel/unit is NOT required to have an approved Ships Security Plan (SSP) because of vessel/unit's tonnage or trading area, are there Security Procedures in place?</div>
+  <div class="guidance">If the vessel/unit is NOT required to have an approved Ships Security Plan (SSP) because of vessel/unit&#x27;s tonnage or trading area, are there Security Procedures in place?</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_5_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_5_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -932,7 +954,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">5.6 -- Control of work</div>
-
 <div class="question" id="wrap-q5_6_1">
   <div class="q-header">
     <span class="q-num">5.6.1</span>
@@ -1001,7 +1022,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.6.4</span>
     <span class="q-text">Are the period of validity and requirements for revalidation specified on the permit?</span>
   </div>
-  <div class="guidance">Best practice limits a permit's validity to specified individuals on a single shift. A new PTW should be raised after shift change.</div>
+  <div class="guidance">Best practice limits a permit&#x27;s validity to specified individuals on a single shift. A new PTW should be raised after shift change.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_6_4" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_6_4" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1022,7 +1043,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.6.5</span>
     <span class="q-text">Do personnel receive formal induction in the use of the PTW system?</span>
   </div>
-  <div class="guidance">Procedures should include specific training on an individual's roles and responsibilities.</div>
+  <div class="guidance">Procedures should include specific training on an individual&#x27;s roles and responsibilities.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_6_5" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_6_5" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1106,7 +1127,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.6.9</span>
     <span class="q-text">Are documented procedures in place to ensure safe work on high voltage systems and do they address appropriate access arrangements?</span>
   </div>
-  <div class="guidance">'High Voltage' is generally deemed to be &gt;1000 volts (or less if company specifies). Procedures should require a re-test for dead when a change in conditions associated with the work is experienced. Procedures should require two personnel to be present when working on exposed conductors.</div>
+  <div class="guidance">&#x27;High Voltage&#x27; is generally deemed to be &gt;1000 volts (or less if company specifies). Procedures should require a re-test for dead when a change in conditions associated with the work is experienced. Procedures should require two personnel to be present when working on exposed conductors.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_6_9" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_6_9" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1148,7 +1169,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.6.11</span>
     <span class="q-text">Is there evidence that hot work procedures are implemented on board?</span>
   </div>
-  <div class="guidance">Hot work' is defined as any work involving sources of ignition or temperatures sufficiently high to cause the ignition of a flammable gas mixture. In conducting hot work: the workspace and bilges shall be clean, dry and free of oil; the vessel/unit should be outside the 500m or safety zone of an installation; the workspace and enclosed spaces should be tested immediately prior to starting the Hot Work and shown to have an. LEL of less than 1 percent all meters used shall be properly calibrated and their function tested just prior to being used; the atmosphere should be monitored and ventilated throughout the hot work; work pieces should be clamped into position and not held by hand; fire resistant blankets should be used to shield other areas and prevent sparks from falling to lower levels; fire hoses should be rigged and charged with water at all times; a trained fire watch should be continually in attendance; if outside machinery spaces/workshops, all cargo operations and oil transfers should be stopped; if multiple repairs are to be carried out in different locations, each job should be planned and executed as an. individual and separate repair all other work must be considered Gas testers should be trained and deemed competent. A hot work permit should cover the requirements for a fire watch and fire watchers should be trained and deemed competent. The fire watch should continue until there is no further danger. Best practice is for hot work to stop well before a permit is due to expire to allow the fire watch to continue under its control.</div>
+  <div class="guidance">Hot work&#x27; is defined as any work involving sources of ignition or temperatures sufficiently high to cause the ignition of a flammable gas mixture. In conducting hot work: the workspace and bilges shall be clean, dry and free of oil; the vessel/unit should be outside the 500m or safety zone of an installation; the workspace and enclosed spaces should be tested immediately prior to starting the Hot Work and shown to have an. LEL of less than 1 percent all meters used shall be properly calibrated and their function tested just prior to being used; the atmosphere should be monitored and ventilated throughout the hot work; work pieces should be clamped into position and not held by hand; fire resistant blankets should be used to shield other areas and prevent sparks from falling to lower levels; fire hoses should be rigged and charged with water at all times; a trained fire watch should be continually in attendance; if outside machinery spaces/workshops, all cargo operations and oil transfers should be stopped; if multiple repairs are to be carried out in different locations, each job should be planned and executed as an. individual and separate repair all other work must be considered Gas testers should be trained and deemed competent. A hot work permit should cover the requirements for a fire watch and fire watchers should be trained and deemed competent. The fire watch should continue until there is no further danger. Best practice is for hot work to stop well before a permit is due to expire to allow the fire watch to continue under its control.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_6_11" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_6_11" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1272,9 +1293,9 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="question" id="wrap-q5_6_17">
   <div class="q-header">
     <span class="q-num">5.6.17</span>
-    <span class="q-text">Are all spaces that are classed as 'enclosed spaces' identified and clearly marked?</span>
+    <span class="q-text">Are all spaces that are classed as &#x27;enclosed spaces&#x27; identified and clearly marked?</span>
   </div>
-  <div class="guidance">All spaces not normally ventilated should be considered as 'enclosed spaces'. An enclosed space is any enclosed area that: is large enough for personnel to enter; has limited or restricted means of entry; is not designed for normal or continuous occupancy. It can be any space of an enclosed nature where there is a risk of death or serious injury from hazardous substances or dangerous conditions (e.g. lack of oxygen, machinery located within the space, etc). Enclosed spaces include cargo tanks, bulk tanks, ballast tanks, fuel tanks, water tanks, lubricating oil tanks, slop and waste oil tanks, sewage tanks, cofferdams, duct keels, void spaces and trunkings, pipelines or fittings connected to any of these. They also include any other item of machinery or equipment that is not routinely ventilated and entered, such as boilers and main engine crankcases.</div>
+  <div class="guidance">All spaces not normally ventilated should be considered as &#x27;enclosed spaces&#x27;. An enclosed space is any enclosed area that: is large enough for personnel to enter; has limited or restricted means of entry; is not designed for normal or continuous occupancy. It can be any space of an enclosed nature where there is a risk of death or serious injury from hazardous substances or dangerous conditions (e.g. lack of oxygen, machinery located within the space, etc). Enclosed spaces include cargo tanks, bulk tanks, ballast tanks, fuel tanks, water tanks, lubricating oil tanks, slop and waste oil tanks, sewage tanks, cofferdams, duct keels, void spaces and trunkings, pipelines or fittings connected to any of these. They also include any other item of machinery or equipment that is not routinely ventilated and entered, such as boilers and main engine crankcases.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_6_17" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_6_17" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1295,7 +1316,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.6.18</span>
     <span class="q-text">Is there evidence that enclosed space entry procedures are implemented on board?</span>
   </div>
-  <div class="guidance">Procedures should ensure that no person shall enter any enclosed space unless all other alternatives to entry have been considered and: a valid entry permit has been issued (Note: some permit systems may require a work permit in addition to an entry. permit for work conducted in an enclosed space). Lock Out/Tag Out of pipework and machinery has been completed with fully completed isolation tags and locks in. place (as required). the work space has been tested and found gas free; ventilation is maintained throughout entry and the atmosphere is monitored; adequate lighting, including a back-up source and safe access has been provided; during the hazard assessment phase, the vessel/unit's contingency plan for enclosed space rescue should be reviewed. to ensure it is appropriate for the specific entry, its contents discussed and the necessary equipment readily available. an experienced person should be standing by who is capable of initiating the alarm/response procedure; communications procedures have been agreed. MO(D)U Code IMO RESOLUTION MSC.358(92) and 1989/2009 MODU Codes (Chapters 14.13/14.14) have requirements for enclosed space entry and rescue drills. 14.13 Enclosed space entry and rescue drills. Crew members with enclosed space entry or rescue responsibilities should participate in an enclosed space entry and rescue drill to be held on board the unit at least once every two months. Each enclosed space entry and rescue drill should include: 1 checking and use of personal protective equipment required for entry; 2 checking and use of communication equipment and procedures; 3 checking and use of instruments for measuring the atmosphere in enclosed spaces; 4 checking and use of rescue equipment and procedures; 5 instructions in first aid and resuscitation techniques.</div>
+  <div class="guidance">Procedures should ensure that no person shall enter any enclosed space unless all other alternatives to entry have been considered and: a valid entry permit has been issued (Note: some permit systems may require a work permit in addition to an entry. permit for work conducted in an enclosed space). Lock Out/Tag Out of pipework and machinery has been completed with fully completed isolation tags and locks in. place (as required). the work space has been tested and found gas free; ventilation is maintained throughout entry and the atmosphere is monitored; adequate lighting, including a back-up source and safe access has been provided; during the hazard assessment phase, the vessel/unit&#x27;s contingency plan for enclosed space rescue should be reviewed. to ensure it is appropriate for the specific entry, its contents discussed and the necessary equipment readily available. an experienced person should be standing by who is capable of initiating the alarm/response procedure; communications procedures have been agreed. MO(D)U Code IMO RESOLUTION MSC.358(92) and 1989/2009 MODU Codes (Chapters 14.13/14.14) have requirements for enclosed space entry and rescue drills. 14.13 Enclosed space entry and rescue drills. Crew members with enclosed space entry or rescue responsibilities should participate in an enclosed space entry and rescue drill to be held on board the unit at least once every two months. Each enclosed space entry and rescue drill should include: 1 checking and use of personal protective equipment required for entry; 2 checking and use of communication equipment and procedures; 3 checking and use of instruments for measuring the atmosphere in enclosed spaces; 4 checking and use of rescue equipment and procedures; 5 instructions in first aid and resuscitation techniques.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_6_18" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_6_18" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1314,7 +1335,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="question" id="wrap-q5_6_19">
   <div class="q-header">
     <span class="q-num">5.6.19</span>
-    <span class="q-text">Are portable gas and oxygen analysers provided appropriate to the vessel/unit's operations and are they calibrated and in good order?</span>
+    <span class="q-text">Are portable gas and oxygen analysers provided appropriate to the vessel/unit&#x27;s operations and are they calibrated and in good order?</span>
   </div>
   <div class="guidance">Check calibration records and that tests and inspections are included in the vessel/units planned maintenance system.</div>
   <div class="answer-row">
@@ -1377,7 +1398,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">5.7 -- Lifting equipment</div>
-
 <div class="question" id="wrap-q5_7_1">
   <div class="q-header">
     <span class="q-num">5.7.1</span>
@@ -1675,7 +1695,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">5.9 -- Offshore personnel transfer</div>
-
 <div class="question" id="wrap-q5_9_1">
   <div class="q-header">
     <span class="q-num">5.9.1</span>
@@ -1702,7 +1721,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.9.2</span>
     <span class="q-text">Are all personnel transfer equipment subject to an inspection and certification regime?</span>
   </div>
-  <div class="guidance">Sight certification and inspection records. Where fitted, boat/surfer landings should be in good order and regularly inspected as part of vessel's regular maintenance programme. Inspection regimes for transfer equipment to follow OEM requirements and inspectors should document the periodic inspection regime in place for this equipment.</div>
+  <div class="guidance">Sight certification and inspection records. Where fitted, boat/surfer landings should be in good order and regularly inspected as part of vessel&#x27;s regular maintenance programme. Inspection regimes for transfer equipment to follow OEM requirements and inspectors should document the periodic inspection regime in place for this equipment.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_9_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_9_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1825,7 +1844,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">5.10 -- Life saving appliances</div>
-
 <div class="question" id="wrap-q5_10_1">
   <div class="q-header">
     <span class="q-num">5.10.1</span>
@@ -1852,7 +1870,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.10.2</span>
     <span class="q-text">Are vessel/unit-specific life-saving equipment maintenance instructions available and are weekly and monthly inspections being carried out?</span>
   </div>
-  <div class="guidance">The following tests and inspections shall be carried out weekly and a report of the inspection shall be entered in the log- book: all survival craft, rescue boats and launching appliances shall be visually inspected to ensure that they are ready for. use. The inspection shall include, but is not limited to, the condition of hooks, their attachment to the lifeboat and the on-load release gear being properly and completely reset; all engines in lifeboats and rescue boats shall be run for a total period of not less than 3 minutes, provided the. ambient temperature is above the minimum temperature required for starting and running the engine. During this period of time, it should be demonstrated that the gearbox and gearbox train are engaging satisfactorily. If the special characteristics of an outboard motor fitted to a rescue boat would not allow it to be run other than with its propeller submerged for a period of 3 minutes, it should be run for such a period as prescribed in the manufacturer's handbook. In special cases, the Administration may waive this requirement for ships constructed before 1 July 1986; lifeboats, except free-fall lifeboats, on cargo ships shall be moved from their stowed position, without any persons on. board, to the extent necessary to demonstrate satisfactory operation of launching appliances, if weather and sea conditions so allow; and the general emergency alarm shall be tested. (SOLAS III/20.6). All lifeboats, except free-fall lifeboats, shall be turned out from their stowed position, without any persons on board if weather and sea conditions so allow.(SOLAS III/20.7.1) Monthly inspections. Inspection of the life-saving appliances, including lifeboat equipment, shall be carried out monthly using the checklist required by regulation 36.1 to ensure that they are complete and in good order. A report of the inspection shall be entered in the log-book. (SOLAS III/20.7.2) Instructions for on-board maintenance shall be easily understood, illustrated wherever possible and as appropriate, shall include for each appliance: a checklist for use when carrying out the monthly inspections required by SOLAS III/20.7.2 and SOLAS III/36.1; maintenance and repair instructions; a schedule of periodic maintenance; a diagram of lubrication points with the recommended lubricants; a list of replaceable parts; a list of sources of spare parts; and; a log for records of inspections and maintenance. (SOLAS III/36) This is considered best practice for non-SOLAS. vessels</div>
+  <div class="guidance">The following tests and inspections shall be carried out weekly and a report of the inspection shall be entered in the log- book: all survival craft, rescue boats and launching appliances shall be visually inspected to ensure that they are ready for. use. The inspection shall include, but is not limited to, the condition of hooks, their attachment to the lifeboat and the on-load release gear being properly and completely reset; all engines in lifeboats and rescue boats shall be run for a total period of not less than 3 minutes, provided the. ambient temperature is above the minimum temperature required for starting and running the engine. During this period of time, it should be demonstrated that the gearbox and gearbox train are engaging satisfactorily. If the special characteristics of an outboard motor fitted to a rescue boat would not allow it to be run other than with its propeller submerged for a period of 3 minutes, it should be run for such a period as prescribed in the manufacturer&#x27;s handbook. In special cases, the Administration may waive this requirement for ships constructed before 1 July 1986; lifeboats, except free-fall lifeboats, on cargo ships shall be moved from their stowed position, without any persons on. board, to the extent necessary to demonstrate satisfactory operation of launching appliances, if weather and sea conditions so allow; and the general emergency alarm shall be tested. (SOLAS III/20.6). All lifeboats, except free-fall lifeboats, shall be turned out from their stowed position, without any persons on board if weather and sea conditions so allow.(SOLAS III/20.7.1) Monthly inspections. Inspection of the life-saving appliances, including lifeboat equipment, shall be carried out monthly using the checklist required by regulation 36.1 to ensure that they are complete and in good order. A report of the inspection shall be entered in the log-book. (SOLAS III/20.7.2) Instructions for on-board maintenance shall be easily understood, illustrated wherever possible and as appropriate, shall include for each appliance: a checklist for use when carrying out the monthly inspections required by SOLAS III/20.7.2 and SOLAS III/36.1; maintenance and repair instructions; a schedule of periodic maintenance; a diagram of lubrication points with the recommended lubricants; a list of replaceable parts; a list of sources of spare parts; and; a log for records of inspections and maintenance. (SOLAS III/36) This is considered best practice for non-SOLAS. vessels</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_10_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_10_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -2206,7 +2224,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">5.11 -- Fire-fighting</div>
-
 <div class="question" id="wrap-q5_11_1">
   <div class="q-header">
     <span class="q-num">5.11.1</span>
@@ -2380,7 +2397,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.11.9</span>
     <span class="q-text">Is the emergency fire pump in full operational condition and are starting instructions clearly displayed?</span>
   </div>
-  <div class="guidance">Consistent with safety and without interfering with the Vessel's operations, request to witness the starting and operation of the emergency fire pump. If a priming system has been fitted to the emergency fire pump, it must be class approved. Inspectors shall check that the procedures as posted and written for operation are relevant to the equipment and can be followed logically and any equipment requiring operation is marked legibly.</div>
+  <div class="guidance">Consistent with safety and without interfering with the Vessel&#x27;s operations, request to witness the starting and operation of the emergency fire pump. If a priming system has been fitted to the emergency fire pump, it must be class approved. Inspectors shall check that the procedures as posted and written for operation are relevant to the equipment and can be followed logically and any equipment requiring operation is marked legibly.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_11_9" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_11_9" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -2420,9 +2437,9 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="question" id="wrap-q5_11_11">
   <div class="q-header">
     <span class="q-num">5.11.11</span>
-    <span class="q-text">Are firemen's outfits and breathing apparatus in good order, provided with fully charged cylinders and ready for immediate use?</span>
+    <span class="q-text">Are firemen&#x27;s outfits and breathing apparatus in good order, provided with fully charged cylinders and ready for immediate use?</span>
   </div>
-  <div class="guidance">A number of spare charges, suitable for use with the apparatus provided, shall be available on board to the satisfaction of the Administration. (SOLAS 74 II-2/17.1.2.2) Two spare charges shall be provided for each required breathing apparatus……cargo ships that are equipped with suitably located means for fully recharging the air cylinders free from contamination need carry only one spare charge for each required apparatus. (SOLAS 2004 II-2/10.2.5) For vessels constructed before 1st July 2002, the breathing apparatus may be either a smoke helmet type, or a self- contained compressed air type. A number of spare charges suitable for use with the apparatus provided shall be available on board to the satisfaction of the Administration. (SOLAS 1974 II-2/17.1.2) The outfits shall be kept ready for use in an easily accessible location that is permanently and clearly marked and, they shall be stored in widely separated positions. (SOLAS 1974 II-2/17.4 and SOLAS 2004 II-2/10.3.1) Notes: Although SOLAS recommends ‘widely separated positions’, fire-fighting training advocates that breathing apparatus should be used by personnel in pairs. Self-contained breathing apparatus should be checked for condition and satisfactory operation. With the apparatus charged and the cylinder valve closed, the drop in pressure should not be more than10 bars in one minute. (Manufacturer’s instructions) Annual inspections should be carried out to ensure that the air quality of breathing apparatus air recharging systems is satisfactory. (IMO MSC.1/Circ.1432) Breathing apparatus shall be a self-contained compressed air-operated breathing apparatus for which the volume of air contained in the cylinders shall be at least 1,200 l, or other self-contained breathing apparatus which shall be capable of functioning for at least 30 min. All air cylinders for breathing apparatus shall be interchangeable. (FSS Code 3.2.1.2) Notes: Air cylinders should be charged to not less than 10% below full. BA air cylinders should be hydrostatically tested every 5 years or lesser period if so recommended by the manufacturer. (4-Year testing intervals are customary for some composite wound cylinders.) The hydrostatic test date must be stamped on the cylinder. For ships constructed on or after 1 July 2014, a minimum of two two-way portable radiotelephone apparatus for each fire party for fire-fighter's communication shall be carried on board. Those two-way portable radiotelephone apparatuses shall be of an explosion-proof type or intrinsically safe. Ships constructed before 1 July 2014 shall comply with the requirements of this paragraph not later than the first survey after 1 July 2018. (SOLAS II-2/10.4). Compressed air breathing apparatus shall be fitted with an audible alarm and a visual or other device which will alert the user before the volume of the air in the cylinder has been reduced to no less than 200 L. New ships constructed (keel-laid) on or after 1 July 2014 and existing ships (ships constructed before 1 July 2014) shall comply with the requirements by 1 July 2019. (FSS Code 3/2.1.2.2)</div>
+  <div class="guidance">A number of spare charges, suitable for use with the apparatus provided, shall be available on board to the satisfaction of the Administration. (SOLAS 74 II-2/17.1.2.2) Two spare charges shall be provided for each required breathing apparatus……cargo ships that are equipped with suitably located means for fully recharging the air cylinders free from contamination need carry only one spare charge for each required apparatus. (SOLAS 2004 II-2/10.2.5) For vessels constructed before 1st July 2002, the breathing apparatus may be either a smoke helmet type, or a self- contained compressed air type. A number of spare charges suitable for use with the apparatus provided shall be available on board to the satisfaction of the Administration. (SOLAS 1974 II-2/17.1.2) The outfits shall be kept ready for use in an easily accessible location that is permanently and clearly marked and, they shall be stored in widely separated positions. (SOLAS 1974 II-2/17.4 and SOLAS 2004 II-2/10.3.1) Notes: Although SOLAS recommends ‘widely separated positions’, fire-fighting training advocates that breathing apparatus should be used by personnel in pairs. Self-contained breathing apparatus should be checked for condition and satisfactory operation. With the apparatus charged and the cylinder valve closed, the drop in pressure should not be more than10 bars in one minute. (Manufacturer’s instructions) Annual inspections should be carried out to ensure that the air quality of breathing apparatus air recharging systems is satisfactory. (IMO MSC.1/Circ.1432) Breathing apparatus shall be a self-contained compressed air-operated breathing apparatus for which the volume of air contained in the cylinders shall be at least 1,200 l, or other self-contained breathing apparatus which shall be capable of functioning for at least 30 min. All air cylinders for breathing apparatus shall be interchangeable. (FSS Code 3.2.1.2) Notes: Air cylinders should be charged to not less than 10% below full. BA air cylinders should be hydrostatically tested every 5 years or lesser period if so recommended by the manufacturer. (4-Year testing intervals are customary for some composite wound cylinders.) The hydrostatic test date must be stamped on the cylinder. For ships constructed on or after 1 July 2014, a minimum of two two-way portable radiotelephone apparatus for each fire party for fire-fighter&#x27;s communication shall be carried on board. Those two-way portable radiotelephone apparatuses shall be of an explosion-proof type or intrinsically safe. Ships constructed before 1 July 2014 shall comply with the requirements of this paragraph not later than the first survey after 1 July 2018. (SOLAS II-2/10.4). Compressed air breathing apparatus shall be fitted with an audible alarm and a visual or other device which will alert the user before the volume of the air in the cylinder has been reduced to no less than 200 L. New ships constructed (keel-laid) on or after 1 July 2014 and existing ships (ships constructed before 1 July 2014) shall comply with the requirements by 1 July 2019. (FSS Code 3/2.1.2.2)</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_11_11" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_11_11" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -2443,7 +2460,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.11.12</span>
     <span class="q-text">If fitted, are emergency escape breathing devices in good order and ready for immediate use?</span>
   </div>
-  <div class="guidance">All ships shall carry at least two emergency escape breathing devices within accommodation spaces. (SOLAS II- 2/13.3.4.2) On all ships, within the machinery spaces, emergency escape breathing devices shall be situated ready for use at easily visible places, which can be reached quickly and easily at any time in event of fire. The location of EEBD’s shall take into account the layout of the machinery space and the number of persons normally working in the spaces. (SOLAS II- 2/13.4.3.1) Spare emergency escape breathing devices shall be kept on board. (SOLAS II-2/13.3.4.1) Training in the use of the EEBD should be considered a part of basic safety training. (MSC/Circ.849) Note: The requirements for EEBD’s are contained in Chapter 3/2.2 of the FSS Code and MSC/Circ.849 and among other measures or definitions, stipulate: an EEBD is a supplied air or oxygen device only used for escape from a compartment that has a hazardous. atmosphere and shall be of an approved type. EEBDs shall not be used for fighting fires, entering oxygen deficient voids or tanks, or worn by fire-fighters. In these. events, a self-contained breathing apparatus, which is specifically suited for such applications, shall be used. the EEBD shall have a service duration of at least 10 min. The EEBD shall include a hood or full face piece, as. appropriate, to protect the eyes, nose and mouth during escape. hoods and face pieces shall be constructed of flame-resistant materials and include a clear window for viewing; an inactivated EEBD shall be capable of being carried hands-free; an EEBD, when stored, shall be suitably protected from the environment; brief instructions or diagrams clearly illustrating their use shall be clearly printed on the EEBD. The donning. procedures shall be quick and easy to allow for situations where there is little time to seek safety from a hazardous atmosphere. maintenance requirements, manufacturer's trademark and serial number, shelf life with accompanying manufacture. date and name of the approving authority shall be printed on each EEBD. all EEBD training units shall be clearly marked.</div>
+  <div class="guidance">All ships shall carry at least two emergency escape breathing devices within accommodation spaces. (SOLAS II- 2/13.3.4.2) On all ships, within the machinery spaces, emergency escape breathing devices shall be situated ready for use at easily visible places, which can be reached quickly and easily at any time in event of fire. The location of EEBD’s shall take into account the layout of the machinery space and the number of persons normally working in the spaces. (SOLAS II- 2/13.4.3.1) Spare emergency escape breathing devices shall be kept on board. (SOLAS II-2/13.3.4.1) Training in the use of the EEBD should be considered a part of basic safety training. (MSC/Circ.849) Note: The requirements for EEBD’s are contained in Chapter 3/2.2 of the FSS Code and MSC/Circ.849 and among other measures or definitions, stipulate: an EEBD is a supplied air or oxygen device only used for escape from a compartment that has a hazardous. atmosphere and shall be of an approved type. EEBDs shall not be used for fighting fires, entering oxygen deficient voids or tanks, or worn by fire-fighters. In these. events, a self-contained breathing apparatus, which is specifically suited for such applications, shall be used. the EEBD shall have a service duration of at least 10 min. The EEBD shall include a hood or full face piece, as. appropriate, to protect the eyes, nose and mouth during escape. hoods and face pieces shall be constructed of flame-resistant materials and include a clear window for viewing; an inactivated EEBD shall be capable of being carried hands-free; an EEBD, when stored, shall be suitably protected from the environment; brief instructions or diagrams clearly illustrating their use shall be clearly printed on the EEBD. The donning. procedures shall be quick and easy to allow for situations where there is little time to seek safety from a hazardous atmosphere. maintenance requirements, manufacturer&#x27;s trademark and serial number, shelf life with accompanying manufacture. date and name of the approving authority shall be printed on each EEBD. all EEBD training units shall be clearly marked.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_11_12" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_11_12" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -2546,7 +2563,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">5.12 -- Access</div>
-
 <div class="question" id="wrap-q5_12_1">
   <div class="q-header">
     <span class="q-num">5.12.1</span>
@@ -2592,19 +2608,64 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 
 <div class="general-obs">
-  <h3>General Observations</h3>
-  <textarea id="general-obs" placeholder="Overall inspection notes, summary of findings, follow-up actions required..." rows="5" oninput="onAnswer()"></textarea>
+  <h3>&#9888; General Observations</h3>
+  <textarea id="general-obs" placeholder="General remarks about this inspection..." oninput="onAnswer()"></textarea>
 </div>
-
 
 <script>
 
 var STORAGE_KEY = "ovid-common-p2";
 var ALL_IDS = ["q5_1_1", "q5_1_2", "q5_1_3", "q5_1_4", "q5_1_5", "q5_1_6", "q5_1_7", "q5_1_8", "q5_1_9", "q5_1_10", "q5_1_11", "q5_1_12", "q5_2_1", "q5_2_2", "q5_2_3", "q5_2_4", "q5_2_5", "q5_2_6", "q5_2_7", "q5_2_8", "q5_2_9", "q5_2_10", "q5_3_1", "q5_3_2", "q5_3_3", "q5_4_1", "q5_4_2", "q5_4_3", "q5_4_4", "q5_4_5", "q5_5_1", "q5_5_2", "q5_5_3", "q5_5_4", "q5_5_5", "q5_5_6", "q5_5_7", "q5_6_1", "q5_6_2", "q5_6_3", "q5_6_4", "q5_6_5", "q5_6_6", "q5_6_7", "q5_6_8", "q5_6_9", "q5_6_10", "q5_6_11", "q5_6_12", "q5_6_13", "q5_6_14", "q5_6_15", "q5_6_16", "q5_6_17", "q5_6_18", "q5_6_19", "q5_6_20", "q5_6_21", "q5_7_1", "q5_7_2", "q5_7_3", "q5_7_4", "q5_7_5", "q5_7_6", "q5_7_7", "q5_7_8", "q5_7_9", "q5_7_10", "q5_7_11", "q5_7_12", "q5_7_13", "q5_7_14", "q5_9_1", "q5_9_2", "q5_9_3", "q5_9_4", "q5_9_5", "q5_9_6", "q5_9_7", "q5_10_1", "q5_10_2", "q5_10_3", "q5_10_4", "q5_10_5", "q5_10_6", "q5_10_7", "q5_10_8", "q5_10_9", "q5_10_10", "q5_10_11", "q5_10_12", "q5_10_13", "q5_10_14", "q5_10_15", "q5_10_16", "q5_10_17", "q5_10_18", "q5_11_1", "q5_11_2", "q5_11_3", "q5_11_4", "q5_11_5", "q5_11_6", "q5_11_7", "q5_11_8", "q5_11_9", "q5_11_10", "q5_11_11", "q5_11_12", "q5_11_13", "q5_11_14", "q5_11_15", "q5_11_16", "q5_12_1", "q5_12_2"];
-var Q_TEXTS = {"q5_1_1": "Is contact details of the Designated Person Ashore (DPA) or appropriate shore-based contact clearly posted onboard?", "q5_1_2": "Has a vessel/unit safety officer been designated and trained to undertake this role?", "q5_1_3": "Is personal protective equipment provided and available spares on board?", "q5_1_4": "Are the PPE requirements for tasks clearly defined and worn as required?", "q5_1_5": "Are regular safety meetings held, are the minutes recorded and does the operator provide shore management responses?", "q5_1_6": "Are there records on board showing that accidents, incidents, non-conformities, including breaches of regulations and near misses are reported, investigated and closed out?", "q5_1_7": "Have officers responsible for incident investigation on board received incident investigation training?", "q5_1_8": "Are smoking restrictions in place and are they being adhered to?", "q5_1_9": "Is there a risk Assessment System in place for the carriage and handling of chemicals?", "q5_1_10": "Does the safety management system contain procedures to address the control of hazardous substances used on board the vessel/unit?", "q5_1_11": "Does the Vessel/Unit Safety Officer undertake periodic inspection of all areas?", "q5_1_12": "If there a safety observation programme implemented on board?", "q5_2_1": "Is the hospital clean and tidy and ready for immediate use?", "q5_2_2": "Is an alarm system fitted in the hospital and is it regularly tested?", "q5_2_3": "Is there an appropriately qualified individual designated to provide medical care on board?", "q5_2_4": "Is there a system for verifying and checking medical stores?", "q5_2_5": "Are first aid kits readily available and subjected to regular inspection to confirm their contents?", "q5_2_6": "If cardiopulmonary resuscitation (CPR) equipment is carried, including oxygen resuscitators and/or defibrillators, is it regularly tested?", "q5_2_7": "Are personnel familiar with CPR equipment carried on board?", "q5_2_8": "Is medical advice available 24hrs a day?", "q5_2_9": "Is there a formal medical evacuation plan in place?", "q5_2_10": "Are medical drills carried out at periodic intervals?", "q5_3_1": "Is there a documented procedure in place for the management of change?", "q5_3_2": "Is there evidence to demonstrate that the MoC process is being properly applied?", "q5_3_3": "If any equipment required by operations is retro-fitted or temporarily installed, is there a formal process for assessing the integrity of connections to the vessel/unit's systems?", "q5_4_1": "Is there evidence that all personnel, including contractors and project personnel, receive safety induction and familiarisation?", "q5_4_2": "Are emergency drills being carried out regularly?", "q5_4_3": "Does the vessel/unit have documented procedures for Man Overboard scenarios?", "q5_4_4": "Is regular training in the use of life-saving equipment being undertaken and are appropriate records maintained for each person on board?", "q5_4_5": "For vessel equipped with hybrid power solutions including energy storage systems (ESS), are the crew familiar with the fire extinguishing system for the battery room, have they received additional training in the risk related to exposure from gases from a fire in batteries?", "q5_5_1": "Does the vessel/unit have an approved Ships Security Plan (SSP)?", "q5_5_2": "Is security threat and risk assessment an integral part of voyage planning, and did the passage plan contain security related information for each leg of the voyage?", "q5_5_3": "Are Master and officers familiar with the company procedures for hardening the vessel when entering areas of increased security risk, and was there a Vessel Hardening Plan (VHP) available?", "q5_5_4": "Are the Master, officers and ratings familiar with the company procedures to control access to the vessel in port and to ensure the safety of visitors, and were these procedures effectively implemented?", "q5_5_5": "Are the Master and officers familiar with regional maritime security reporting requirements and operation of the ship security alert system (SSAS) and has this equipment been regularly tested?", "q5_5_6": "Does the Ship Security Officer (SSO) have a valid Certificate of Proficiency and a full understanding of their role, and are ship security records of port calls being maintained as required by SOLAS?", "q5_5_7": "Are the Master and officers familiar with the company procedures for cyber security risk management, and have these procedures been fully implemented?", "q5_6_1": "Does the vessel/unit operate a documented permit to work (PTW) system?", "q5_6_2": "Does the PTW system specify roles and responsibilities?", "q5_6_3": "Is there a register recording permits issued and isolations performed?", "q5_6_4": "Are the period of validity and requirements for revalidation specified on the permit?", "q5_6_5": "Do personnel receive formal induction in the use of the PTW system?", "q5_6_6": "Does the PTW system include an audit process?", "q5_6_7": "Does the PTW or SMS include a \"Stop the Job\" policy or statement?", "q5_6_8": "Is there evidence that an effective isolation process is implemented on board as part of the PTW system?", "q5_6_9": "Are documented procedures in place to ensure safe work on high voltage systems and do they address appropriate access arrangements?", "q5_6_10": "If the vessel/unit has high voltage equipment, are staff suitably trained to perform maintenance on it?", "q5_6_11": "Is there evidence that hot work procedures are implemented on board?", "q5_6_12": "If electric welding equipment is provided, is it in good order, inspected regularly and are written safety guidelines available on site?", "q5_6_13": "If gas welding and burning equipment is provided, is it inspected regularly and in good order?", "q5_6_14": "Are spare oxygen and acetylene cylinders stored apart in a dedicated storage and is the storage in a clearly marked, well-ventilated position outside the accommodation and machinery spaces?", "q5_6_15": "Are there documented procedures in place covering the use of portable electrical equipment on deck?", "q5_6_16": "Is there an effective inspection and testing programme in place to ensure that all portable electrical equipment used on board is maintained in a satisfactory condition and included in the vessel PMS?", "q5_6_17": "Are all spaces that are classed as 'enclosed spaces' identified and clearly marked?", "q5_6_18": "Is there evidence that enclosed space entry procedures are implemented on board?", "q5_6_19": "Are portable gas and oxygen analysers provided appropriate to the vessel/unit's operations and are they calibrated and in good order?", "q5_6_20": "Are personnel onboard trained in the use and calibration of portable oxygen and gas analysers?", "q5_6_21": "Is there evidence that working at height or overside work procedures are implemented on board?", "q5_7_1": "Are all cranes in a satisfactory condition?", "q5_7_2": "Are up to date records maintained for the regular inspection, maintenance and testing of all lifting equipment/devices?", "q5_7_3": "Has the vessel/unit undergone annual survey of the crane(s) within last 12 months?", "q5_7_4": "Has proof load testing and examination been completed by certifying authority within last 5 years?", "q5_7_5": "Are all cranes covered under planned maintenance system (PMS)?", "q5_7_6": "Has the vessel/unit undergone any major modifications, upgrades or repairs to the crane(s)?", "q5_7_7": "Are test certificates available onboard for all items of loose lifting equipment and are they subject to inspection and maintenance programme?", "q5_7_8": "Are safety devices associated with lifting appliances fully operational?", "q5_7_9": "Are cranes, derricks, pad eyes and other securing points clearly marked with their SWL?", "q5_7_10": "Are all items of lifting gear marked with a unique identification?", "q5_7_11": "Is a colour-coding or alternative system in use to identify inspected lifting equipment?", "q5_7_12": "Is there a programme for routine testing, i.e. start-up, daily, weekly and monthly checks of lifting equipment?", "q5_7_13": "Is there a documented procedure requiring that all lifting operations are properly planned?", "q5_7_14": "Does the vessel/unit have a system in place for the quarantine of damaged or uncertified lifting equipment?", "q5_9_1": "Does the vessel/unit have documented procedures for transfer of personnel offshore?", "q5_9_2": "Are all personnel transfer equipment subject to an inspection and certification regime?", "q5_9_3": "Have all personnel involved in lifting/man riding operations been trained and certified to carry out such operations?", "q5_9_4": "Where fitted, is the offshore personnel gangway certified and subject to an inspection programme?", "q5_9_5": "Is there a formal check system for confirming who crosses the gangway, and is there an effective back up check system to ensure discrepancies are raised and addressed?", "q5_9_6": "If the gangway is stabilised, does the control function use a dedicated crew?", "q5_9_7": "Are effective documented procedures in place for the use of small boats that include working from them, personnel transfer and the launch and recovery?", "q5_10_1": "Are vessel/unit-specific life-saving equipment training manuals available?", "q5_10_2": "Are vessel/unit-specific life-saving equipment maintenance instructions available and are weekly and monthly inspections being carried out?", "q5_10_3": "Are muster lists displayed onboard?", "q5_10_4": "Is there a maintenance and test schedule for lifeboat, Rescue boat on-load release gear, davit launched liferaft automatic release hooks, and free-fall lifeboat release systems, where fitted?", "q5_10_5": "If vessel/unit has lifeboats, are the lifeboats, including their equipment and launching mechanisms, in good order?", "q5_10_6": "If fitted, are lifeboat operating instructions clearly displayed?", "q5_10_7": "If vessel/unit has a rescue boat, is the rescue boat, including its equipment and launching arrangement available for use and in good order?", "q5_10_8": "Are liferafts in good order, within due date and operating instructions clearly posted?", "q5_10_9": "Are hydrostatic releases, where fitted, correctly attached?", "q5_10_10": "Are survival craft portable VHF radios and Search and Rescue Radar Transponders (SART\u2019s) in good order and charged?", "q5_10_11": "Are lifebuoys, lights, buoyant lines, quick release mechanisms and self-activating smoke floats in good order?", "q5_10_12": "Are lifejackets in good order?", "q5_10_13": "Are lifejacket donning instructions displayed?", "q5_10_14": "If vessel is outfitted with immersion suits, are the immersion suits available for use and free of defects?", "q5_10_15": "Are pyrotechnics, including line throwing apparatus, in date and in good order?", "q5_10_16": "Are the locations of life saving appliances marked with IMO or equivalent certifying authority symbols?", "q5_10_17": "Is the LSA plan seen to be up to date and represent the current arrangements on the Vessel/Unit?", "q5_10_18": "If the vessel has been retrofitted with hybrid power solutions, such as energy storage systems (ESS), have relevant safety documentation been updated?", "q5_11_1": "Are vessel/unit-specific fire training manuals available?", "q5_11_2": "Are vessel/unit-specific fire fighting equipment maintenance instructions available and are weekly and monthly inspections being carried out?", "q5_11_3": "Are records available to show that samples of foam compound have been tested at regular intervals?", "q5_11_4": "Is a fire control plan exhibited within the accommodation, is a copy available externally and is equipment correctly marked on it?", "q5_11_5": "Are fire mains, pumps, hoses and nozzles in good order and available for immediate use?", "q5_11_6": "Is the International shore fire connection readily available externally and is the location clearly marked?", "q5_11_7": "Are fixed fire detection and alarm systems, if fitted, in good order and tested regularly?", "q5_11_8": "Are fixed fire extinguishing systems, where fitted, in good order and are clear operating instructions posted?", "q5_11_9": "Is the emergency fire pump in full operational condition and are starting instructions clearly displayed?", "q5_11_10": "Are portable fire extinguishers in good order with operating instructions clearly marked?", "q5_11_11": "Are firemen's outfits and breathing apparatus in good order, provided with fully charged cylinders and ready for immediate use?", "q5_11_12": "If fitted, are emergency escape breathing devices in good order and ready for immediate use?", "q5_11_13": "Are accommodation and ventilation fan emergency stops in good order and clearly marked to indicate the spaces they serve?", "q5_11_14": "Are fire flaps in good order and clearly marked to indicate the spaces they serve?", "q5_11_15": "If vessel has FiFi notation, is the associated equipment in good order?", "q5_11_16": "Are Fire Doors Operational and part of a planned maintenance and inspection regime?", "q5_12_1": "Is a safe means of access provided, including, where appropriate, the provision of a gangway, accommodation ladder, pilot ladder, safety net, lifebuoy and line?", "q5_12_2": "Where the vessel/unit is not fitted with a helideck, and Chapter 14 is not applicable, does the vessel/unit have a set of procedures/guidance for helicopter winching operations in the event that they may need to be enacted?"};
+var Q_TEXTS = {"q5_1_1": "Is contact details of the Designated Person Ashore (DPA) or appropriate shore-based contact clearly posted onboard?", "q5_1_2": "Has a vessel/unit safety officer been designated and trained to undertake this role?", "q5_1_3": "Is personal protective equipment provided and available spares on board?", "q5_1_4": "Are the PPE requirements for tasks clearly defined and worn as required?", "q5_1_5": "Are regular safety meetings held, are the minutes recorded and does the operator provide shore management responses?", "q5_1_6": "Are there records on board showing that accidents, incidents, non-conformities, including breaches of regulations and near misses are reported, investigated and closed out?", "q5_1_7": "Have officers responsible for incident investigation on board received incident investigation training?", "q5_1_8": "Are smoking restrictions in place and are they being adhered to?", "q5_1_9": "Is there a risk Assessment System in place for the carriage and handling of chemicals?", "q5_1_10": "Does the safety management system contain procedures to address the control of hazardous substances used on board the vessel/unit?", "q5_1_11": "Does the Vessel/Unit Safety Officer undertake periodic inspection of all areas?", "q5_1_12": "If there a safety observation programme implemented on board?", "q5_2_1": "Is the hospital clean and tidy and ready for immediate use?", "q5_2_2": "Is an alarm system fitted in the hospital and is it regularly tested?", "q5_2_3": "Is there an appropriately qualified individual designated to provide medical care on board?", "q5_2_4": "Is there a system for verifying and checking medical stores?", "q5_2_5": "Are first aid kits readily available and subjected to regular inspection to confirm their contents?", "q5_2_6": "If cardiopulmonary resuscitation (CPR) equipment is carried, including oxygen resuscitators and/or defibrillators, is it regularly tested?", "q5_2_7": "Are personnel familiar with CPR equipment carried on board?", "q5_2_8": "Is medical advice available 24hrs a day?", "q5_2_9": "Is there a formal medical evacuation plan in place?", "q5_2_10": "Are medical drills carried out at periodic intervals?", "q5_3_1": "Is there a documented procedure in place for the management of change?", "q5_3_2": "Is there evidence to demonstrate that the MoC process is being properly applied?", "q5_3_3": "If any equipment required by operations is retro-fitted or temporarily installed, is there a formal process for assessing the integrity of connections to the vessel/unit's systems?", "q5_4_1": "Is there evidence that all personnel, including contractors and project personnel, receive safety induction and familiarisation?", "q5_4_2": "Are emergency drills being carried out regularly?", "q5_4_3": "Does the vessel/unit have documented procedures for Man Overboard scenarios?", "q5_4_4": "Is regular training in the use of life-saving equipment being undertaken and are appropriate records maintained for each person on board?", "q5_4_5": "For vessel equipped with hybrid power solutions including energy storage systems (ESS), are the crew familiar with the fire extinguishing system for the battery room, have they received additional training in the risk related to exposure from gases from a fire in batteries?", "q5_5_1": "Does the vessel/unit have an approved Ships Security Plan (SSP)?", "q5_5_2": "Is security threat and risk assessment an integral part of voyage planning, and did the passage plan contain security related information for each leg of the voyage?", "q5_5_3": "Are Master and officers familiar with the company procedures for hardening the vessel when entering areas of increased security risk, and was there a Vessel Hardening Plan (VHP) available?", "q5_5_4": "Are the Master, officers and ratings familiar with the company procedures to control access to the vessel in port and to ensure the safety of visitors, and were these procedures effectively implemented?", "q5_5_5": "Are the Master and officers familiar with regional maritime security reporting requirements and operation of the ship security alert system (SSAS) and has this equipment been regularly tested?", "q5_5_6": "Does the Ship Security Officer (SSO) have a valid Certificate of Proficiency and a full understanding of their role, and are ship security records of port calls being maintained as required by SOLAS?", "q5_5_7": "Are the Master and officers familiar with the company procedures for cyber security risk management, and have these procedures been fully implemented?", "q5_6_1": "Does the vessel/unit operate a documented permit to work (PTW) system?", "q5_6_2": "Does the PTW system specify roles and responsibilities?", "q5_6_3": "Is there a register recording permits issued and isolations performed?", "q5_6_4": "Are the period of validity and requirements for revalidation specified on the permit?", "q5_6_5": "Do personnel receive formal induction in the use of the PTW system?", "q5_6_6": "Does the PTW system include an audit process?", "q5_6_7": "Does the PTW or SMS include a \"Stop the Job\" policy or statement?", "q5_6_8": "Is there evidence that an effective isolation process is implemented on board as part of the PTW system?", "q5_6_9": "Are documented procedures in place to ensure safe work on high voltage systems and do they address appropriate access arrangements?", "q5_6_10": "If the vessel/unit has high voltage equipment, are staff suitably trained to perform maintenance on it?", "q5_6_11": "Is there evidence that hot work procedures are implemented on board?", "q5_6_12": "If electric welding equipment is provided, is it in good order, inspected regularly and are written safety guidelines available on site?", "q5_6_13": "If gas welding and burning equipment is provided, is it inspected regularly and in good order?", "q5_6_14": "Are spare oxygen and acetylene cylinders stored apart in a dedicated storage and is the storage in a clearly marked, well-ventilated position outside the accommodation and machinery spaces?", "q5_6_15": "Are there documented procedures in place covering the use of portable electrical equipment on deck?", "q5_6_16": "Is there an effective inspection and testing programme in place to ensure that all portable electrical equipment used on board is maintained in a satisfactory condition and included in the vessel PMS?", "q5_6_17": "Are all spaces that are classed as 'enclosed spaces' identified and clearly marked?", "q5_6_18": "Is there evidence that enclosed space entry procedures are implemented on board?", "q5_6_19": "Are portable gas and oxygen analysers provided appropriate to the vessel/unit's operations and are they calibrated and in good order?", "q5_6_20": "Are personnel onboard trained in the use and calibration of portable oxygen and gas analysers?", "q5_6_21": "Is there evidence that working at height or overside work procedures are implemented on board?", "q5_7_1": "Are all cranes in a satisfactory condition?", "q5_7_2": "Are up to date records maintained for the regular inspection, maintenance and testing of all lifting equipment/devices?", "q5_7_3": "Has the vessel/unit undergone annual survey of the crane(s) within last 12 months?", "q5_7_4": "Has proof load testing and examination been completed by certifying authority within last 5 years?", "q5_7_5": "Are all cranes covered under planned maintenance system (PMS)?", "q5_7_6": "Has the vessel/unit undergone any major modifications, upgrades or repairs to the crane(s)?", "q5_7_7": "Are test certificates available onboard for all items of loose lifting equipment and are they subject to inspection and maintenance programme?", "q5_7_8": "Are safety devices associated with lifting appliances fully operational?", "q5_7_9": "Are cranes, derricks, pad eyes and other securing points clearly marked with their SWL?", "q5_7_10": "Are all items of lifting gear marked with a unique identification?", "q5_7_11": "Is a colour-coding or alternative system in use to identify inspected lifting equipment?", "q5_7_12": "Is there a programme for routine testing, i.e. start-up, daily, weekly and monthly checks of lifting equipment?", "q5_7_13": "Is there a documented procedure requiring that all lifting operations are properly planned?", "q5_7_14": "Does the vessel/unit have a system in place for the quarantine of damaged or uncertified lifting equipment?", "q5_9_1": "Does the vessel/unit have documented procedures for transfer of personnel offshore?", "q5_9_2": "Are all personnel transfer equipment subject to an inspection and certification regime?", "q5_9_3": "Have all personnel involved in lifting/man riding operations been trained and certified to carry out such operations?", "q5_9_4": "Where fitted, is the offshore personnel gangway certified and subject to an inspection programme?", "q5_9_5": "Is there a formal check system for confirming who crosses the gangway, and is there an effective back up check system to ensure discrepancies are raised and addressed?", "q5_9_6": "If the gangway is stabilised, does the control function use a dedicated crew?", "q5_9_7": "Are effective documented procedures in place for the use of small boats that include working from them, personnel transfer and the launch and recovery?", "q5_10_1": "Are vessel/unit-specific life-saving equipment training manuals available?", "q5_10_2": "Are vessel/unit-specific life-saving equipment maintenance instructions available and are weekly and monthly inspections being carried out?", "q5_10_3": "Are muster lists displayed onboard?", "q5_10_4": "Is there a maintenance and test schedule for lifeboat, Rescue boat on-load release gear, davit launched liferaft automatic release hooks, and free-fall lifeboat release systems, where fitted?", "q5_10_5": "If vessel/unit has lifeboats, are the lifeboats, including their equipment and launching mechanisms, in good order?", "q5_10_6": "If fitted, are lifeboat operating instructions clearly displayed?", "q5_10_7": "If vessel/unit has a rescue boat, is the rescue boat, including its equipment and launching arrangement available for use and in good order?", "q5_10_8": "Are liferafts in good order, within due date and operating instructions clearly posted?", "q5_10_9": "Are hydrostatic releases, where fitted, correctly attached?", "q5_10_10": "Are survival craft portable VHF radios and Search and Rescue Radar Transponders (SART’s) in good order and charged?", "q5_10_11": "Are lifebuoys, lights, buoyant lines, quick release mechanisms and self-activating smoke floats in good order?", "q5_10_12": "Are lifejackets in good order?", "q5_10_13": "Are lifejacket donning instructions displayed?", "q5_10_14": "If vessel is outfitted with immersion suits, are the immersion suits available for use and free of defects?", "q5_10_15": "Are pyrotechnics, including line throwing apparatus, in date and in good order?", "q5_10_16": "Are the locations of life saving appliances marked with IMO or equivalent certifying authority symbols?", "q5_10_17": "Is the LSA plan seen to be up to date and represent the current arrangements on the Vessel/Unit?", "q5_10_18": "If the vessel has been retrofitted with hybrid power solutions, such as energy storage systems (ESS), have relevant safety documentation been updated?", "q5_11_1": "Are vessel/unit-specific fire training manuals available?", "q5_11_2": "Are vessel/unit-specific fire fighting equipment maintenance instructions available and are weekly and monthly inspections being carried out?", "q5_11_3": "Are records available to show that samples of foam compound have been tested at regular intervals?", "q5_11_4": "Is a fire control plan exhibited within the accommodation, is a copy available externally and is equipment correctly marked on it?", "q5_11_5": "Are fire mains, pumps, hoses and nozzles in good order and available for immediate use?", "q5_11_6": "Is the International shore fire connection readily available externally and is the location clearly marked?", "q5_11_7": "Are fixed fire detection and alarm systems, if fitted, in good order and tested regularly?", "q5_11_8": "Are fixed fire extinguishing systems, where fitted, in good order and are clear operating instructions posted?", "q5_11_9": "Is the emergency fire pump in full operational condition and are starting instructions clearly displayed?", "q5_11_10": "Are portable fire extinguishers in good order with operating instructions clearly marked?", "q5_11_11": "Are firemen's outfits and breathing apparatus in good order, provided with fully charged cylinders and ready for immediate use?", "q5_11_12": "If fitted, are emergency escape breathing devices in good order and ready for immediate use?", "q5_11_13": "Are accommodation and ventilation fan emergency stops in good order and clearly marked to indicate the spaces they serve?", "q5_11_14": "Are fire flaps in good order and clearly marked to indicate the spaces they serve?", "q5_11_15": "If vessel has FiFi notation, is the associated equipment in good order?", "q5_11_16": "Are Fire Doors Operational and part of a planned maintenance and inspection regime?", "q5_12_1": "Is a safe means of access provided, including, where appropriate, the provision of a gangway, accommodation ladder, pilot ladder, safety net, lifebuoy and line?", "q5_12_2": "Where the vessel/unit is not fitted with a helideck, and Chapter 14 is not applicable, does the vessel/unit have a set of procedures/guidance for helicopter winching operations in the event that they may need to be enacted?"};
 var Q_NUMS = {"q5_1_1": "5.1.1", "q5_1_2": "5.1.2", "q5_1_3": "5.1.3", "q5_1_4": "5.1.4", "q5_1_5": "5.1.5", "q5_1_6": "5.1.6", "q5_1_7": "5.1.7", "q5_1_8": "5.1.8", "q5_1_9": "5.1.9", "q5_1_10": "5.1.10", "q5_1_11": "5.1.11", "q5_1_12": "5.1.12", "q5_2_1": "5.2.1", "q5_2_2": "5.2.2", "q5_2_3": "5.2.3", "q5_2_4": "5.2.4", "q5_2_5": "5.2.5", "q5_2_6": "5.2.6", "q5_2_7": "5.2.7", "q5_2_8": "5.2.8", "q5_2_9": "5.2.9", "q5_2_10": "5.2.10", "q5_3_1": "5.3.1", "q5_3_2": "5.3.2", "q5_3_3": "5.3.3", "q5_4_1": "5.4.1", "q5_4_2": "5.4.2", "q5_4_3": "5.4.3", "q5_4_4": "5.4.4", "q5_4_5": "5.4.5", "q5_5_1": "5.5.1", "q5_5_2": "5.5.2", "q5_5_3": "5.5.3", "q5_5_4": "5.5.4", "q5_5_5": "5.5.5", "q5_5_6": "5.5.6", "q5_5_7": "5.5.7", "q5_6_1": "5.6.1", "q5_6_2": "5.6.2", "q5_6_3": "5.6.3", "q5_6_4": "5.6.4", "q5_6_5": "5.6.5", "q5_6_6": "5.6.6", "q5_6_7": "5.6.7", "q5_6_8": "5.6.8", "q5_6_9": "5.6.9", "q5_6_10": "5.6.10", "q5_6_11": "5.6.11", "q5_6_12": "5.6.12", "q5_6_13": "5.6.13", "q5_6_14": "5.6.14", "q5_6_15": "5.6.15", "q5_6_16": "5.6.16", "q5_6_17": "5.6.17", "q5_6_18": "5.6.18", "q5_6_19": "5.6.19", "q5_6_20": "5.6.20", "q5_6_21": "5.6.21", "q5_7_1": "5.7.1", "q5_7_2": "5.7.2", "q5_7_3": "5.7.3", "q5_7_4": "5.7.4", "q5_7_5": "5.7.5", "q5_7_6": "5.7.6", "q5_7_7": "5.7.7", "q5_7_8": "5.7.8", "q5_7_9": "5.7.9", "q5_7_10": "5.7.10", "q5_7_11": "5.7.11", "q5_7_12": "5.7.12", "q5_7_13": "5.7.13", "q5_7_14": "5.7.14", "q5_9_1": "5.9.1", "q5_9_2": "5.9.2", "q5_9_3": "5.9.3", "q5_9_4": "5.9.4", "q5_9_5": "5.9.5", "q5_9_6": "5.9.6", "q5_9_7": "5.9.7", "q5_10_1": "5.10.1", "q5_10_2": "5.10.2", "q5_10_3": "5.10.3", "q5_10_4": "5.10.4", "q5_10_5": "5.10.5", "q5_10_6": "5.10.6", "q5_10_7": "5.10.7", "q5_10_8": "5.10.8", "q5_10_9": "5.10.9", "q5_10_10": "5.10.10", "q5_10_11": "5.10.11", "q5_10_12": "5.10.12", "q5_10_13": "5.10.13", "q5_10_14": "5.10.14", "q5_10_15": "5.10.15", "q5_10_16": "5.10.16", "q5_10_17": "5.10.17", "q5_10_18": "5.10.18", "q5_11_1": "5.11.1", "q5_11_2": "5.11.2", "q5_11_3": "5.11.3", "q5_11_4": "5.11.4", "q5_11_5": "5.11.5", "q5_11_6": "5.11.6", "q5_11_7": "5.11.7", "q5_11_8": "5.11.8", "q5_11_9": "5.11.9", "q5_11_10": "5.11.10", "q5_11_11": "5.11.11", "q5_11_12": "5.11.12", "q5_11_13": "5.11.13", "q5_11_14": "5.11.14", "q5_11_15": "5.11.15", "q5_11_16": "5.11.16", "q5_12_1": "5.12.1", "q5_12_2": "5.12.2"};
+var META_IDS = ["vessel", "insp_date", "inspector", "operator", "flag", "imo", "port", "block", "status"];
 var saveTimer = null;
 var photoStore = {};
+
+/* ---- IndexedDB pour les photos (localStorage = 5MB max, insuffisant) ---- */
+var DB_NAME = 'inspectare-photos';
+var idb = null;
+function openDB() {
+  return new Promise(function(resolve, reject) {
+    if (idb) return resolve(idb);
+    var req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = function(e) {
+      e.target.result.createObjectStore('photos');
+    };
+    req.onsuccess = function(e) { idb = e.target.result; resolve(idb); };
+    req.onerror = function(e) { reject(e); };
+  });
+}
+function idbSavePhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction('photos', 'readwrite');
+      tx.objectStore('photos').put(photoStore, STORAGE_KEY);
+      tx.oncomplete = resolve;
+      tx.onerror = reject;
+    });
+  });
+}
+function idbLoadPhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction('photos', 'readonly');
+      var req = tx.objectStore('photos').get(STORAGE_KEY);
+      req.onsuccess = function() { resolve(req.result || {}); };
+      req.onerror = function() { resolve({}); };
+    });
+  });
+}
+function idbClearPhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction('photos', 'readwrite');
+      tx.objectStore('photos').delete(STORAGE_KEY);
+      tx.oncomplete = resolve;
+      tx.onerror = resolve;
+    });
+  });
+}
 
 function compressImage(file, callback) {
   var reader = new FileReader();
@@ -2700,11 +2761,10 @@ function updateProgress() {
 }
 
 function saveData() {
-  var data = { meta: {}, answers: {}, obs: {}, comments: {}, photos: photoStore };
-  var metaIds = ['vessel','insp_date','inspector','operator','flag','imo','port','block','status'];
-  for (var m = 0; m < metaIds.length; m++) {
-    var el = document.getElementById('m-' + metaIds[m]);
-    if (el) data.meta[metaIds[m]] = el.value;
+  var data = { meta: {}, answers: {}, obs: {}, comments: {} };
+  for (var m = 0; m < META_IDS.length; m++) {
+    var el = document.getElementById('m-' + META_IDS[m]);
+    if (el) data.meta[META_IDS[m]] = el.value;
   }
   for (var i = 0; i < ALL_IDS.length; i++) {
     var id = ALL_IDS[i];
@@ -2730,8 +2790,11 @@ function saveData() {
       setTimeout(function(){ ind.style.opacity = '0'; }, 2000);
     }
   } catch(e) {
-    alert('Storage full. Remove some photos to continue saving.');
+    alert('Storage error while saving answers.');
   }
+  idbSavePhotos().catch(function() {
+    alert('Photo storage error. Photo may not be saved.');
+  });
 }
 
 function loadData() {
@@ -2740,10 +2803,9 @@ function loadData() {
     if (!raw) return;
     var data = JSON.parse(raw);
     if (data.meta) {
-      var metaIds = ['vessel','insp_date','inspector','operator','flag','imo','port','block','status'];
-      for (var m = 0; m < metaIds.length; m++) {
-        var el = document.getElementById('m-' + metaIds[m]);
-        if (el && data.meta[metaIds[m]]) el.value = data.meta[metaIds[m]];
+      for (var m = 0; m < META_IDS.length; m++) {
+        var el = document.getElementById('m-' + META_IDS[m]);
+        if (el && data.meta[META_IDS[m]]) el.value = data.meta[META_IDS[m]];
       }
     }
     if (data.answers) {
@@ -2766,15 +2828,27 @@ function loadData() {
         if (cmt) cmt.value = data.comments[cid];
       }
     }
-    if (data.photos) {
-      photoStore = data.photos;
-      for (var pid in photoStore) { renderPhotos(pid); }
-    }
     if (data.general_obs) {
       var gobs = document.getElementById('general-obs');
       if (gobs) gobs.value = data.general_obs;
     }
     updateProgress();
+    // Photos : IDB, avec migration depuis l'ancien format localStorage
+    var legacyPhotos = data.photos || null;
+    idbLoadPhotos().then(function(stored) {
+      photoStore = stored;
+      if (legacyPhotos) {
+        for (var lp in legacyPhotos) {
+          if (!photoStore[lp]) photoStore[lp] = legacyPhotos[lp];
+        }
+        idbSavePhotos().then(function() {
+          // retirer les photos du localStorage pour liberer le quota
+          delete data.photos;
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+        });
+      }
+      for (var pid in photoStore) { renderPhotos(pid); }
+    });
   } catch(e) {}
 }
 
@@ -2782,7 +2856,7 @@ function clearData() {
   if (!confirm('Clear all answers and photos? This cannot be undone.')) return;
   try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
   photoStore = {};
-  location.reload();
+  idbClearPhotos().then(function() { location.reload(); });
 }
 
 function getInitials(name) {
@@ -2795,26 +2869,91 @@ function getInitials(name) {
   return ini;
 }
 
+function shrinkDataUrl(dataUrl, maxDim, quality) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload = function() {
+      var w = img.width, h = img.height;
+      if (w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+      if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+      var c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(c.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = function() { resolve(dataUrl); };
+    img.src = dataUrl;
+  });
+}
+
+function shrinkForBudget(dataUrl, perPhotoBudget) {
+  var steps = [[1000, 0.55], [800, 0.45], [650, 0.35], [500, 0.3]];
+  function tryStep(i) {
+    if (i >= steps.length) return shrinkDataUrl(dataUrl, 500, 0.3);
+    return shrinkDataUrl(dataUrl, steps[i][0], steps[i][1]).then(function(out) {
+      if (out.length <= perPhotoBudget) return out;
+      return tryStep(i + 1);
+    });
+  }
+  if (dataUrl.length <= perPhotoBudget) return Promise.resolve(dataUrl);
+  return tryStep(0);
+}
+
+function preparePrintPhotos() {
+  // budget total ~3.5MB de base64 pour viser un PDF < 5MB
+  var thumbs = document.querySelectorAll('.photo-thumb');
+  if (thumbs.length === 0) return Promise.resolve();
+  var perPhoto = Math.floor(3500000 / thumbs.length);
+  var jobs = [];
+  for (var i = 0; i < thumbs.length; i++) {
+    (function(el) {
+      jobs.push(shrinkForBudget(el.src, perPhoto).then(function(small) {
+        el.setAttribute('data-full', el.src);
+        el.src = small;
+      }));
+    })(thumbs[i]);
+  }
+  return Promise.all(jobs);
+}
+
+function restorePhotos() {
+  var thumbs = document.querySelectorAll('.photo-thumb[data-full]');
+  for (var i = 0; i < thumbs.length; i++) {
+    thumbs[i].src = thumbs[i].getAttribute('data-full');
+    thumbs[i].removeAttribute('data-full');
+  }
+}
+
 function exportPDF() {
-  var vessel = document.getElementById('m-vessel').value || 'Unknown Vessel';
+  var vessel = document.getElementById('m-vessel').value || 'Unknown';
   var inspector = document.getElementById('m-inspector').value || '';
   var date = document.getElementById('m-insp_date').value || '';
   var initials = getInitials(inspector);
-  var fileTitle = 'OVID-Common-P2-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
+  var fileTitle = "ovid-common-p2" + '-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
   document.title = fileTitle;
-  var pdfTitle = 'OVID -- Commun 2/4 (Safety and Security)' + ' | ' + vessel;
+  var pdfTitle = "OVID -- Commun 2/4 (Safety and Security)" + ' | ' + vessel;
   if (initials) pdfTitle += ' | ' + initials;
   if (date) pdfTitle += ' | ' + date;
   document.getElementById('pdf-title').textContent = pdfTitle;
 
-  var findings = [];
+  // Findings = ONLY questions with the Observation checkbox ticked.
+  // Photos are evidence attached to answers, they do NOT make a finding.
+  var findingNums = [];
   for (var i = 0; i < ALL_IDS.length; i++) {
     var id = ALL_IDS[i];
+    var wrap = document.getElementById('wrap-' + id);
     var obs = document.getElementById('obs-' + id);
-    var photos = photoStore[id] || [];
-    if ((obs && obs.checked) || photos.length > 0) {
-      var cmt = document.getElementById('cmt-' + id);
-      findings.push({ num: Q_NUMS[id], text: Q_TEXTS[id], comment: cmt ? cmt.value : '', photos: photos });
+    var cmt = document.getElementById('cmt-' + id);
+    var isFinding = obs && obs.checked;
+    if (isFinding) findingNums.push(Q_NUMS[id]);
+    if (wrap) {
+      wrap.classList.toggle('is-finding', !!isFinding);
+      wrap.classList.toggle('no-comment', !(cmt && cmt.value.trim()));
+      var labels = wrap.querySelectorAll('.ans');
+      for (var L = 0; L < labels.length; L++) {
+        var r = labels[L].querySelector('input');
+        labels[L].classList.toggle('checked', !!(r && r.checked));
+      }
     }
   }
   var gobs = document.getElementById('general-obs');
@@ -2823,50 +2962,47 @@ function exportPDF() {
   var na = parseInt(document.getElementById('prog-na').textContent) || 0;
 
   var summaryHtml = '<div class="pdf-summary">';
-  summaryHtml += '<h2>INSPECTION SUMMARY</h2>';
-  summaryHtml += '<div class="summary-meta">';
-  summaryHtml += '<p><strong>Vessel:</strong> ' + vessel + '</p>';
-  summaryHtml += '<p><strong>Inspector:</strong> ' + (inspector || '-') + '</p>';
-  summaryHtml += '<p><strong>Date:</strong> ' + (date || '-') + '</p>';
-  summaryHtml += '<p><strong>Operator:</strong> ' + (document.getElementById('m-operator').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Flag:</strong> ' + (document.getElementById('m-flag').value || '-') + '</p>';
-  summaryHtml += '<p><strong>IMO:</strong> ' + (document.getElementById('m-imo').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Location:</strong> ' + (document.getElementById('m-port').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Block/Field:</strong> ' + (document.getElementById('m-block').value || '-') + '</p>';
-  summaryHtml += '</div>';
+  summaryHtml += '<div class="summary-block"><div class="summary-block-title">Inspection Details</div><table class="summary-table">';
+  for (var m2 = 0; m2 < META_IDS.length; m2++) {
+    var mid2 = META_IDS[m2];
+    var el2 = document.getElementById('m-' + mid2);
+    var lbl2 = el2 && el2.previousElementSibling ? el2.previousElementSibling.textContent : mid2;
+    summaryHtml += '<tr><td class="st-label">' + lbl2 + '</td><td>' + ((el2 && el2.value) || '-') + '</td></tr>';
+  }
+  summaryHtml += '</table></div>';
+
   summaryHtml += '<div class="summary-stats">';
-  summaryHtml += '<span class="stat-yes">YES: ' + yes + '</span>';
-  summaryHtml += '<span class="stat-no">NO: ' + no + '</span>';
-  summaryHtml += '<span class="stat-na">N/A: ' + na + '</span>';
-  summaryHtml += '<span class="stat-findings">Findings: ' + findings.length + '</span>';
+  summaryHtml += '<div class="stat-box stat-yes"><div class="stat-n">' + yes + '</div><div class="stat-l">YES</div></div>';
+  summaryHtml += '<div class="stat-box stat-no"><div class="stat-n">' + no + '</div><div class="stat-l">NO</div></div>';
+  summaryHtml += '<div class="stat-box stat-na"><div class="stat-n">' + na + '</div><div class="stat-l">N/A</div></div>';
+  summaryHtml += '<div class="stat-box stat-findings"><div class="stat-n">' + findingNums.length + '</div><div class="stat-l">FINDINGS</div></div>';
   summaryHtml += '</div>';
 
-  if (findings.length > 0) {
-    summaryHtml += '<h3>OBSERVATIONS / FINDINGS (' + findings.length + ')</h3>';
-    for (var f = 0; f < findings.length; f++) {
-      var fi = findings[f];
-      summaryHtml += '<div class="finding-block">';
-      summaryHtml += '<div class="finding-header"><span class="finding-num">' + fi.num + '</span><span class="finding-text">' + fi.text + '</span></div>';
-      if (fi.comment) summaryHtml += '<div class="finding-comment">' + fi.comment + '</div>';
-      if (fi.photos.length > 0) {
-        summaryHtml += '<div class="finding-photos">';
-        for (var p = 0; p < fi.photos.length; p++) {
-          summaryHtml += '<img src="' + fi.photos[p] + '" class="finding-photo">';
-        }
-        summaryHtml += '</div>';
-      }
-      summaryHtml += '</div>';
+  summaryHtml += '<div class="summary-block"><div class="summary-block-title">Observations / Findings</div>';
+  if (findingNums.length > 0) {
+    summaryHtml += '<div class="finding-chips">';
+    for (var f = 0; f < findingNums.length; f++) {
+      summaryHtml += '<span class="finding-chip">' + findingNums[f] + '</span>';
     }
+    summaryHtml += '</div><p class="finding-note">See flagged questions in the report body for details and photo evidence.</p>';
   } else {
     summaryHtml += '<p class="no-findings">No observations / findings recorded.</p>';
   }
+  summaryHtml += '</div>';
 
-  if (gobs && gobs.value) {
-    summaryHtml += '<h3>GENERAL OBSERVATIONS</h3><p>' + gobs.value + '</p>';
+  if (gobs && gobs.value.trim()) {
+    summaryHtml += '<div class="summary-block"><div class="summary-block-title">General Observations</div><p class="gen-obs-text">' + gobs.value + '</p></div>';
   }
+
   summaryHtml += '</div>';
   document.getElementById('pdf-summary').innerHTML = summaryHtml;
-  window.print();
+  var ind = document.getElementById('save-indicator');
+  if (ind) { ind.textContent = 'Preparing PDF...'; ind.style.opacity = '1'; }
+  preparePrintPhotos().then(function() {
+    if (ind) ind.style.opacity = '0';
+    window.print();
+    setTimeout(restorePhotos, 1000);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', function() {

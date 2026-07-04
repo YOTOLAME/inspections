@@ -9,6 +9,7 @@
 body { font-family: -apple-system, Arial, sans-serif; font-size: 14px; background: #f0f2f5; color: #1a2a3a; }
 .header { background: #003B6E; color: white; padding: 12px 16px 10px; }
 .header h1 { font-size: 15px; font-weight: 700; }
+.header p { font-size: 11px; opacity: 0.75; margin-top: 3px; }
 .progress-bar { position: sticky; top: 0; z-index: 100; background: white; border-bottom: 2px solid #eee; padding: 8px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
 .prog-pct { font-size: 16px; font-weight: 800; color: #003B6E; }
@@ -24,6 +25,8 @@ body { font-family: -apple-system, Arial, sans-serif; font-size: 14px; backgroun
 .btn { flex: 1; padding: 11px; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; }
 .btn-pdf { background: #e67e22; color: white; }
 .btn-new { background: #e8ecf0; color: #555; }
+.nav-links { display: flex; gap: 8px; padding: 0 12px 12px; }
+.nav-links a { flex: 1; text-align: center; padding: 9px; background: #eef3fb; color: #003B6E; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; border: 1px solid #cddcef; }
 .meta-card { background: white; margin: 0 12px 12px; padding: 12px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
 .meta-card h2 { font-size: 11px; text-transform: uppercase; color: #666; margin-bottom: 10px; }
 .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -57,36 +60,62 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 #pdf-title { display: none; }
 #pdf-summary { display: none; }
 @media print {
-  .progress-bar, .btn-row, .header, .btn-photo { display: none !important; }
-  body { background: white; font-size: 11px; padding: 1.2cm 1.2cm 0.8cm; }
-  #pdf-title { display: block; font-size: 13px; font-weight: 700; color: #003B6E; padding: 12px 16px; border-bottom: 2px solid #003B6E; margin-bottom: 10px; }
-  #pdf-summary { display: block; padding: 0 16px; page-break-after: always; }
-  .pdf-summary h2 { font-size: 13px; color: #003B6E; border-bottom: 2px solid #003B6E; padding-bottom: 5px; margin-bottom: 10px; }
-  .pdf-summary h3 { font-size: 11px; color: #003B6E; margin: 12px 0 5px; text-transform: uppercase; }
-  .summary-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; margin-bottom: 10px; font-size: 10px; }
-  .summary-stats { display: flex; gap: 14px; font-size: 11px; font-weight: 700; margin-bottom: 12px; padding: 7px; background: #f0f5ff; border-radius: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .stat-yes { color: #27ae60; }
-  .stat-no { color: #e74c3c; }
-  .stat-na { color: #7f8c8d; }
-  .stat-findings { color: #e67e22; }
-  .finding-block { border: 1px solid #ddd; border-radius: 4px; padding: 8px; margin-bottom: 8px; page-break-inside: avoid; }
-  .finding-header { display: flex; gap: 8px; margin-bottom: 4px; }
-  .finding-num { background: #003B6E; color: white; border-radius: 3px; padding: 1px 6px; font-size: 10px; font-weight: 700; white-space: nowrap; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .finding-text { font-size: 11px; font-weight: 600; }
-  .finding-comment { font-size: 10px; color: #555; margin: 4px 0; font-style: italic; }
-  .finding-photos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-  .finding-photo { width: 120px; height: 90px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
-  .no-findings { font-style: italic; color: #27ae60; font-size: 11px; }
-  .meta-card, .section, .general-obs { box-shadow: none; border: 1px solid #ddd; margin: 0 0 6px; border-radius: 4px; }
-  .section-title { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 0; size: A4; }
+  html, body { margin: 0 !important; }
+  .progress-bar, .btn-row, .header, .btn-photo, .nav-links { display: none !important; }
+  body { background: white; font-size: 10.5px; padding: 1.4cm 1.4cm 1.2cm; }
+  #pdf-title { display: block; font-size: 15px; font-weight: 800; color: #003B6E; padding: 0 0 8px; border-bottom: 3px solid #003B6E; margin-bottom: 12px; }
+
+  /* ---- Page 1 : synthese ---- */
+  #pdf-summary { display: block; page-break-after: always; }
+  .summary-block { border: 1px solid #ccd6e0; border-radius: 6px; margin-bottom: 12px; overflow: hidden; page-break-inside: avoid; }
+  .summary-block-title { background: #003B6E; color: white; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 6px 10px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+  .summary-table td { padding: 5px 10px; border-bottom: 1px solid #eef1f5; }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .st-label { width: 38%; color: #667; font-weight: 700; text-transform: uppercase; font-size: 9px; }
+  .summary-stats { display: flex; gap: 10px; margin-bottom: 12px; }
+  .stat-box { flex: 1; text-align: center; border-radius: 6px; padding: 8px 4px; border: 1px solid #ddd; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .stat-n { font-size: 20px; font-weight: 800; }
+  .stat-l { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; }
+  .stat-yes { background: #eafaf1; color: #1e8449; border-color: #1e8449; }
+  .stat-no { background: #fdecea; color: #c0392b; border-color: #c0392b; }
+  .stat-na { background: #f2f3f4; color: #566573; border-color: #99a3ad; }
+  .stat-findings { background: #fff4e0; color: #b8630a; border-color: #b8630a; }
+  .finding-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; }
+  .finding-chip { background: #b8630a; color: white; border-radius: 4px; padding: 3px 9px; font-size: 11px; font-weight: 800; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .finding-note { font-size: 9px; color: #888; font-style: italic; padding: 0 10px 8px; }
+  .no-findings { font-style: italic; color: #1e8449; font-size: 11px; padding: 10px; }
+  .gen-obs-text { padding: 10px; font-size: 10.5px; white-space: pre-wrap; }
+
+  /* ---- Corps du rapport ---- */
+  .meta-card { display: none; } /* deja en page 1 */
+  .guidance { background: #f0f5ff !important; font-size: 9px; padding: 4px 8px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section { box-shadow: none; border: none; margin: 0 0 8px; border-radius: 0; }
+  .section-title { background: #003B6E !important; border-radius: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; page-break-after: avoid; }
+  .question { padding: 7px 4px; border-bottom: 1px solid #e4e8ee; page-break-inside: avoid; }
   .q-num { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .guidance { background: #f0f5ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .photo-wrap { display: none; }
-  input[type=radio]:not(:checked) { display: none; }
-  .ans { border: none; padding: 0; font-size: 10px; }
-  .obs-row { font-size: 10px; }
-  textarea { border: none; font-size: 10px; padding: 0; min-height: unset; }
-  @page { margin: 0; }
+  .q-text { font-size: 10.5px; }
+  /* Marquage FINDING sur la question concernee */
+  .question.is-finding { border-left: 4px solid #b8630a; background: #fffaf2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .question.is-finding .q-num { background: #b8630a !important; }
+  .obs-row { display: none; }
+  .question.is-finding .obs-row { display: block; font-size: 9px; color: #b8630a; font-weight: 800; }
+  .question.is-finding .obs-row input { display: none; }
+  /* Reponses : seule la cochee reste */
+  input[type=radio] { display: none; }
+  .ans { display: none; }
+  .ans.checked { display: inline-block; border: none; padding: 0 4px; font-size: 10px; font-weight: 800; }
+  .answer-row { margin-bottom: 2px; }
+  /* Commentaire : masque si vide */
+  textarea { border: none; font-size: 10px; padding: 0; min-height: unset; width: 100%; }
+  .question.no-comment textarea { display: none; }
+  /* Photos = evidence, imprimees avec leur question */
+  .photo-area { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 2px; }
+  .photo-wrap { display: inline-block; }
+  .photo-thumb { width: 150px; height: 112px; object-fit: cover; border-radius: 4px; border: 1px solid #ccd6e0; }
+  .photo-del { display: none; }
+  .general-obs { display: none; } /* deja en page 1 */
 }
 @media (max-width: 500px) {
   .meta-grid { grid-template-columns: 1fr; }
@@ -95,7 +124,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </style>
 </head>
 <body>
-<div class="header"><h1>&#9875; Inspectare -- 500m Zone Vessel</h1></div>
+<div class="header"><h1>&#9875; Inspectare -- 500m Zone Vessel</h1><p>TotalEnergies E&amp;P Angola -- Offline Inspection Form</p></div>
 <div id="pdf-title"></div>
 <div id="pdf-summary"></div>
 <div class="progress-bar">
@@ -115,10 +144,11 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
   <button class="btn btn-pdf" onclick="exportPDF()">&#128438; Export PDF</button>
   <button class="btn btn-new" onclick="clearData()">&#8635; New Inspection</button>
 </div>
+<div class="nav-links"><a href="index.html">&#8592; Retour a la liste des formulaires</a></div>
 <div class="meta-card">
   <h2>Inspection Details</h2>
   <div class="meta-grid">
-    <div class="meta-field"><label>Vessel Name</label><input type="text" id="m-vessel" placeholder="e.g. Bourbon Evolution 805"></div>
+    <div class="meta-field"><label>Vessel Name</label><input type="text" id="m-vessel" placeholder="e.g. Bourbon Liberty 303"></div>
     <div class="meta-field"><label>Inspection Date</label><input type="date" id="m-insp_date"></div>
     <div class="meta-field"><label>Inspector</label><input type="text" id="m-inspector" placeholder="Name"></div>
     <div class="meta-field"><label>Operator</label><input type="text" id="m-operator" placeholder="Company"></div>
@@ -133,14 +163,13 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 
 <div class="section">
-  <div class="section-title">1 -- Approach Passage & Pre-Entry</div>
-  
+  <div class="section-title">? -- ?</div>
 <div class="question" id="wrap-q1_1">
   <div class="q-header">
     <span class="q-num">1.1</span>
     <span class="q-text">Are the Bridge Team aware of maintaining a safe passing distance from installations and other operations when making a field transit through a multi-installation field?</span>
   </div>
-  <div class="guidance">When passing through multi-installation fields the maximum passing distance shall ideally be 1Nm from installations and other operations.<div class="ref">GOMO Sect. 8.15</div></div>
+  <div class="guidance">When passing through multi-installation fields the maximum passing distance shall ideally be 1Nm from installations and other operations.GOMO Sect. 8.15</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -161,7 +190,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.2</span>
     <span class="q-text">Are the Bridge Team aware of not utilising the co-ordinates of offshore installations as way points and is the final waypoint offset from the installation?</span>
   </div>
-  <div class="guidance">Voyage planning shall not utilise the location of offshore installations as way points. This prevents vessel-offshore installation collision by auto pilot.<div class="ref">GOMO Sect. 8.4</div></div>
+  <div class="guidance">Voyage planning shall not utilise the location of offshore installations as way points. This prevents vessel-offshore installation collision by auto pilot.GOMO Sect. 8.4</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -182,7 +211,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.3</span>
     <span class="q-text">Are the Bridge Team and Engine Room Team members suitably rested prior to 500m safety zone entry?</span>
   </div>
-  <div class="guidance">Crew should not show obvious signs of fatigue potentially linked to excessive time on board, workload from previous operations or lack of organisation. A table with the shipboard working arrangements shall be posted in an easily accessible place and contain for every position at least the schedule of service at sea and service in port, and the maximum hours of work or the minimum hours of rest required by national laws, regulations or applicable collective agreements.<div class="ref">MLC 2006 Reg. 2.3</div></div>
+  <div class="guidance">Crew should not show obvious signs of fatigue potentially linked to excessive time on board, workload from previous operations or lack of organisation. A table with the shipboard working arrangements shall be posted in an easily accessible place and contain for every position at least the schedule of service at sea and service in port, and the maximum hours of work or the minimum hours of rest required by national laws, regulations or applicable collective agreements.MLC 2006 Reg. 2.3</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -201,9 +230,9 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="question" id="wrap-q1_4">
   <div class="q-header">
     <span class="q-num">1.4</span>
-    <span class="q-text">Are the Master/Bridge and Engine Control Room teams aware of Company's Stop Work Authority?</span>
+    <span class="q-text">Are the Master/Bridge and Engine Control Room teams aware of Company&#x27;s Stop Work Authority?</span>
   </div>
-  <div class="guidance">When Company or contractor employees identify or perceive unsafe conditions due to an error, an oversight, a failure to enforce a rule or a situation that could potentially result in an accident, they use their Stop Card with the person(s) involved, in the way they deem appropriate. Crew should be able to give recent examples when Stop Work Authority was used.<div class="ref">GM-GR-HSE-122 Sect. 5.0</div></div>
+  <div class="guidance">When Company or contractor employees identify or perceive unsafe conditions due to an error, an oversight, a failure to enforce a rule or a situation that could potentially result in an accident, they use their Stop Card with the person(s) involved, in the way they deem appropriate. Crew should be able to give recent examples when Stop Work Authority was used.GM-GR-HSE-122 Sect. 5.0</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_4" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_4" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -224,7 +253,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.5</span>
     <span class="q-text">Did the crew ever perceive time or commercial pressure to commence or continue operations in 500m safety zone?</span>
   </div>
-  <div class="guidance">Time pressure can be explicit, implicit, or perceived and can develop in serious incidents. Installations shall not apply time pressure on vessel, as it is Company policy to complete tasks with adequate safeguards and control measures. Crew shall clearly understand this policy, make sure that they don't apply themselves an undue time pressure and explain how pressure have been or would be resolved. If crew feels under pressure, Company shall facilitate discussion between parties for resolution.<div class="ref">Nautical Institute 'Time pressures in the maritime industry'</div></div>
+  <div class="guidance">Time pressure can be explicit, implicit, or perceived and can develop in serious incidents. Installations shall not apply time pressure on vessel, as it is Company policy to complete tasks with adequate safeguards and control measures. Crew shall clearly understand this policy, make sure that they don&#x27;t apply themselves an undue time pressure and explain how pressure have been or would be resolved. If crew feels under pressure, Company shall facilitate discussion between parties for resolution.Nautical Institute &#x27;Time pressures in the maritime industry&#x27;</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_5" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_5" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -245,7 +274,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.6</span>
     <span class="q-text">Are the Bridge and the Engine Control Room free of distractions?</span>
   </div>
-  <div class="guidance">On the Bridge and in the Engine Control Room, particularly around conning positions, check for the presence of mobile phones, laptop computers, tablets, newspapers/magazines, books, manuals, folders, training course notes, plates, cups, cutlery. Background music, meetings, informal gatherings, and personnel on watch working on computers shall be prohibited on the Bridge. A high level of housekeeping shall be maintained.<div class="ref">GOMO Sect. 8.2.2</div></div>
+  <div class="guidance">On the Bridge and in the Engine Control Room, particularly around conning positions, check for the presence of mobile phones, laptop computers, tablets, newspapers/magazines, books, manuals, folders, training course notes, plates, cups, cutlery. Background music, meetings, informal gatherings, and personnel on watch working on computers shall be prohibited on the Bridge. A high level of housekeeping shall be maintained.GOMO Sect. 8.2.2</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_6" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_6" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -266,7 +295,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.7</span>
     <span class="q-text">Are the last updated installations data cards and the adverse weather working policy available to the Bridge Team?</span>
   </div>
-  
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_7" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_7" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -287,7 +315,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.8</span>
     <span class="q-text">Does the vessel fill a pre-entry checklist and inform the installation of completion?</span>
   </div>
-  <div class="guidance">Where laminated check lists are in use, an entry shall be made in the vessel's log of each such use, together with a summary of the outcomes.<div class="ref">GOMO Sect. 8.5</div></div>
+  <div class="guidance">Where laminated check lists are in use, an entry shall be made in the vessel&#x27;s log of each such use, together with a summary of the outcomes.GOMO Sect. 8.5</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_8" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_8" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -308,7 +336,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.9</span>
     <span class="q-text">Does the pre-entry checklist include the minimum requirements listed in GOMO?</span>
   </div>
-  <div class="guidance">Refer to GOMO checklists for vessels.<div class="ref">GOMO App. 8-A</div></div>
+  <div class="guidance">Refer to GOMO checklists for vessels.GOMO App. 8-A</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_9" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_9" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -329,7 +357,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.10</span>
     <span class="q-text">Are the Company 500m Entry Lifesaving Checks conducted?</span>
   </div>
-  <div class="guidance">Reference is made to the Life Saving Checks for the entry of a vessel within the 500m of an offshore installation.<div class="ref">TotalEnergies Life Saving Checks</div></div>
+  <div class="guidance">Reference is made to the Life Saving Checks for the entry of a vessel within the 500m of an offshore installation.TotalEnergies Life Saving Checks</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_10" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_10" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -350,7 +378,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.11</span>
     <span class="q-text">Is the pre-entry checklist completed in a drift-off situation?</span>
   </div>
-  <div class="guidance"><div class="ref">GOMO Sect. 8.3</div></div>
+  <div class="guidance">GOMO Sect. 8.3</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_11" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_11" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -371,7 +399,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.12</span>
     <span class="q-text">In case of weather side working (drift on) or at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?</span>
   </div>
-  <div class="guidance">If weather side is tide dependent, the operations should be postponed until the next suitable window. Mitigation measures shall include: Reduced use of engines power (e.g. <40%); Minimum level of Bridge Team experience; Reduced duration alongside; Prohibited SIMOPS (e.g. seismic, construction, drilling); Reduced waves criteria. Working on the weather side of the installation shall be prohibited if the drift or the close proximity of the vessel put unprotected risers at collision risk.<div class="ref">TotalEnergies Life Saving Checks</div></div>
+  <div class="guidance">If weather side is tide dependent, the operations should be postponed until the next suitable window. Mitigation measures shall include: Reduced use of engines power (e.g. TotalEnergies Life Saving Checks</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_12" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_12" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -392,7 +420,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.13</span>
     <span class="q-text">In case of working at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?</span>
   </div>
-  <div class="guidance">Working at a distance below 10 meters from the installation shall only be considered during slack waters. The vessel shall only be handled in manual as DP footprint might result in excessive excursion incompatible with the close proximity. Working at less than 10 meters shall be prohibited if the drift or close proximity puts unprotected risers at collision risk.<div class="ref">TotalEnergies Life Saving Checks</div></div>
+  <div class="guidance">Working at a distance below 10 meters from the installation shall only be considered during slack waters. The vessel shall only be handled in manual as DP footprint might result in excessive excursion incompatible with the close proximity. Working at less than 10 meters shall be prohibited if the drift or close proximity puts unprotected risers at collision risk.TotalEnergies Life Saving Checks</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_13" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_13" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -413,7 +441,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.14</span>
     <span class="q-text">Are the Bridge Team aware that changes of conning station are not permitted closer than 200m from the Installation?</span>
   </div>
-  <div class="guidance">Bridge Team members shall not change the position of the control station (forward/aft on the Bridge or onto a Bridge wing) at a distance lower than 200m from the installation. However, vessels shall be encouraged to increase this distance to 500 meters.<div class="ref">Step Change in Safety - Marine Operations Safety Zone - Step 2 Approach</div></div>
+  <div class="guidance">Bridge Team members shall not change the position of the control station (forward/aft on the Bridge or onto a Bridge wing) at a distance lower than 200m from the installation. However, vessels shall be encouraged to increase this distance to 500 meters.Step Change in Safety - Marine Operations Safety Zone - Step 2 Approach</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_14" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_14" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -434,7 +462,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.15</span>
     <span class="q-text">If station keeping in 500m zone will be done in DP, are the functional checks conducted in DP Auto Position prior to 500m entry?</span>
   </div>
-  <div class="guidance">The intention is to verify the operation of the DP systems prior to entry. The checks shall include full functional checks of the operation of the thrusters, power generation, auto DP, IJS and manual controls. The checks also ensure that the DP system is set up correctly according to the DP operations manual and associated engine room and bridge checklists. The DP model will be built up at the setup position 200m from the installation.<div class="ref">IMCA M103 Sect. 3.4.4; IMCA M182 App. 6</div></div>
+  <div class="guidance">The intention is to verify the operation of the DP systems prior to entry. The checks shall include full functional checks of the operation of the thrusters, power generation, auto DP, IJS and manual controls. The checks also ensure that the DP system is set up correctly according to the DP operations manual and associated engine room and bridge checklists. The DP model will be built up at the setup position 200m from the installation.IMCA M103 Sect. 3.4.4; IMCA M182 App. 6</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_15" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_15" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -455,7 +483,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.16</span>
     <span class="q-text">Does the vessel maintain an Engine room watch during 500m safety zone operations?</span>
   </div>
-  <div class="guidance">During DP operations, vessel's engine control room shall be manned by an STCW certified officer in charge of an engineering watch. Similar provision shall apply for vessel handled manually.<div class="ref">GS OT OPP 847 Sect. 7</div></div>
+  <div class="guidance">During DP operations, vessel&#x27;s engine control room shall be manned by an STCW certified officer in charge of an engineering watch. Similar provision shall apply for vessel handled manually.GS OT OPP 847 Sect. 7</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_16" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_16" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -476,7 +504,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.17</span>
     <span class="q-text">Does the engineer on watch complete a vessel specific engine room checklist as part of the pre-entry checks?</span>
   </div>
-  <div class="guidance">An engine room readiness for DP operations checklist shall be completed by the engineer on watch. The purpose of this checklist is to ensure that the engine room systems and equipment are set up correctly for DP with the correct redundancy and the appropriate equipment and switchboard configuration. Similar provision shall apply for vessel handled manually.<div class="ref">IMCA M103 Sect. 3.4.7</div></div>
+  <div class="guidance">An engine room readiness for DP operations checklist shall be completed by the engineer on watch. The purpose of this checklist is to ensure that the engine room systems and equipment are set up correctly for DP with the correct redundancy and the appropriate equipment and switchboard configuration. Similar provision shall apply for vessel handled manually.IMCA M103 Sect. 3.4.7</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_17" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_17" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -497,7 +525,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.18</span>
     <span class="q-text">Is there evidence that the Bridge Team have been trained for handling the vessel?</span>
   </div>
-  <div class="guidance">MSF Ship Handling Record Book can be used as a basis to demonstrate level of experience and competencies in handling the vessel. Masters should provide every opportunity for junior officers to practice ship handling when vessel/safety considerations allow.<div class="ref">MSF Ship Handling Record Book</div></div>
+  <div class="guidance">MSF Ship Handling Record Book can be used as a basis to demonstrate level of experience and competencies in handling the vessel. Masters should provide every opportunity for junior officers to practice ship handling when vessel/safety considerations allow.MSF Ship Handling Record Book</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_18" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_18" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -518,7 +546,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.19</span>
     <span class="q-text">Does the vessel conduct DP drills?</span>
   </div>
-  <div class="guidance">DP drill matrix should include as a minimum: Black-out recovery; Transfer between operating stations (including joystick control and manual manoeuvring using independent lever control); Loss of thrusters, reference systems, and sensors; Loss of position, drift off, drive off.<div class="ref">GS OT OPP 847 Sect. 8.4</div></div>
+  <div class="guidance">DP drill matrix should include as a minimum: Black-out recovery; Transfer between operating stations (including joystick control and manual manoeuvring using independent lever control); Loss of thrusters, reference systems, and sensors; Loss of position, drift off, drive off.GS OT OPP 847 Sect. 8.4</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_19" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_19" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -539,7 +567,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.20</span>
     <span class="q-text">Can the Bridge Team demonstrate how to safely transfer between manual mode to DP mode and from DP Mode to manual mode?</span>
   </div>
-  <div class="guidance">Personnel operating in DP mode must be able to demonstrate how they can switch from DP mode to manual to manoeuvre the vessel away from the installation in a controlled manner. Lack of understanding and awareness of the correct procedures for transferring modes of operation can lead to collision with the installation.<div class="ref">IMCA M182 Sect. 3.1</div></div>
+  <div class="guidance">Personnel operating in DP mode must be able to demonstrate how they can switch from DP mode to manual to manoeuvre the vessel away from the installation in a controlled manner. Lack of understanding and awareness of the correct procedures for transferring modes of operation can lead to collision with the installation.IMCA M182 Sect. 3.1</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_20" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_20" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -560,7 +588,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.21</span>
     <span class="q-text">Does the Bridge Team understand when and how to utilise the DP Independent Joy Stick (IJS), and is the IJS appropriately marked?</span>
   </div>
-  <div class="guidance">DP operators shall be able to operate the vessel utilising the IJS and this shall be documented in a Ship Handling Record Book. The IJS shall also be clearly marked to differentiate it from other joysticks (e.g. the DP Control System joystick or individual thruster controls).<div class="ref">IMCA M182 Sect. 3.1; IMCA M103 Sect 2.20.8</div></div>
+  <div class="guidance">DP operators shall be able to operate the vessel utilising the IJS and this shall be documented in a Ship Handling Record Book. The IJS shall also be clearly marked to differentiate it from other joysticks (e.g. the DP Control System joystick or individual thruster controls).IMCA M182 Sect. 3.1; IMCA M103 Sect 2.20.8</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_21" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_21" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -581,7 +609,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.22</span>
     <span class="q-text">Does the Bridge Team understand that the DP IJS is a different joystick than the DP Control System joystick, and is the DP Control System joystick appropriately marked?</span>
   </div>
-  <div class="guidance">DP operators shall be able to correctly identify the DP Control System joystick and the IJS and be aware that they are separate. The DP Control System joystick shall also be clearly marked to differentiate it from other joysticks.<div class="ref">IMCA M182 Sect. 3.1</div></div>
+  <div class="guidance">DP operators shall be able to correctly identify the DP Control System joystick and the IJS and be aware that they are separate. The DP Control System joystick shall also be clearly marked to differentiate it from other joysticks.IMCA M182 Sect. 3.1</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_22" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_22" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -623,7 +651,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.24</span>
     <span class="q-text">Does the vessel implement a vessel/operation/location specific ASOG and CAM?</span>
   </div>
-  <div class="guidance">DP vessels must operate in accordance with an Activity Specific Operating Guidelines (ASOG) and, as relevant, in accordance with a Critical Activity Mode (CAM). An ASOG should be updated for each different type of activity and location where the vessel is to work and when the conditions differ. The CAM defines the most robust configuration of the DP system and identifies the equipment configuration and methods of operation that ensure the vessel meets its maximum level of redundancy.<div class="ref">IMCA M220 Sect 5.1 & 5.3; IMCA M109 Sect 4.4; IMCA M182 App. 9 & 10</div></div>
+  <div class="guidance">DP vessels must operate in accordance with an Activity Specific Operating Guidelines (ASOG) and, as relevant, in accordance with a Critical Activity Mode (CAM). An ASOG should be updated for each different type of activity and location where the vessel is to work and when the conditions differ. The CAM defines the most robust configuration of the DP system and identifies the equipment configuration and methods of operation that ensure the vessel meets its maximum level of redundancy.IMCA M220 Sect 5.1 &amp; 5.3; IMCA M109 Sect 4.4; IMCA M182 App. 9 &amp; 10</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_24" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_24" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -644,7 +672,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.25</span>
     <span class="q-text">Does the Bridge Team understand the limits defined in ASOG and CAM?</span>
   </div>
-  <div class="guidance">DP operators shall have an ASOG and CAM readily available at the DP control station. The DPOs should be questioned on their understanding of the ASOG and CAM by reviewing some scenarios (e.g. what action to take if a thruster stops, what happens if a PRS is lost, etc).<div class="ref">IMCA M220 Sect 5.1 & 5.3; IMCA M109 Sect 4.4</div></div>
+  <div class="guidance">DP operators shall have an ASOG and CAM readily available at the DP control station. The DPOs should be questioned on their understanding of the ASOG and CAM by reviewing some scenarios (e.g. what action to take if a thruster stops, what happens if a PRS is lost, etc).IMCA M220 Sect 5.1 &amp; 5.3; IMCA M109 Sect 4.4</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_25" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_25" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -665,7 +693,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.26</span>
     <span class="q-text">For when vessel is handled manually, are station keeping limitations defined and does the Bridge Team understand them?</span>
   </div>
-  <div class="guidance">Station keeping limitations shall include criteria for engine power limitations (allowing recovery in case of engine failure), loss of most effective thruster, waves conditions affecting tunnel thrusters' performance (i.e. aeration).</div>
+  <div class="guidance">Station keeping limitations shall include criteria for engine power limitations (allowing recovery in case of engine failure), loss of most effective thruster, waves conditions affecting tunnel thrusters&#x27; performance (i.e. aeration).</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_26" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_26" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -686,7 +714,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.27</span>
     <span class="q-text">Does the Bridge Team understand the WCFDI and what to do in the event of a WCF?</span>
   </div>
-  <div class="guidance">DP operators shall understand the WCFDI from the DP FMEA and trials documentation and understand what to do in the event of a WCF through the vessel specific ASOG, CAM, and DP Operations Manual. The Worst Case Failure Design Intent (WCFDI) is used as the basis of the design. DP Operators shall ideally have signed to state that they have read and understood the DP FMEA and DP Operations Manual.<div class="ref">IMO MSC 1580 Sect 1.2; IMCA M220 Sect 3.2 & 3.6</div></div>
+  <div class="guidance">DP operators shall understand the WCFDI from the DP FMEA and trials documentation and understand what to do in the event of a WCF through the vessel specific ASOG, CAM, and DP Operations Manual. The Worst Case Failure Design Intent (WCFDI) is used as the basis of the design. DP Operators shall ideally have signed to state that they have read and understood the DP FMEA and DP Operations Manual.IMO MSC 1580 Sect 1.2; IMCA M220 Sect 3.2 &amp; 3.6</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_27" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_27" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -707,7 +735,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.28</span>
     <span class="q-text">Are DP footprints periodically undertaken on board?</span>
   </div>
-  <div class="guidance">DP footprint plots measure the vessel's real station keeping performance (accuracy) in specific equipment configurations and environmental conditions. They determine the vessel's actual station keeping ability in various thruster configurations and environmental conditions and can be used for comparison with DP capability plots. All DPOs shall be capable to demonstrate how to record DP footprints.<div class="ref">IMCA M103 Sect. 3.6; IMCA M182 Sect. 2.5.6; MTS Operations Guidance Pt. 1 Sect. 4.5</div></div>
+  <div class="guidance">DP footprint plots measure the vessel&#x27;s real station keeping performance (accuracy) in specific equipment configurations and environmental conditions. They determine the vessel&#x27;s actual station keeping ability in various thruster configurations and environmental conditions and can be used for comparison with DP capability plots. All DPOs shall be capable to demonstrate how to record DP footprints.IMCA M103 Sect. 3.6; IMCA M182 Sect. 2.5.6; MTS Operations Guidance Pt. 1 Sect. 4.5</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_28" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_28" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -728,7 +756,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.29</span>
     <span class="q-text">Is the DP capability analysis for the area of operations available on board and is it understood by the Bridge Team?</span>
   </div>
-  <div class="guidance">The purpose of DP capability plots or analysis, is to determine by calculation, based on assumed propulsive power, the position keeping ability of the vessel in fully intact, certain degraded conditions and in various environmental conditions. DP capability plots should be generated to DNV-ST-0111 standard and be area of operations specific (site level 2). Must be from OEM or recognized 3rd party for all modes including Intact, WCFDI, Loss of most effective thruster(s). Must include any power restrictions (kW) and be at the designated operational draught.<div class="ref">GS OT OPP 847 Sect. 6; IMO MSC 1580 Sect. 4.5; IMCA M109 Sect 4.2.10; IMCA M182 Sect 2.5.5</div></div>
+  <div class="guidance">The purpose of DP capability plots or analysis, is to determine by calculation, based on assumed propulsive power, the position keeping ability of the vessel in fully intact, certain degraded conditions and in various environmental conditions. DP capability plots should be generated to DNV-ST-0111 standard and be area of operations specific (site level 2). Must be from OEM or recognized 3rd party for all modes including Intact, WCFDI, Loss of most effective thruster(s). Must include any power restrictions (kW) and be at the designated operational draught.GS OT OPP 847 Sect. 6; IMO MSC 1580 Sect. 4.5; IMCA M109 Sect 4.2.10; IMCA M182 Sect 2.5.5</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_29" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_29" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -749,7 +777,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.30</span>
     <span class="q-text">Is the DP Consequence Analysis function understood by the Bridge Team?</span>
   </div>
-  <div class="guidance">A consequence analysis is a class requirement in all DP equipment class 2 and 3 DP control systems. A consequence analysis provides a warning if the vessel is not able to maintain position and/or heading after a predefined WCF has occurred during current operations and weather conditions. Additionally, the consequence analysis shall perform calculations to verify that in the event of a single fault there is sufficient thrust available to maintain position and/or heading. DP consequence analysis settings and alarms shall be included in the DP Operations Manual.<div class="ref">IMO MSC 1580 Sect. 3.4.2; IMCA M103 Sect. 2.20.5</div></div>
+  <div class="guidance">A consequence analysis is a class requirement in all DP equipment class 2 and 3 DP control systems. A consequence analysis provides a warning if the vessel is not able to maintain position and/or heading after a predefined WCF has occurred during current operations and weather conditions. Additionally, the consequence analysis shall perform calculations to verify that in the event of a single fault there is sufficient thrust available to maintain position and/or heading. DP consequence analysis settings and alarms shall be included in the DP Operations Manual.IMO MSC 1580 Sect. 3.4.2; IMCA M103 Sect. 2.20.5</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_30" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_30" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -791,7 +819,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.32</span>
     <span class="q-text">Does the Bridge Team know and understand the environmental forces impacting the vessel at the location of operation?</span>
   </div>
-  <div class="guidance">The Bridge Team shall be aware of location specific tides and current, prevailing wind directions, sudden changes that may occur in wind or current, rip tides, the speed/onset of approaching weather fronts, typical wave and typical wind speeds. Awareness shall consider seasonal norms and maximum values exceeding the capability of the vessel.<div class="ref">IMCA M182 Sect. 4.6</div></div>
+  <div class="guidance">The Bridge Team shall be aware of location specific tides and current, prevailing wind directions, sudden changes that may occur in wind or current, rip tides, the speed/onset of approaching weather fronts, typical wave and typical wind speeds. Awareness shall consider seasonal norms and maximum values exceeding the capability of the vessel.IMCA M182 Sect. 4.6</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_32" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_32" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -812,7 +840,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.33</span>
     <span class="q-text">Are the vessel personnel aware that they are not permitted to undertake maintenance activities inside the 500m safety zone?</span>
   </div>
-  <div class="guidance">Maintenance activities shall be prohibited and remote access to DP software shall be isolated. These shall be referenced within the ASOG. Onboard engineering, electrical and electronics support team shall not conduct maintenance activities on DP systems whilst the vessel is in DP mode.<div class="ref">IMCA M182 Sect. 4.6</div></div>
+  <div class="guidance">Maintenance activities shall be prohibited and remote access to DP software shall be isolated. These shall be referenced within the ASOG. Onboard engineering, electrical and electronics support team shall not conduct maintenance activities on DP systems whilst the vessel is in DP mode.IMCA M182 Sect. 4.6</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_33" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_33" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -833,7 +861,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.34</span>
     <span class="q-text">Do vessel personnel understand that they cannot undertake 500m safety zone entry/operations with the vessels systems and equipment in a degraded state?</span>
   </div>
-  <div class="guidance">Vessel in a degraded state shall not enter the 500m safety zone. The degraded state for DP vessels is defined as any condition that is not within the green status of the ASOG. Green indicates normal operations where planned operations can be undertaken within agreed safe limits.<div class="ref">IMCA M182 Sect. 4.2.5.1</div></div>
+  <div class="guidance">Vessel in a degraded state shall not enter the 500m safety zone. The degraded state for DP vessels is defined as any condition that is not within the green status of the ASOG. Green indicates normal operations where planned operations can be undertaken within agreed safe limits.IMCA M182 Sect. 4.2.5.1</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_34" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_34" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -854,7 +882,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.35</span>
     <span class="q-text">Does the Bridge Team understand the limitations of utilising absolute and relative DP Position Reference Systems?</span>
   </div>
-  <div class="guidance">A minimum of two (2) relative PRS are required for floating installations, and fixed installations where shadowing occurs. A minimum of two (2) constellations/service providers are required for absolute positioning referencing (e.g. GPS and Glonass). Where multiple position references are in use by DP, the DPOs should monitor the weightings closely so as to ensure that no one system or set of systems is "hogging" the weighting.<div class="ref">GS OT OPP 847 Sect. 8; IMCA M252 Section 6; MTS Operations Guidance Pt. 1 Sect. 4.6</div></div>
+  <div class="guidance">A minimum of two (2) relative PRS are required for floating installations, and fixed installations where shadowing occurs. A minimum of two (2) constellations/service providers are required for absolute positioning referencing (e.g. GPS and Glonass). Where multiple position references are in use by DP, the DPOs should monitor the weightings closely so as to ensure that no one system or set of systems is &quot;hogging&quot; the weighting.GS OT OPP 847 Sect. 8; IMCA M252 Section 6; MTS Operations Guidance Pt. 1 Sect. 4.6</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_35" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_35" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -873,9 +901,9 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="question" id="wrap-q1_36">
   <div class="q-header">
     <span class="q-num">1.36</span>
-    <span class="q-text">Does the bridge team activate the "follow target" mode when approaching in DP a weathervaning floating installation or another DP installation (e.g. drilling rig)?</span>
+    <span class="q-text">Does the bridge team activate the &quot;follow target&quot; mode when approaching in DP a weathervaning floating installation or another DP installation (e.g. drilling rig)?</span>
   </div>
-  <div class="guidance">DPOs shall be aware of the implications of not using the "follow target" mode when approaching a weathervaning floating installation or another DP installation.</div>
+  <div class="guidance">DPOs shall be aware of the implications of not using the &quot;follow target&quot; mode when approaching a weathervaning floating installation or another DP installation.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_36" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_36" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -917,7 +945,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.38</span>
     <span class="q-text">Are escape routes defined prior to entering the 500m safety zone?</span>
   </div>
-  <div class="guidance">Escape routes shall be clearly highlighted by the Bridge team, (e.g. posted on white boards, using post it notes on the DP console). An escape route shall be identified providing a clear path for the vessel to follow when making a routine, or emergency departure from the installation. Other vessels shall stay clear of the escape route.<div class="ref">IMCA M182 Sect 4.6; GOMO Sect. 8.7</div></div>
+  <div class="guidance">Escape routes shall be clearly highlighted by the Bridge team, (e.g. posted on white boards, using post it notes on the DP console). An escape route shall be identified providing a clear path for the vessel to follow when making a routine, or emergency departure from the installation. Other vessels shall stay clear of the escape route.IMCA M182 Sect 4.6; GOMO Sect. 8.7</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_38" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_38" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -938,7 +966,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">1.39</span>
     <span class="q-text">Do Bridge Team members discuss and agree on entry and close approach actions?</span>
   </div>
-  <div class="guidance">Bridge Team members shall discuss and agree on 500m safety zone entry and installation close approach actions. Such discussions shall cover vessel heading, helicopter operations (with possible effect on the vessel's wind sensors), location of craneage, escape routes, location of PRS reflectors/transponders, riser locations, overboard discharges, undersea discharges, thrusters, mooring lines, installation rotation/excursion, bulk hoses/manifolds, etc.<div class="ref">GOMO Sect. 8.2.3</div></div>
+  <div class="guidance">Bridge Team members shall discuss and agree on 500m safety zone entry and installation close approach actions. Such discussions shall cover vessel heading, helicopter operations (with possible effect on the vessel&#x27;s wind sensors), location of craneage, escape routes, location of PRS reflectors/transponders, riser locations, overboard discharges, undersea discharges, thrusters, mooring lines, installation rotation/excursion, bulk hoses/manifolds, etc.GOMO Sect. 8.2.3</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q1_39" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q1_39" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -956,14 +984,13 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 </div>
 <div class="section">
-  <div class="section-title">2 -- Approach (500m - 200m approx.)</div>
-  
+  <div class="section-title">? -- ?</div>
 <div class="question" id="wrap-q2_1">
   <div class="q-header">
     <span class="q-num">2.1</span>
     <span class="q-text">Does the vessel transfer from 500m to 200m at a speed below 3 knots and with an offset heading?</span>
   </div>
-  <div class="guidance">Entry can be made in manual mode or DP mode. Entry and close approach shall be offset to avoid the vessel being on a direct collision course with the installation.<div class="ref">GOMO Sect. 8.3</div></div>
+  <div class="guidance">Entry can be made in manual mode or DP mode. Entry and close approach shall be offset to avoid the vessel being on a direct collision course with the installation.GOMO Sect. 8.3</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q2_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q2_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -981,14 +1008,13 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 </div>
 <div class="section">
-  <div class="section-title">3 -- Position Setup</div>
-  
+  <div class="section-title">? -- ?</div>
 <div class="question" id="wrap-q3_1">
   <div class="q-header">
     <span class="q-num">3.1</span>
     <span class="q-text">Is the position setup controlled with a DP location setup checklist?</span>
   </div>
-  <div class="guidance">The purpose of these checks is to ensure that the vessel's station keeping performance at the position setup is satisfactory and, in particular, to ensure that the position reference systems are properly set up. The checks also confirm that the power and propulsion demands, and DP control parameters are within the ASOG/CAM criteria.<div class="ref">IMCA M103 Sect. 3.4.5</div></div>
+  <div class="guidance">The purpose of these checks is to ensure that the vessel&#x27;s station keeping performance at the position setup is satisfactory and, in particular, to ensure that the position reference systems are properly set up. The checks also confirm that the power and propulsion demands, and DP control parameters are within the ASOG/CAM criteria.IMCA M103 Sect. 3.4.5</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q3_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q3_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1009,7 +1035,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">3.2</span>
     <span class="q-text">Is set-up for close approach to the installation conducted at a safe distance from the installation?</span>
   </div>
-  <div class="guidance">This position shall be such that collision with installation is avoided if equipment failure occurs during set up checks. As a minimum it shall be: 1.5 x vessel length for drift off operations; 2.5 x vessel length for drift on operations.<div class="ref">GOMO Sect. 8.4; IMCA M182 Sect. 4.6</div></div>
+  <div class="guidance">This position shall be such that collision with installation is avoided if equipment failure occurs during set up checks. As a minimum it shall be: 1.5 x vessel length for drift off operations; 2.5 x vessel length for drift on operations.GOMO Sect. 8.4; IMCA M182 Sect. 4.6</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q3_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q3_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1030,7 +1056,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">3.3</span>
     <span class="q-text">Does the vessel ensure station keeping is stable at the setup position prior to moving alongside?</span>
   </div>
-  <div class="guidance">The following stabilisation periods are recommended depending on the mode of operation: Manual Mode -- 15~20 minutes; DP Mode -- 30 minutes for DP model build up and stabilisation.<div class="ref">IMCA M182 Sect. 4.6; GOMO Sect. 8.7</div></div>
+  <div class="guidance">The following stabilisation periods are recommended depending on the mode of operation: Manual Mode -- 15~20 minutes; DP Mode -- 30 minutes for DP model build up and stabilisation.IMCA M182 Sect. 4.6; GOMO Sect. 8.7</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q3_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q3_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1048,14 +1074,13 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 </div>
 <div class="section">
-  <div class="section-title">4 -- Final Approach (200m approx.) - Working Position & Alongside Working</div>
-  
+  <div class="section-title">? -- ?</div>
 <div class="question" id="wrap-q4_1">
   <div class="q-header">
     <span class="q-num">4.1</span>
     <span class="q-text">Does the Bridge Team implement an incremental stepped approach and a maximum speed during final approach?</span>
   </div>
-  <div class="guidance">Vessels shall implement an incremental stepped approach from the setup position, initially 10m steps down to 1m steps, not exceeding 0.5knts. This shall be captured within the ASOG for DP vessels.<div class="ref">GOMO Sect. 8.7</div></div>
+  <div class="guidance">Vessels shall implement an incremental stepped approach from the setup position, initially 10m steps down to 1m steps, not exceeding 0.5knts. This shall be captured within the ASOG for DP vessels.GOMO Sect. 8.7</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q4_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q4_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1076,7 +1101,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">4.2</span>
     <span class="q-text">Is the Bridge Team aware of forecast environmental conditions?</span>
   </div>
-  <div class="guidance">The Bridge Team members shall monitor weather and sea state conditions using on board instrumentation and seamanship. The Bridge Team shall be aware of local metocean conditions (e.g. presence of rip tides, squalls) and what to do in the event of the onset of inclement weather and metocean conditions.<div class="ref">GOMO Sect. 8.2.5</div></div>
+  <div class="guidance">The Bridge Team members shall monitor weather and sea state conditions using on board instrumentation and seamanship. The Bridge Team shall be aware of local metocean conditions (e.g. presence of rip tides, squalls) and what to do in the event of the onset of inclement weather and metocean conditions.GOMO Sect. 8.2.5</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q4_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q4_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1097,7 +1122,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">4.3</span>
     <span class="q-text">Do the Bridge Team have situational awareness during close approach operations?</span>
   </div>
-  <div class="guidance">Bridge Team members shall monitor the position of the vessel in relation to the installation and other vessels/operations installation close approach. The Bridge Team shall consider where the closest point of approach will be, the drive on/drift off risk of collision, the availability of escape routes, simultaneous operations (e.g. crew transfers, ERRV FRC close standby). The impact of environmental forces on DP systems shall also be closely monitored. Access to DP desk or control stations shall be restricted during 500m zone entry and alongside working.<div class="ref">GOMO Sect. 7.2, 8.9</div></div>
+  <div class="guidance">Bridge Team members shall monitor the position of the vessel in relation to the installation and other vessels/operations installation close approach. The Bridge Team shall consider where the closest point of approach will be, the drive on/drift off risk of collision, the availability of escape routes, simultaneous operations (e.g. crew transfers, ERRV FRC close standby). The impact of environmental forces on DP systems shall also be closely monitored. Access to DP desk or control stations shall be restricted during 500m zone entry and alongside working.GOMO Sect. 7.2, 8.9</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q4_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q4_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1139,7 +1164,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">4.5</span>
     <span class="q-text">Is there a suitable system for handover between Bridge and Engine room watches?</span>
   </div>
-  <div class="guidance">Bridge and Engine Room Team members shall complete effective formal handovers. Handover shall include DP/manual operational modes, environmental conditions, ongoing work with the installation, working radio channels, incidents, delays, planned operations, etc. Bridge watches shall be staggered (e.g. one officer on 09.00-15.00hrs and the relieving officer on 12.00-18.00hrs). DP operators shall rotate, ensuring the time spent on the DP desk is shared (e.g. 1 hour at a time).<div class="ref">GOMO Sect. 8.2.6; IMCA M103 Sect. 3.4.6; IMCA M182 App. 7</div></div>
+  <div class="guidance">Bridge and Engine Room Team members shall complete effective formal handovers. Handover shall include DP/manual operational modes, environmental conditions, ongoing work with the installation, working radio channels, incidents, delays, planned operations, etc. Bridge watches shall be staggered (e.g. one officer on 09.00-15.00hrs and the relieving officer on 12.00-18.00hrs). DP operators shall rotate, ensuring the time spent on the DP desk is shared (e.g. 1 hour at a time).GOMO Sect. 8.2.6; IMCA M103 Sect. 3.4.6; IMCA M182 App. 7</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q4_5" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q4_5" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1160,7 +1185,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">4.6</span>
     <span class="q-text">Does the Bridge Team understand that the vessel must be steered out of the 500m safety zone in the event of a yellow condition in the ASOG?</span>
   </div>
-  <div class="guidance">The vessel DP Operations Manual shall clearly state that the vessel is required to exit the 500m safety zone when the yellow condition is reached in the ASOG. Similar provision shall apply for vessel handled manually in case of equipment failure having an impact on station keeping capability.<div class="ref">GOMO Sect. 8.8</div></div>
+  <div class="guidance">The vessel DP Operations Manual shall clearly state that the vessel is required to exit the 500m safety zone when the yellow condition is reached in the ASOG. Similar provision shall apply for vessel handled manually in case of equipment failure having an impact on station keeping capability.GOMO Sect. 8.8</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q4_6" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q4_6" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1181,7 +1206,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">4.7</span>
     <span class="q-text">Does the Bridge Team understand that the length of time alongside shall be minimised, and in no case vessel shall remain idle/on standby alongside more than 30 minutes?</span>
   </div>
-  <div class="guidance">Extended or protracted operations alongside increase the likelihood of a collision. After 30 minutes in idle/standby alongside, vessel shall notify the installation that it moves clear of the installation to a drift off position outside the 500m safety zone. The process of checks for 500m safety zone entry and setup need to be repeated prior to working alongside.<div class="ref">GOMO Sect. 8.12 & 8.13</div></div>
+  <div class="guidance">Extended or protracted operations alongside increase the likelihood of a collision. After 30 minutes in idle/standby alongside, vessel shall notify the installation that it moves clear of the installation to a drift off position outside the 500m safety zone. The process of checks for 500m safety zone entry and setup need to be repeated prior to working alongside.GOMO Sect. 8.12 &amp; 8.13</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q4_7" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q4_7" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1244,7 +1269,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">4.10</span>
     <span class="q-text">Does the Bridge Team exit the 500m safety zone and re-enter the 500m safety zone when changing working faces at the installation?</span>
   </div>
-  <div class="guidance">Changing faces of the installations requires the vessel to exit and re-enter the 500m safety zone. The appropriate setting up location in relation to changing working faces as highlighted in GOMO shall be read as outside the 500m safety zone.<div class="ref">GOMO Sect. 8.10</div></div>
+  <div class="guidance">Changing faces of the installations requires the vessel to exit and re-enter the 500m safety zone. The appropriate setting up location in relation to changing working faces as highlighted in GOMO shall be read as outside the 500m safety zone.GOMO Sect. 8.10</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q4_10" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q4_10" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1262,14 +1287,13 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 </div>
 <div class="section">
-  <div class="section-title">5 -- Exiting Safety Zone</div>
-  
+  <div class="section-title">? -- ?</div>
 <div class="question" id="wrap-q5_1">
   <div class="q-header">
     <span class="q-num">5.1</span>
     <span class="q-text">Does the vessel remain in DP mode up to the 200m position when departing the installation?</span>
   </div>
-  <div class="guidance">A safe exit route shall be selected, taking the vessel well clear of all hazards, including any other vessels and to leeward of the facility. In all cases, changes in operating mode shall not take place within 200m of the installation and/or in a drift on position.<div class="ref">GOMO Sect. 8.14</div></div>
+  <div class="guidance">A safe exit route shall be selected, taking the vessel well clear of all hazards, including any other vessels and to leeward of the facility. In all cases, changes in operating mode shall not take place within 200m of the installation and/or in a drift on position.GOMO Sect. 8.14</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_1" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_1" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1290,7 +1314,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.2</span>
     <span class="q-text">Does the vessel operate in manual mode between 200m and edge of the 500m safety zone?</span>
   </div>
-  <div class="guidance">DP vessels operating in DP mode can, in most circumstances, be switched to joystick or manual mode after 200m, and be manoeuvred away from the offshore installation in a controlled manner.<div class="ref">IMCA M182 Sect. 3.1.2</div></div>
+  <div class="guidance">DP vessels operating in DP mode can, in most circumstances, be switched to joystick or manual mode after 200m, and be manoeuvred away from the offshore installation in a controlled manner.IMCA M182 Sect. 3.1.2</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_2" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_2" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1311,7 +1335,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">5.3</span>
     <span class="q-text">Does the vessel change the conning position only outside the 500m safety zone?</span>
   </div>
-  <div class="guidance">Bridge Team members shall not change the control station/position (forward/aft on the Bridge or onto a Bridge wing) inside the 500m safety zone.<div class="ref">GOMO Sect. 8.6</div></div>
+  <div class="guidance">Bridge Team members shall not change the control station/position (forward/aft on the Bridge or onto a Bridge wing) inside the 500m safety zone.GOMO Sect. 8.6</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q5_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q5_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1328,22 +1352,66 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
   </label>
 </div>
 </div>
+
 <div class="general-obs">
-  <h3>&#9888; General Observations / Additional Comments</h3>
-  <textarea id="general-obs" placeholder="Overall inspection notes, summary of findings, follow-up actions required..." rows="5" oninput="onAnswer()"></textarea>
+  <h3>&#9888; General Observations</h3>
+  <textarea id="general-obs" placeholder="General remarks about this inspection..." oninput="onAnswer()"></textarea>
 </div>
-<div class="btn-row">
-  <button class="btn btn-pdf" onclick="exportPDF()">&#128438; Export PDF</button>
-  <button class="btn btn-new" onclick="clearData()">&#8635; New Inspection</button>
-</div>
+
 <script>
 
 var STORAGE_KEY = "inspectare-500m";
 var ALL_IDS = ["q1_1", "q1_2", "q1_3", "q1_4", "q1_5", "q1_6", "q1_7", "q1_8", "q1_9", "q1_10", "q1_11", "q1_12", "q1_13", "q1_14", "q1_15", "q1_16", "q1_17", "q1_18", "q1_19", "q1_20", "q1_21", "q1_22", "q1_23", "q1_24", "q1_25", "q1_26", "q1_27", "q1_28", "q1_29", "q1_30", "q1_31", "q1_32", "q1_33", "q1_34", "q1_35", "q1_36", "q1_37", "q1_38", "q1_39", "q2_1", "q3_1", "q3_2", "q3_3", "q4_1", "q4_2", "q4_3", "q4_4", "q4_5", "q4_6", "q4_7", "q4_8", "q4_9", "q4_10", "q5_1", "q5_2", "q5_3"];
 var Q_TEXTS = {"q1_1": "Are the Bridge Team aware of maintaining a safe passing distance from installations and other operations when making a field transit through a multi-installation field?", "q1_2": "Are the Bridge Team aware of not utilising the co-ordinates of offshore installations as way points and is the final waypoint offset from the installation?", "q1_3": "Are the Bridge Team and Engine Room Team members suitably rested prior to 500m safety zone entry?", "q1_4": "Are the Master/Bridge and Engine Control Room teams aware of Company's Stop Work Authority?", "q1_5": "Did the crew ever perceive time or commercial pressure to commence or continue operations in 500m safety zone?", "q1_6": "Are the Bridge and the Engine Control Room free of distractions?", "q1_7": "Are the last updated installations data cards and the adverse weather working policy available to the Bridge Team?", "q1_8": "Does the vessel fill a pre-entry checklist and inform the installation of completion?", "q1_9": "Does the pre-entry checklist include the minimum requirements listed in GOMO?", "q1_10": "Are the Company 500m Entry Lifesaving Checks conducted?", "q1_11": "Is the pre-entry checklist completed in a drift-off situation?", "q1_12": "In case of weather side working (drift on) or at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?", "q1_13": "In case of working at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?", "q1_14": "Are the Bridge Team aware that changes of conning station are not permitted closer than 200m from the Installation?", "q1_15": "If station keeping in 500m zone will be done in DP, are the functional checks conducted in DP Auto Position prior to 500m entry?", "q1_16": "Does the vessel maintain an Engine room watch during 500m safety zone operations?", "q1_17": "Does the engineer on watch complete a vessel specific engine room checklist as part of the pre-entry checks?", "q1_18": "Is there evidence that the Bridge Team have been trained for handling the vessel?", "q1_19": "Does the vessel conduct DP drills?", "q1_20": "Can the Bridge Team demonstrate how to safely transfer between manual mode to DP mode and from DP Mode to manual mode?", "q1_21": "Does the Bridge Team understand when and how to utilise the DP Independent Joy Stick (IJS), and is the IJS appropriately marked?", "q1_22": "Does the Bridge Team understand that the DP IJS is a different joystick than the DP Control System joystick, and is the DP Control System joystick appropriately marked?", "q1_23": "Does the Bridge Team know what the gain setting of the joysticks (both IJS and DP) are?", "q1_24": "Does the vessel implement a vessel/operation/location specific ASOG and CAM?", "q1_25": "Does the Bridge Team understand the limits defined in ASOG and CAM?", "q1_26": "For when vessel is handled manually, are station keeping limitations defined and does the Bridge Team understand them?", "q1_27": "Does the Bridge Team understand the WCFDI and what to do in the event of a WCF?", "q1_28": "Are DP footprints periodically undertaken on board?", "q1_29": "Is the DP capability analysis for the area of operations available on board and is it understood by the Bridge Team?", "q1_30": "Is the DP Consequence Analysis function understood by the Bridge Team?", "q1_31": "Is there any previous occurrence of consequence analysis alarms occurring and/or being ignored?", "q1_32": "Does the Bridge Team know and understand the environmental forces impacting the vessel at the location of operation?", "q1_33": "Are the vessel personnel aware that they are not permitted to undertake maintenance activities inside the 500m safety zone?", "q1_34": "Do vessel personnel understand that they cannot undertake 500m safety zone entry/operations with the vessels systems and equipment in a degraded state?", "q1_35": "Does the Bridge Team understand the limitations of utilising absolute and relative DP Position Reference Systems?", "q1_36": "Does the bridge team activate the \"follow target\" mode when approaching in DP a weathervaning floating installation or another DP installation (e.g. drilling rig)?", "q1_37": "Are the locations and status of the installation mounted PRS transponders/reflectors known prior to entry?", "q1_38": "Are escape routes defined prior to entering the 500m safety zone?", "q1_39": "Do Bridge Team members discuss and agree on entry and close approach actions?", "q2_1": "Does the vessel transfer from 500m to 200m at a speed below 3 knots and with an offset heading?", "q3_1": "Is the position setup controlled with a DP location setup checklist?", "q3_2": "Is set-up for close approach to the installation conducted at a safe distance from the installation?", "q3_3": "Does the vessel ensure station keeping is stable at the setup position prior to moving alongside?", "q4_1": "Does the Bridge Team implement an incremental stepped approach and a maximum speed during final approach?", "q4_2": "Is the Bridge Team aware of forecast environmental conditions?", "q4_3": "Do the Bridge Team have situational awareness during close approach operations?", "q4_4": "For vessel handled manually, is the maximum time alongside defined and understood by Bridge Team?", "q4_5": "Is there a suitable system for handover between Bridge and Engine room watches?", "q4_6": "Does the Bridge Team understand that the vessel must be steered out of the 500m safety zone in the event of a yellow condition in the ASOG?", "q4_7": "Does the Bridge Team understand that the length of time alongside shall be minimised, and in no case vessel shall remain idle/on standby alongside more than 30 minutes?", "q4_8": "Do the bridge team understand that the DP rotation point shall not be changed during operations alongside?", "q4_9": "Does the Bridge Team return to the setup position (200m) when shifting vessel position/orientation alongside on the same side of the installation?", "q4_10": "Does the Bridge Team exit the 500m safety zone and re-enter the 500m safety zone when changing working faces at the installation?", "q5_1": "Does the vessel remain in DP mode up to the 200m position when departing the installation?", "q5_2": "Does the vessel operate in manual mode between 200m and edge of the 500m safety zone?", "q5_3": "Does the vessel change the conning position only outside the 500m safety zone?"};
 var Q_NUMS = {"q1_1": "1.1", "q1_2": "1.2", "q1_3": "1.3", "q1_4": "1.4", "q1_5": "1.5", "q1_6": "1.6", "q1_7": "1.7", "q1_8": "1.8", "q1_9": "1.9", "q1_10": "1.10", "q1_11": "1.11", "q1_12": "1.12", "q1_13": "1.13", "q1_14": "1.14", "q1_15": "1.15", "q1_16": "1.16", "q1_17": "1.17", "q1_18": "1.18", "q1_19": "1.19", "q1_20": "1.20", "q1_21": "1.21", "q1_22": "1.22", "q1_23": "1.23", "q1_24": "1.24", "q1_25": "1.25", "q1_26": "1.26", "q1_27": "1.27", "q1_28": "1.28", "q1_29": "1.29", "q1_30": "1.30", "q1_31": "1.31", "q1_32": "1.32", "q1_33": "1.33", "q1_34": "1.34", "q1_35": "1.35", "q1_36": "1.36", "q1_37": "1.37", "q1_38": "1.38", "q1_39": "1.39", "q2_1": "2.1", "q3_1": "3.1", "q3_2": "3.2", "q3_3": "3.3", "q4_1": "4.1", "q4_2": "4.2", "q4_3": "4.3", "q4_4": "4.4", "q4_5": "4.5", "q4_6": "4.6", "q4_7": "4.7", "q4_8": "4.8", "q4_9": "4.9", "q4_10": "4.10", "q5_1": "5.1", "q5_2": "5.2", "q5_3": "5.3"};
+var META_IDS = ["vessel", "insp_date", "inspector", "operator", "flag", "imo", "port", "block", "status"];
 var saveTimer = null;
 var photoStore = {};
+
+/* ---- IndexedDB pour les photos (localStorage = 5MB max, insuffisant) ---- */
+var DB_NAME = 'inspectare-photos';
+var idb = null;
+function openDB() {
+  return new Promise(function(resolve, reject) {
+    if (idb) return resolve(idb);
+    var req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = function(e) {
+      e.target.result.createObjectStore('photos');
+    };
+    req.onsuccess = function(e) { idb = e.target.result; resolve(idb); };
+    req.onerror = function(e) { reject(e); };
+  });
+}
+function idbSavePhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction('photos', 'readwrite');
+      tx.objectStore('photos').put(photoStore, STORAGE_KEY);
+      tx.oncomplete = resolve;
+      tx.onerror = reject;
+    });
+  });
+}
+function idbLoadPhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction('photos', 'readonly');
+      var req = tx.objectStore('photos').get(STORAGE_KEY);
+      req.onsuccess = function() { resolve(req.result || {}); };
+      req.onerror = function() { resolve({}); };
+    });
+  });
+}
+function idbClearPhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction('photos', 'readwrite');
+      tx.objectStore('photos').delete(STORAGE_KEY);
+      tx.oncomplete = resolve;
+      tx.onerror = resolve;
+    });
+  });
+}
 
 function compressImage(file, callback) {
   var reader = new FileReader();
@@ -1371,7 +1439,6 @@ function addPhoto(event, qid) {
   if (!file) return;
   compressImage(file, function(dataUrl) {
     if (!photoStore[qid]) photoStore[qid] = [];
-    var idx = photoStore[qid].length;
     photoStore[qid].push(dataUrl);
     renderPhotos(qid);
     onAnswer();
@@ -1440,11 +1507,10 @@ function updateProgress() {
 }
 
 function saveData() {
-  var data = { meta: {}, answers: {}, obs: {}, comments: {}, photos: photoStore };
-  var metaIds = ['vessel','insp_date','inspector','operator','flag','imo','port','block','status'];
-  for (var m = 0; m < metaIds.length; m++) {
-    var el = document.getElementById('m-' + metaIds[m]);
-    if (el) data.meta[metaIds[m]] = el.value;
+  var data = { meta: {}, answers: {}, obs: {}, comments: {} };
+  for (var m = 0; m < META_IDS.length; m++) {
+    var el = document.getElementById('m-' + META_IDS[m]);
+    if (el) data.meta[META_IDS[m]] = el.value;
   }
   for (var i = 0; i < ALL_IDS.length; i++) {
     var id = ALL_IDS[i];
@@ -1470,8 +1536,11 @@ function saveData() {
       setTimeout(function(){ ind.style.opacity = '0'; }, 2000);
     }
   } catch(e) {
-    alert('Storage full. Remove some photos to continue saving.');
+    alert('Storage error while saving answers.');
   }
+  idbSavePhotos().catch(function() {
+    alert('Photo storage error. Photo may not be saved.');
+  });
 }
 
 function loadData() {
@@ -1480,10 +1549,9 @@ function loadData() {
     if (!raw) return;
     var data = JSON.parse(raw);
     if (data.meta) {
-      var metaIds = ['vessel','insp_date','inspector','operator','flag','imo','port','block','status'];
-      for (var m = 0; m < metaIds.length; m++) {
-        var el = document.getElementById('m-' + metaIds[m]);
-        if (el && data.meta[metaIds[m]]) el.value = data.meta[metaIds[m]];
+      for (var m = 0; m < META_IDS.length; m++) {
+        var el = document.getElementById('m-' + META_IDS[m]);
+        if (el && data.meta[META_IDS[m]]) el.value = data.meta[META_IDS[m]];
       }
     }
     if (data.answers) {
@@ -1506,15 +1574,27 @@ function loadData() {
         if (cmt) cmt.value = data.comments[cid];
       }
     }
-    if (data.photos) {
-      photoStore = data.photos;
-      for (var pid in photoStore) { renderPhotos(pid); }
-    }
     if (data.general_obs) {
       var gobs = document.getElementById('general-obs');
       if (gobs) gobs.value = data.general_obs;
     }
     updateProgress();
+    // Photos : IDB, avec migration depuis l'ancien format localStorage
+    var legacyPhotos = data.photos || null;
+    idbLoadPhotos().then(function(stored) {
+      photoStore = stored;
+      if (legacyPhotos) {
+        for (var lp in legacyPhotos) {
+          if (!photoStore[lp]) photoStore[lp] = legacyPhotos[lp];
+        }
+        idbSavePhotos().then(function() {
+          // retirer les photos du localStorage pour liberer le quota
+          delete data.photos;
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+        });
+      }
+      for (var pid in photoStore) { renderPhotos(pid); }
+    });
   } catch(e) {}
 }
 
@@ -1522,7 +1602,7 @@ function clearData() {
   if (!confirm('Clear all answers and photos? This cannot be undone.')) return;
   try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
   photoStore = {};
-  location.reload();
+  idbClearPhotos().then(function() { location.reload(); });
 }
 
 function getInitials(name) {
@@ -1535,26 +1615,91 @@ function getInitials(name) {
   return ini;
 }
 
+function shrinkDataUrl(dataUrl, maxDim, quality) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload = function() {
+      var w = img.width, h = img.height;
+      if (w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+      if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+      var c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(c.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = function() { resolve(dataUrl); };
+    img.src = dataUrl;
+  });
+}
+
+function shrinkForBudget(dataUrl, perPhotoBudget) {
+  var steps = [[1000, 0.55], [800, 0.45], [650, 0.35], [500, 0.3]];
+  function tryStep(i) {
+    if (i >= steps.length) return shrinkDataUrl(dataUrl, 500, 0.3);
+    return shrinkDataUrl(dataUrl, steps[i][0], steps[i][1]).then(function(out) {
+      if (out.length <= perPhotoBudget) return out;
+      return tryStep(i + 1);
+    });
+  }
+  if (dataUrl.length <= perPhotoBudget) return Promise.resolve(dataUrl);
+  return tryStep(0);
+}
+
+function preparePrintPhotos() {
+  // budget total ~3.5MB de base64 pour viser un PDF < 5MB
+  var thumbs = document.querySelectorAll('.photo-thumb');
+  if (thumbs.length === 0) return Promise.resolve();
+  var perPhoto = Math.floor(3500000 / thumbs.length);
+  var jobs = [];
+  for (var i = 0; i < thumbs.length; i++) {
+    (function(el) {
+      jobs.push(shrinkForBudget(el.src, perPhoto).then(function(small) {
+        el.setAttribute('data-full', el.src);
+        el.src = small;
+      }));
+    })(thumbs[i]);
+  }
+  return Promise.all(jobs);
+}
+
+function restorePhotos() {
+  var thumbs = document.querySelectorAll('.photo-thumb[data-full]');
+  for (var i = 0; i < thumbs.length; i++) {
+    thumbs[i].src = thumbs[i].getAttribute('data-full');
+    thumbs[i].removeAttribute('data-full');
+  }
+}
+
 function exportPDF() {
-  var vessel = document.getElementById('m-vessel').value || 'Unknown Vessel';
+  var vessel = document.getElementById('m-vessel').value || 'Unknown';
   var inspector = document.getElementById('m-inspector').value || '';
   var date = document.getElementById('m-insp_date').value || '';
   var initials = getInitials(inspector);
-  var fileTitle = 'Inspectare-500m-Zone-Vessel-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
+  var fileTitle = "inspectare-500m" + '-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
   document.title = fileTitle;
-  var pdfTitle = 'Inspectare - 500m Zone Vessel' + ' | ' + vessel;
+  var pdfTitle = "Inspectare -- 500m Zone Vessel" + ' | ' + vessel;
   if (initials) pdfTitle += ' | ' + initials;
   if (date) pdfTitle += ' | ' + date;
   document.getElementById('pdf-title').textContent = pdfTitle;
 
-  var findings = [];
+  // Findings = ONLY questions with the Observation checkbox ticked.
+  // Photos are evidence attached to answers, they do NOT make a finding.
+  var findingNums = [];
   for (var i = 0; i < ALL_IDS.length; i++) {
     var id = ALL_IDS[i];
+    var wrap = document.getElementById('wrap-' + id);
     var obs = document.getElementById('obs-' + id);
-    var photos = photoStore[id] || [];
-    if ((obs && obs.checked) || photos.length > 0) {
-      var cmt = document.getElementById('cmt-' + id);
-      findings.push({ num: Q_NUMS[id], text: Q_TEXTS[id], comment: cmt ? cmt.value : '', photos: photos });
+    var cmt = document.getElementById('cmt-' + id);
+    var isFinding = obs && obs.checked;
+    if (isFinding) findingNums.push(Q_NUMS[id]);
+    if (wrap) {
+      wrap.classList.toggle('is-finding', !!isFinding);
+      wrap.classList.toggle('no-comment', !(cmt && cmt.value.trim()));
+      var labels = wrap.querySelectorAll('.ans');
+      for (var L = 0; L < labels.length; L++) {
+        var r = labels[L].querySelector('input');
+        labels[L].classList.toggle('checked', !!(r && r.checked));
+      }
     }
   }
   var gobs = document.getElementById('general-obs');
@@ -1563,50 +1708,47 @@ function exportPDF() {
   var na = parseInt(document.getElementById('prog-na').textContent) || 0;
 
   var summaryHtml = '<div class="pdf-summary">';
-  summaryHtml += '<h2>INSPECTION SUMMARY</h2>';
-  summaryHtml += '<div class="summary-meta">';
-  summaryHtml += '<p><strong>Vessel:</strong> ' + vessel + '</p>';
-  summaryHtml += '<p><strong>Inspector:</strong> ' + (inspector || '-') + '</p>';
-  summaryHtml += '<p><strong>Date:</strong> ' + (date || '-') + '</p>';
-  summaryHtml += '<p><strong>Operator:</strong> ' + (document.getElementById('m-operator').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Flag:</strong> ' + (document.getElementById('m-flag').value || '-') + '</p>';
-  summaryHtml += '<p><strong>IMO:</strong> ' + (document.getElementById('m-imo').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Location:</strong> ' + (document.getElementById('m-port').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Block/Field:</strong> ' + (document.getElementById('m-block').value || '-') + '</p>';
-  summaryHtml += '</div>';
+  summaryHtml += '<div class="summary-block"><div class="summary-block-title">Inspection Details</div><table class="summary-table">';
+  for (var m2 = 0; m2 < META_IDS.length; m2++) {
+    var mid2 = META_IDS[m2];
+    var el2 = document.getElementById('m-' + mid2);
+    var lbl2 = el2 && el2.previousElementSibling ? el2.previousElementSibling.textContent : mid2;
+    summaryHtml += '<tr><td class="st-label">' + lbl2 + '</td><td>' + ((el2 && el2.value) || '-') + '</td></tr>';
+  }
+  summaryHtml += '</table></div>';
+
   summaryHtml += '<div class="summary-stats">';
-  summaryHtml += '<span class="stat-yes">YES: ' + yes + '</span>';
-  summaryHtml += '<span class="stat-no">NO: ' + no + '</span>';
-  summaryHtml += '<span class="stat-na">N/A: ' + na + '</span>';
-  summaryHtml += '<span class="stat-findings">Findings: ' + findings.length + '</span>';
+  summaryHtml += '<div class="stat-box stat-yes"><div class="stat-n">' + yes + '</div><div class="stat-l">YES</div></div>';
+  summaryHtml += '<div class="stat-box stat-no"><div class="stat-n">' + no + '</div><div class="stat-l">NO</div></div>';
+  summaryHtml += '<div class="stat-box stat-na"><div class="stat-n">' + na + '</div><div class="stat-l">N/A</div></div>';
+  summaryHtml += '<div class="stat-box stat-findings"><div class="stat-n">' + findingNums.length + '</div><div class="stat-l">FINDINGS</div></div>';
   summaryHtml += '</div>';
 
-  if (findings.length > 0) {
-    summaryHtml += '<h3>OBSERVATIONS / FINDINGS (' + findings.length + ')</h3>';
-    for (var f = 0; f < findings.length; f++) {
-      var fi = findings[f];
-      summaryHtml += '<div class="finding-block">';
-      summaryHtml += '<div class="finding-header"><span class="finding-num">' + fi.num + '</span><span class="finding-text">' + fi.text + '</span></div>';
-      if (fi.comment) summaryHtml += '<div class="finding-comment">' + fi.comment + '</div>';
-      if (fi.photos.length > 0) {
-        summaryHtml += '<div class="finding-photos">';
-        for (var p = 0; p < fi.photos.length; p++) {
-          summaryHtml += '<img src="' + fi.photos[p] + '" class="finding-photo">';
-        }
-        summaryHtml += '</div>';
-      }
-      summaryHtml += '</div>';
+  summaryHtml += '<div class="summary-block"><div class="summary-block-title">Observations / Findings</div>';
+  if (findingNums.length > 0) {
+    summaryHtml += '<div class="finding-chips">';
+    for (var f = 0; f < findingNums.length; f++) {
+      summaryHtml += '<span class="finding-chip">' + findingNums[f] + '</span>';
     }
+    summaryHtml += '</div><p class="finding-note">See flagged questions in the report body for details and photo evidence.</p>';
   } else {
     summaryHtml += '<p class="no-findings">No observations / findings recorded.</p>';
   }
+  summaryHtml += '</div>';
 
-  if (gobs && gobs.value) {
-    summaryHtml += '<h3>GENERAL OBSERVATIONS</h3><p>' + gobs.value + '</p>';
+  if (gobs && gobs.value.trim()) {
+    summaryHtml += '<div class="summary-block"><div class="summary-block-title">General Observations</div><p class="gen-obs-text">' + gobs.value + '</p></div>';
   }
+
   summaryHtml += '</div>';
   document.getElementById('pdf-summary').innerHTML = summaryHtml;
-  window.print();
+  var ind = document.getElementById('save-indicator');
+  if (ind) { ind.textContent = 'Preparing PDF...'; ind.style.opacity = '1'; }
+  preparePrintPhotos().then(function() {
+    if (ind) ind.style.opacity = '0';
+    window.print();
+    setTimeout(restorePhotos, 1000);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1619,5 +1761,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
+
 </body>
 </html>

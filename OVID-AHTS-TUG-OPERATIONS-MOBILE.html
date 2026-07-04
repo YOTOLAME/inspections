@@ -9,6 +9,7 @@
 body { font-family: -apple-system, Arial, sans-serif; font-size: 14px; background: #f0f2f5; color: #1a2a3a; }
 .header { background: #003B6E; color: white; padding: 12px 16px 10px; }
 .header h1 { font-size: 15px; font-weight: 700; }
+.header p { font-size: 11px; opacity: 0.75; margin-top: 3px; }
 .progress-bar { position: sticky; top: 0; z-index: 100; background: white; border-bottom: 2px solid #eee; padding: 8px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
 .prog-pct { font-size: 16px; font-weight: 800; color: #003B6E; }
@@ -59,36 +60,62 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 #pdf-title { display: none; }
 #pdf-summary { display: none; }
 @media print {
+  @page { margin: 0; size: A4; }
+  html, body { margin: 0 !important; }
   .progress-bar, .btn-row, .header, .btn-photo, .nav-links { display: none !important; }
-  body { background: white; font-size: 11px; padding: 1.2cm 1.2cm 0.8cm; }
-  #pdf-title { display: block; font-size: 13px; font-weight: 700; color: #003B6E; padding: 12px 16px; border-bottom: 2px solid #003B6E; margin-bottom: 10px; }
-  #pdf-summary { display: block; padding: 0 16px; page-break-after: always; }
-  .pdf-summary h2 { font-size: 13px; color: #003B6E; border-bottom: 2px solid #003B6E; padding-bottom: 5px; margin-bottom: 10px; }
-  .pdf-summary h3 { font-size: 11px; color: #003B6E; margin: 12px 0 5px; text-transform: uppercase; }
-  .summary-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; margin-bottom: 10px; font-size: 10px; }
-  .summary-stats { display: flex; gap: 14px; font-size: 11px; font-weight: 700; margin-bottom: 12px; padding: 7px; background: #f0f5ff; border-radius: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .stat-yes { color: #27ae60; }
-  .stat-no { color: #e74c3c; }
-  .stat-na { color: #7f8c8d; }
-  .stat-findings { color: #e67e22; }
-  .finding-block { border: 1px solid #ddd; border-radius: 4px; padding: 8px; margin-bottom: 8px; page-break-inside: avoid; }
-  .finding-header { display: flex; gap: 8px; margin-bottom: 4px; }
-  .finding-num { background: #003B6E; color: white; border-radius: 3px; padding: 1px 6px; font-size: 10px; font-weight: 700; white-space: nowrap; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .finding-text { font-size: 11px; font-weight: 600; }
-  .finding-comment { font-size: 10px; color: #555; margin: 4px 0; font-style: italic; }
-  .finding-photos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-  .finding-photo { width: 120px; height: 90px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
-  .no-findings { font-style: italic; color: #27ae60; font-size: 11px; }
-  .meta-card, .section, .general-obs { box-shadow: none; border: 1px solid #ddd; margin: 0 0 6px; border-radius: 4px; }
-  .section-title { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: white; font-size: 10.5px; padding: 1.4cm 1.4cm 1.2cm; }
+  #pdf-title { display: block; font-size: 15px; font-weight: 800; color: #003B6E; padding: 0 0 8px; border-bottom: 3px solid #003B6E; margin-bottom: 12px; }
+
+  /* ---- Page 1 : synthese ---- */
+  #pdf-summary { display: block; page-break-after: always; }
+  .summary-block { border: 1px solid #ccd6e0; border-radius: 6px; margin-bottom: 12px; overflow: hidden; page-break-inside: avoid; }
+  .summary-block-title { background: #003B6E; color: white; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 6px 10px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+  .summary-table td { padding: 5px 10px; border-bottom: 1px solid #eef1f5; }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .st-label { width: 38%; color: #667; font-weight: 700; text-transform: uppercase; font-size: 9px; }
+  .summary-stats { display: flex; gap: 10px; margin-bottom: 12px; }
+  .stat-box { flex: 1; text-align: center; border-radius: 6px; padding: 8px 4px; border: 1px solid #ddd; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .stat-n { font-size: 20px; font-weight: 800; }
+  .stat-l { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; }
+  .stat-yes { background: #eafaf1; color: #1e8449; border-color: #1e8449; }
+  .stat-no { background: #fdecea; color: #c0392b; border-color: #c0392b; }
+  .stat-na { background: #f2f3f4; color: #566573; border-color: #99a3ad; }
+  .stat-findings { background: #fff4e0; color: #b8630a; border-color: #b8630a; }
+  .finding-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; }
+  .finding-chip { background: #b8630a; color: white; border-radius: 4px; padding: 3px 9px; font-size: 11px; font-weight: 800; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .finding-note { font-size: 9px; color: #888; font-style: italic; padding: 0 10px 8px; }
+  .no-findings { font-style: italic; color: #1e8449; font-size: 11px; padding: 10px; }
+  .gen-obs-text { padding: 10px; font-size: 10.5px; white-space: pre-wrap; }
+
+  /* ---- Corps du rapport ---- */
+  .meta-card { display: none; } /* deja en page 1 */
+  .guidance { background: #f0f5ff !important; font-size: 9px; padding: 4px 8px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section { box-shadow: none; border: none; margin: 0 0 8px; border-radius: 0; }
+  .section-title { background: #003B6E !important; border-radius: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; page-break-after: avoid; }
+  .question { padding: 7px 4px; border-bottom: 1px solid #e4e8ee; page-break-inside: avoid; }
   .q-num { background: #003B6E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .guidance { background: #f0f5ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .photo-wrap { display: none; }
-  input[type=radio]:not(:checked) { display: none; }
-  .ans { border: none; padding: 0; font-size: 10px; }
-  .obs-row { font-size: 10px; }
-  textarea { border: none; font-size: 10px; padding: 0; min-height: unset; }
-  @page { margin: 0; }
+  .q-text { font-size: 10.5px; }
+  /* Marquage FINDING sur la question concernee */
+  .question.is-finding { border-left: 4px solid #b8630a; background: #fffaf2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .question.is-finding .q-num { background: #b8630a !important; }
+  .obs-row { display: none; }
+  .question.is-finding .obs-row { display: block; font-size: 9px; color: #b8630a; font-weight: 800; }
+  .question.is-finding .obs-row input { display: none; }
+  /* Reponses : seule la cochee reste */
+  input[type=radio] { display: none; }
+  .ans { display: none; }
+  .ans.checked { display: inline-block; border: none; padding: 0 4px; font-size: 10px; font-weight: 800; }
+  .answer-row { margin-bottom: 2px; }
+  /* Commentaire : masque si vide */
+  textarea { border: none; font-size: 10px; padding: 0; min-height: unset; width: 100%; }
+  .question.no-comment textarea { display: none; }
+  /* Photos = evidence, imprimees avec leur question */
+  .photo-area { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 2px; }
+  .photo-wrap { display: inline-block; }
+  .photo-thumb { width: 150px; height: 112px; object-fit: cover; border-radius: 4px; border: 1px solid #ccd6e0; }
+  .photo-del { display: none; }
+  .general-obs { display: none; } /* deja en page 1 */
 }
 @media (max-width: 500px) {
   .meta-grid { grid-template-columns: 1fr; }
@@ -97,7 +124,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </style>
 </head>
 <body>
-<div class="header"><h1>&#128676; OVID -- AHTS/TUG Operations (Escort Tug, Towing, Anchor Handling)</h1></div>
+<div class="header"><h1>&#9875; OVID -- AHTS/TUG Operations (Escort Tug, Towing, Anchor Handling)</h1></div>
 <div id="pdf-title"></div>
 <div id="pdf-summary"></div>
 <div class="progress-bar">
@@ -121,7 +148,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="meta-card">
   <h2>Inspection Details</h2>
   <div class="meta-grid">
-    <div class="meta-field"><label>Vessel Name</label><input type="text" id="m-vessel" placeholder="e.g. IFCB / Mamolinos"></div>
+    <div class="meta-field"><label>Vessel Name</label><input type="text" id="m-vessel" placeholder="e.g. Bourbon Liberty 303"></div>
     <div class="meta-field"><label>Inspection Date</label><input type="date" id="m-insp_date"></div>
     <div class="meta-field"><label>Inspector</label><input type="text" id="m-inspector" placeholder="Name"></div>
     <div class="meta-field"><label>Operator</label><input type="text" id="m-operator" placeholder="Company"></div>
@@ -137,7 +164,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 
 <div class="section">
   <div class="section-title">8.23 -- Ship Assist Escort Tug</div>
-
 <div class="question" id="wrap-q8_23_1">
   <div class="q-header">
     <span class="q-num">8.23.1</span>
@@ -290,7 +316,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.23.8</span>
     <span class="q-text">Are the calculated indirect towing forces available to the Master and deck officers?</span>
   </div>
-  <div class="guidance">Indirect towing is a method used by tug to exert dynamic forces on the tow line substantially beyond its static bollard pull; e.g. using a tug's weight, bulk and underwater surface area or by turning obliquely to a tow line to produce additional forces to stop or turn a ship under way.</div>
+  <div class="guidance">Indirect towing is a method used by tug to exert dynamic forces on the tow line substantially beyond its static bollard pull; e.g. using a tug&#x27;s weight, bulk and underwater surface area or by turning obliquely to a tow line to produce additional forces to stop or turn a ship under way.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_23_8" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_23_8" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -414,7 +440,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">8.7 -- Towing/pushing</div>
-
 <div class="question" id="wrap-q8_7_1">
   <div class="q-header">
     <span class="q-num">8.7.1</span>
@@ -439,7 +464,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="question" id="wrap-q8_7_2">
   <div class="q-header">
     <span class="q-num">8.7.2</span>
-    <span class="q-text">Is the vessel's fendering in good condition?</span>
+    <span class="q-text">Is the vessel&#x27;s fendering in good condition?</span>
   </div>
   <div class="guidance">Fenders should be fitted in areas of the probable contact with another vessel’s hull during towing assistance (e.g. pushing), ship-to-ship personnel or equipment transfer. All chains and hardware used to secure the fenders should be in good condition and the fendering placed in such a way as to avoiding steel to steel contact.</div>
   <div class="answer-row">
@@ -462,7 +487,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.7.3</span>
     <span class="q-text">Is tow winch, including associated hoses and brake linings, in good order?</span>
   </div>
-  <div class="guidance">Inspectors shall visibly inspect each winch. Mounting brackets should be in good condition with no obvious cracks or defects. Hydraulic and air hoses shall have all fittings tights and no leaks present. Winch controls should be in good working order with minimal wastage. Winches are to be lubricated per vessel's preventative maintenance schedule.</div>
+  <div class="guidance">Inspectors shall visibly inspect each winch. Mounting brackets should be in good condition with no obvious cracks or defects. Hydraulic and air hoses shall have all fittings tights and no leaks present. Winch controls should be in good working order with minimal wastage. Winches are to be lubricated per vessel&#x27;s preventative maintenance schedule.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_7_3" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_7_3" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -607,7 +632,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="question" id="wrap-q8_7_10">
   <div class="q-header">
     <span class="q-num">8.7.10</span>
-    <span class="q-text">Does the vessel have a searchlight that can be directed from the vessel's main steering station and is it in good working order?</span>
+    <span class="q-text">Does the vessel have a searchlight that can be directed from the vessel&#x27;s main steering station and is it in good working order?</span>
   </div>
   <div class="guidance">Searchlight should provide illumination both forward and aft, allowing tug to approach the tow either bow or stern on.</div>
   <div class="answer-row">
@@ -650,7 +675,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.7.12</span>
     <span class="q-text">Are all wire rope terminations on board made with hard eyes with evidence that socketing has been done by a competent person?</span>
   </div>
-  <div class="guidance">If any terminations use long nose or hand-spliced, respond 'No' and provide an observation.</div>
+  <div class="guidance">If any terminations use long nose or hand-spliced, respond &#x27;No&#x27; and provide an observation.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_7_12" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_7_12" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -755,7 +780,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.7.17</span>
     <span class="q-text">Does the vessel Operator have an adequate replacement policy with valid certificates for the towing line(s) in use?</span>
   </div>
-  <div class="guidance">Replacement policy should be based on Manufacturer's recommendation and periodic onboard line inspections. Independent third party testing results should be used to verify the length of service time.</div>
+  <div class="guidance">Replacement policy should be based on Manufacturer&#x27;s recommendation and periodic onboard line inspections. Independent third party testing results should be used to verify the length of service time.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_7_17" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_7_17" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -818,7 +843,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.7.20</span>
     <span class="q-text">If applicable, does the vessel have a suitable towing wire arrangement to prevent girting?</span>
   </div>
-  <div class="guidance">Risk assessment, procedures and checklists in place to address the issue of girting. A towline under tension will exert a heeling moment on the tug if the line is secured around amidships and is leading off toward the beam. If the force in the towline is sufficiently powerful, it may overcome the tug's righting lever and cause it to capsize. Girting can occur very rapidly, and incidents have occurred where crew members have not been able to escape in time. Moreover, it should not be assumed that the winch or winch brake will render or that the towline will break before a potential girting situation occurs as less force may be required to capsize the tug.</div>
+  <div class="guidance">Risk assessment, procedures and checklists in place to address the issue of girting. A towline under tension will exert a heeling moment on the tug if the line is secured around amidships and is leading off toward the beam. If the force in the towline is sufficiently powerful, it may overcome the tug&#x27;s righting lever and cause it to capsize. Girting can occur very rapidly, and incidents have occurred where crew members have not been able to escape in time. Moreover, it should not be assumed that the winch or winch brake will render or that the towline will break before a potential girting situation occurs as less force may be required to capsize the tug.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_7_20" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_7_20" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -902,7 +927,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.7.24</span>
     <span class="q-text">Has the Master appropriate experience of towing/pushing operations on this particular type of vessel?</span>
   </div>
-  <div class="guidance">State Master's experience. For U.S. mariners (license endorsement or Towing Officer Assessment Record) or countries which require documented towing competence assessments or a towing endorsement on their license, is such license endorsement or documented assessment in place.</div>
+  <div class="guidance">State Master&#x27;s experience. For U.S. mariners (license endorsement or Towing Officer Assessment Record) or countries which require documented towing competence assessments or a towing endorsement on their license, is such license endorsement or documented assessment in place.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_7_24" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_7_24" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1006,7 +1031,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.7.29</span>
     <span class="q-text">Are deck officers aware of the stability conditions during towing operations and understand limitations associated?</span>
   </div>
-  <div class="guidance">All the loading conditions reported in the trim and stability booklet, with the exception of lightship, should have been checked by class in order to investigate the ship's capability to support the effect of the towing force in the beam direction. Master of the vessel should receive information in the Trim and Stability Booklet regarding cargo and/or ballast limitations, list of protected flooding openings that need to be kept closed, wind and/or wave restrictions, etc., necessary to ensure that the stability is in compliance with the criteria applicable. If any loading condition requires water ballast for compliance with the criteria, the quantity and disposition should be stated in the Guidance to the Master.</div>
+  <div class="guidance">All the loading conditions reported in the trim and stability booklet, with the exception of lightship, should have been checked by class in order to investigate the ship&#x27;s capability to support the effect of the towing force in the beam direction. Master of the vessel should receive information in the Trim and Stability Booklet regarding cargo and/or ballast limitations, list of protected flooding openings that need to be kept closed, wind and/or wave restrictions, etc., necessary to ensure that the stability is in compliance with the criteria applicable. If any loading condition requires water ballast for compliance with the criteria, the quantity and disposition should be stated in the Guidance to the Master.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_7_29" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_7_29" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1027,7 +1052,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.7.30</span>
     <span class="q-text">Are the calculated indirect towing forces available to the Master and deck officers?</span>
   </div>
-  <div class="guidance">Guidance - Indirect towing is a method used by tug to exert dynamic forces on the tow line substantially beyond its static bollard pull; e.g. using a tug's weight, bulk and underwater surface area or by turning obliquely to a tow line to produce additional forces to stop or turn a ship under way.</div>
+  <div class="guidance">Guidance - Indirect towing is a method used by tug to exert dynamic forces on the tow line substantially beyond its static bollard pull; e.g. using a tug&#x27;s weight, bulk and underwater surface area or by turning obliquely to a tow line to produce additional forces to stop or turn a ship under way.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_7_30" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_7_30" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1132,7 +1157,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.7.35</span>
     <span class="q-text">Are bollard pull figures available for when power is diverted to transverse thrusters or other large power consumers?</span>
   </div>
-  <div class="guidance">Use of thrusters and/or winches may reduce the available power for main propulsion resulting in a reduced bollard pull. Masters should be aware that bollard pull, as measured for the vessel's certificates, in some cases, does not allow for the power used by deck machinery, thrusters and other consumers diverted from the main propulsion. As a minimum, curve showing the maximum available bollard pull for anchor handling as function of total electrical power balance (accounting for the power consumption of side or azimuth thrusters and winches) must be available to crew.</div>
+  <div class="guidance">Use of thrusters and/or winches may reduce the available power for main propulsion resulting in a reduced bollard pull. Masters should be aware that bollard pull, as measured for the vessel&#x27;s certificates, in some cases, does not allow for the power used by deck machinery, thrusters and other consumers diverted from the main propulsion. As a minimum, curve showing the maximum available bollard pull for anchor handling as function of total electrical power balance (accounting for the power consumption of side or azimuth thrusters and winches) must be available to crew.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_7_35" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_7_35" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1233,7 +1258,6 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 <div class="section">
   <div class="section-title">8.6 -- Anchor handling</div>
-
 <div class="question" id="wrap-q8_6_1">
   <div class="q-header">
     <span class="q-num">8.6.1</span>
@@ -1323,7 +1347,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.6.5</span>
     <span class="q-text">Does the vessel carry out risk assessments for each specific operation?</span>
   </div>
-  <div class="guidance">The assessments must also embrace the risk to which the vessel can be exposed. During recovery and deployment of anchors, the vessel will often be affected by great forces. A high level of tensile forces (tension) in the chain or wire may cause great heeling moment and high astern or transverse speed of motion in the anchor handling vessel. A simultaneous loss of thrust force on the vessel's own propellors and or fatal rudder position may result in a rotation which leads to a considerable increase in transverse forces. Environmental conditions as wind, waves and currents will also influence the operations.</div>
+  <div class="guidance">The assessments must also embrace the risk to which the vessel can be exposed. During recovery and deployment of anchors, the vessel will often be affected by great forces. A high level of tensile forces (tension) in the chain or wire may cause great heeling moment and high astern or transverse speed of motion in the anchor handling vessel. A simultaneous loss of thrust force on the vessel&#x27;s own propellors and or fatal rudder position may result in a rotation which leads to a considerable increase in transverse forces. Environmental conditions as wind, waves and currents will also influence the operations.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_6_5" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_6_5" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1344,7 +1368,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.6.6</span>
     <span class="q-text">Does the vessel have contingency plans for operations associated with anchor handling?</span>
   </div>
-  <div class="guidance">Procedures for unintended situations and in particular entire or partial loss of bollard pull, are to be established. They should describe, for each type of equipment (including but not limited to anchor handling winch, wire/chain stopper (such as Karm Fork or Shark Jaw)), emergency release methods, time delays and release speed in both normal operating condition and dead ship condition. Entire or partial loss of vessel's bollard pull will cause the vessel to be pulled astern with great forces by the tension in anchor arrangement. These procedures are to be known by the crew and vital information displayed on the bridge or any other appropriate location.</div>
+  <div class="guidance">Procedures for unintended situations and in particular entire or partial loss of bollard pull, are to be established. They should describe, for each type of equipment (including but not limited to anchor handling winch, wire/chain stopper (such as Karm Fork or Shark Jaw)), emergency release methods, time delays and release speed in both normal operating condition and dead ship condition. Entire or partial loss of vessel&#x27;s bollard pull will cause the vessel to be pulled astern with great forces by the tension in anchor arrangement. These procedures are to be known by the crew and vital information displayed on the bridge or any other appropriate location.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_6_6" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_6_6" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1365,7 +1389,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.6.7</span>
     <span class="q-text">Does the vessel have displayed on the bridge a document to show the acceptable vertical and horizontal transverse force/tensions to which the vessel can be exposed?</span>
   </div>
-  <div class="guidance">Calculations must show the max acceptable tension in wire/chain in order for the vessel's maximum heeling to be less than one of the following angles whichever occurs first: Heeling angle equivalent to a GZ value equal to 50% of GZ max; The angle of flooding, which results in water on working deck; 15 degrees. The most unfavourable conditions for transverse tension are to be considered for the calculations, usually chain acting transversely over the side to the outer pins. The displayed information is to be under the form of curves, prepared so that the master can easily determine the maximum tension that can be applied to the vessel, as a function of the draught, trim and horizontal angle between the longitudinal axis or the guide pin and the wire/chain. (Ref NMD circular Date: 03/31/2014 / Number: RSV 3 - 2014)</div>
+  <div class="guidance">Calculations must show the max acceptable tension in wire/chain in order for the vessel&#x27;s maximum heeling to be less than one of the following angles whichever occurs first: Heeling angle equivalent to a GZ value equal to 50% of GZ max; The angle of flooding, which results in water on working deck; 15 degrees. The most unfavourable conditions for transverse tension are to be considered for the calculations, usually chain acting transversely over the side to the outer pins. The displayed information is to be under the form of curves, prepared so that the master can easily determine the maximum tension that can be applied to the vessel, as a function of the draught, trim and horizontal angle between the longitudinal axis or the guide pin and the wire/chain. (Ref NMD circular Date: 03/31/2014 / Number: RSV 3 - 2014)</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_6_7" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_6_7" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1488,9 +1512,9 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 <div class="question" id="wrap-q8_6_13">
   <div class="q-header">
     <span class="q-num">8.6.13</span>
-    <span class="q-text">Does the vessel's operating procedure define a minimum of two deck officers capable of taking control of the vessel to be on the bridge throughout anchor handling operations?</span>
+    <span class="q-text">Does the vessel&#x27;s operating procedure define a minimum of two deck officers capable of taking control of the vessel to be on the bridge throughout anchor handling operations?</span>
   </div>
-  <div class="guidance">Vessel's operating procedures for bridge manning should be in line with industry standards such as GOMO, which requires 2 deck officers to be present during anchor handling operations.</div>
+  <div class="guidance">Vessel&#x27;s operating procedures for bridge manning should be in line with industry standards such as GOMO, which requires 2 deck officers to be present during anchor handling operations.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_6_13" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_6_13" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1595,7 +1619,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
     <span class="q-num">8.6.18</span>
     <span class="q-text">Are bollard pull figures available for when power is diverted to transverse thrusters or other large power consumers?</span>
   </div>
-  <div class="guidance">Use of thrusters and/or winches may reduce the available power for main propulsion resulting in a reduced bollard pull. Masters should be aware that bollard pull, as measured for the vessel's certificates, in some cases, does not allow for the power used by deck machinery, thrusters and other consumers diverted from the main propulsion. As a minimum, curve showing the maximum available bollard pull for anchor handling as a function of total electrical power balance (accounting for the power consumption of side or azimuth thrusters and winches) must be available to crew. Note: Inspector should consider vessel power generation as, where vessel propulsion is direct drive, the bollard pull should not be affected by power consumption.</div>
+  <div class="guidance">Use of thrusters and/or winches may reduce the available power for main propulsion resulting in a reduced bollard pull. Masters should be aware that bollard pull, as measured for the vessel&#x27;s certificates, in some cases, does not allow for the power used by deck machinery, thrusters and other consumers diverted from the main propulsion. As a minimum, curve showing the maximum available bollard pull for anchor handling as a function of total electrical power balance (accounting for the power consumption of side or azimuth thrusters and winches) must be available to crew. Note: Inspector should consider vessel power generation as, where vessel propulsion is direct drive, the bollard pull should not be affected by power consumption.</div>
   <div class="answer-row">
     <label class="ans yes-lbl"><input type="radio" name="q8_6_18" value="YES" onchange="onAnswer()"> &#10003; YES</label>
     <label class="ans no-lbl"><input type="radio" name="q8_6_18" value="NO" onchange="onAnswer()"> &#10007; NO</label>
@@ -1885,19 +1909,64 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 
 <div class="general-obs">
-  <h3>General Observations</h3>
-  <textarea id="general-obs" placeholder="Overall inspection notes, summary of findings, follow-up actions required..." rows="5" oninput="onAnswer()"></textarea>
+  <h3>&#9888; General Observations</h3>
+  <textarea id="general-obs" placeholder="General remarks about this inspection..." oninput="onAnswer()"></textarea>
 </div>
-
 
 <script>
 
 var STORAGE_KEY = "ovid-ahts-ops";
 var ALL_IDS = ["q8_23_1", "q8_23_2", "q8_23_3", "q8_23_4", "q8_23_5", "q8_23_6", "q8_23_7", "q8_23_8", "q8_23_9", "q8_23_10", "q8_23_11", "q8_23_12", "q8_23_13", "q8_7_1", "q8_7_2", "q8_7_3", "q8_7_4", "q8_7_5", "q8_7_6", "q8_7_7", "q8_7_8", "q8_7_9", "q8_7_10", "q8_7_11", "q8_7_12", "q8_7_13", "q8_7_14", "q8_7_15", "q8_7_16", "q8_7_17", "q8_7_18", "q8_7_19", "q8_7_20", "q8_7_21", "q8_7_22", "q8_7_23", "q8_7_24", "q8_7_25", "q8_7_26", "q8_7_27", "q8_7_28", "q8_7_29", "q8_7_30", "q8_7_31", "q8_7_32", "q8_7_33", "q8_7_34", "q8_7_35", "q8_7_36", "q8_7_37", "q8_7_38", "q8_7_39", "q8_6_1", "q8_6_2", "q8_6_3", "q8_6_4", "q8_6_5", "q8_6_6", "q8_6_7", "q8_6_8", "q8_6_9", "q8_6_10", "q8_6_11", "q8_6_12", "q8_6_13", "q8_6_14", "q8_6_15", "q8_6_16", "q8_6_17", "q8_6_18", "q8_6_19", "q8_6_20", "q8_6_21", "q8_6_22", "q8_6_23", "q8_6_24", "q8_6_25", "q8_6_26", "q8_6_27", "q8_6_28", "q8_6_29", "q8_6_30", "q8_6_31"];
-var Q_TEXTS = {"q8_23_1": "Does the vessel Operator have an adequate replacement policy with valid certificates for the towing line(s) in use?", "q8_23_2": "If using HMPE, is the contact surface for the HMPE tow line clean and sufficiently smooth to avoid damage to tow line?", "q8_23_3": "Is the vessel\u2019s fendering in good condition and suitable for ship assist work?", "q8_23_4": "Does the Operator have good visibility of the work area from the vessel\u2019s control station?", "q8_23_5": "If there are visibility limitations caused by physical vessel design, are there risk mitigations employed to address them such as radios and talk back devices and are they in good working order?", "q8_23_6": "Does the operator have a procedure in place covering the use of recessed bitts?", "q8_23_7": "If the vessel has a STAPLE, is the SWL for the staple and the angles of operability known to the vessel master and deck officers?", "q8_23_8": "Are the calculated indirect towing forces available to the Master and deck officers?", "q8_23_9": "Are any operational limitations for towing arrangements (both fwd and aft) available and known to the master and officers?", "q8_23_10": "If fitted are the tension monitors calibrated and in good working order?", "q8_23_11": "Is there a document readily available that clearly states vessel stability criteria and limitations and is there evidence to suggest master is familiar with the document?", "q8_23_12": "Are the vessel\u2019s winch(s) in good working order?", "q8_23_13": "Is the ship assist winch fitted with an emergency release system and is it regularly tested?", "q8_7_1": "Is the vessel classed/certified for Towing and/or Pushing operations?", "q8_7_2": "Is the vessel's fendering in good condition?", "q8_7_3": "Is tow winch, including associated hoses and brake linings, in good order?", "q8_7_4": "Is the towing gear visually in good condition?", "q8_7_5": "Are certificates for the towing wire and anchor handling wire including sockets available onboard?", "q8_7_6": "Is there a formal, time-based retirement/replacement policy for the towing assembly?", "q8_7_7": "Does the vessel maintain a towing log in accordance with IMO guidelines?", "q8_7_8": "Does the vessel adhere to the IMO guidelines with regard to the minimum breaking load (MBL) of the towline?", "q8_7_9": "Does the vessel have procedures, including contingency plans, in place that address towing and pushing activities?", "q8_7_10": "Does the vessel have a searchlight that can be directed from the vessel's main steering station and is it in good working order?", "q8_7_11": "Does the vessel carry a spare towline, stretchers, shackles and associated equipment that meet all the requirements for the main gear?", "q8_7_12": "Are all wire rope terminations on board made with hard eyes with evidence that socketing has been done by a competent person?", "q8_7_13": "Is the winch fitted with equipment to measure the tension of the towline and is the information displayed in the wheelhouse?", "q8_7_14": "Is a tow winch brake alarm fitted and audible in the wheelhouse?", "q8_7_15": "Does the vessel have a tension gauge and/or tension limiter to monitor bollard pull and is it regularly calibrated?", "q8_7_16": "Are records of inspection and service of the towline available on board?", "q8_7_17": "Does the vessel Operator have an adequate replacement policy with valid certificates for the towing line(s) in use?", "q8_7_18": "If using High Modulus Polyethylene (HMPE), is the contact surface for the HMPE tow line clean and sufficiently smooth to avoid damage to tow line?", "q8_7_19": "If applicable is there a system for prevention of chafing of the tow-wire?", "q8_7_20": "If applicable, does the vessel have a suitable towing wire arrangement to prevent girting?", "q8_7_21": "Are emergency release systems regularly tested and records maintained?", "q8_7_22": "If towline is not provided with quick release capability, does the vessel have cutting gear readily available?", "q8_7_23": "If used, do shock lines and/or towing stretchers have the capability to deal with the expected dynamic loads?", "q8_7_24": "Has the Master appropriate experience of towing/pushing operations on this particular type of vessel?", "q8_7_25": "If applicable, have the Master and/or any officers with direct responsibility for ship handling received appropriate formal training in ship handling for non-conventional propulsion system?", "q8_7_26": "Are risk assessments carried out for all towing/pushing operations?", "q8_7_27": "Is the vessel fitted with necessary towing navigation lights for compliance with Collision Regulations?", "q8_7_28": "Are the Master and officers aware of vessel performance capabilities and limitations?", "q8_7_29": "Are deck officers aware of the stability conditions during towing operations and understand limitations associated?", "q8_7_30": "Are the calculated indirect towing forces available to the Master and deck officers?", "q8_7_31": "Does the Operator have good visibility of the work area from the vessel\u2019s control station?", "q8_7_32": "If there are visibility limitations caused by physical vessel design, are there risk mitigations employed to address them such as radios and talk back devices and are they in good working order?", "q8_7_33": "Is there a sufficient number of portable VHF or UHF and spare batteries available on board?", "q8_7_34": "Is there a notice posted on the bridge giving instructions for emergency release procedures?", "q8_7_35": "Are bollard pull figures available for when power is diverted to transverse thrusters or other large power consumers?", "q8_7_36": "Does the operator have a policy in place covering the use of recessed bitts?", "q8_7_37": "If the vessel has a STAPLE, is the SWL for the staple and the angles of operability known to the vessel master and deck officers?", "q8_7_38": "Does the vessel have bow towing capability when conducting static tow operations?", "q8_7_39": "For vessels engaged in static towing operations, does the towing assembly comply with the recommendations of OCIMF Static Towing Assembly Guidelines (STAG)?", "q8_6_1": "Is the vessel classed for anchor handling operations?", "q8_6_2": "Does the vessel have a Bollard Pull certificate?", "q8_6_3": "Are certificates for the towing wire and anchor handling wire including sockets available onboard?", "q8_6_4": "Are all work, tow and anchor handling wires inspected and tested on a periodic basis?", "q8_6_5": "Does the vessel carry out risk assessments for each specific operation?", "q8_6_6": "Does the vessel have contingency plans for operations associated with anchor handling?", "q8_6_7": "Does the vessel have displayed on the bridge a document to show the acceptable vertical and horizontal transverse force/tensions to which the vessel can be exposed?", "q8_6_8": "Is there a notice posted on the bridge giving instructions for emergency release procedures?", "q8_6_9": "Are emergency release systems regularly tested and records maintained?", "q8_6_10": "Does the vessel operating manual have a written procedure for safe anchor handling operations in differing water depths?", "q8_6_11": "Does the vessel operating manual include written procedures for SIMOPS and tandem vessel operations?", "q8_6_12": "Is all anchor handling equipment secured when not in use?", "q8_6_13": "Does the vessel's operating procedure define a minimum of two deck officers capable of taking control of the vessel to be on the bridge throughout anchor handling operations?", "q8_6_14": "Has the effect of slack tanks been addressed within the stability manual?", "q8_6_15": "Do documented procedures address the use of anti-roll tanks during anchor handling?", "q8_6_16": "Is there recorded evidence of regular testing, inspection and maintenance of all anchor handling equipment including emergency release functionality included in vessel maintenance management system?", "q8_6_17": "Does the vessel have a tension gauge and/or tension limiter to monitor bollard pull and is it regularly calibrated?", "q8_6_18": "Are bollard pull figures available for when power is diverted to transverse thrusters or other large power consumers?", "q8_6_19": "Where towing winch render or emergency release systems are not fitted, is the vessel provided with readily available emergency wire cutting equipment?", "q8_6_20": "Are tugger winches and wires in a satisfactory condition?", "q8_6_21": "Does the Master, Bridge Officers and Deck Personnel have appropriate anchor handling training and experience?", "q8_6_22": "Are records available confirming the training of winch operators?", "q8_6_23": "Where winches are not visible from the bridge, is there a system in place to enable remote monitoring?", "q8_6_24": "Is there evidence of anchor handling operations planning?", "q8_6_25": "Are communications between the bridge and working deck, including backup systems, in working order?", "q8_6_26": "Are anchor handling winch, towing pins and wire/chain stopper in good order and reported to be fully operational?", "q8_6_27": "Are safe areas beyond the crash barriers clear of obstructions and easily accessible to the crew from the working deck?", "q8_6_28": "Is the vessel provided with a stability instrument compliant with the requirements of international code on intact stability part B - ship engaged in anchor handling operations?", "q8_6_29": "Is vessel provided with preventive measures to mitigate the risk of water ingress through the inspection openings on the anchor handling systems?", "q8_6_30": "Are appropriate instructions available for application of silicone sealant and/or installation of gasket available to ensure the watertightness of the anchor handling system housing?", "q8_6_31": "Are appropriate instructions available for testing the watertightness of the anchor handling system after completion of any works and installation of the inspection covers?"};
+var Q_TEXTS = {"q8_23_1": "Does the vessel Operator have an adequate replacement policy with valid certificates for the towing line(s) in use?", "q8_23_2": "If using HMPE, is the contact surface for the HMPE tow line clean and sufficiently smooth to avoid damage to tow line?", "q8_23_3": "Is the vessel’s fendering in good condition and suitable for ship assist work?", "q8_23_4": "Does the Operator have good visibility of the work area from the vessel’s control station?", "q8_23_5": "If there are visibility limitations caused by physical vessel design, are there risk mitigations employed to address them such as radios and talk back devices and are they in good working order?", "q8_23_6": "Does the operator have a procedure in place covering the use of recessed bitts?", "q8_23_7": "If the vessel has a STAPLE, is the SWL for the staple and the angles of operability known to the vessel master and deck officers?", "q8_23_8": "Are the calculated indirect towing forces available to the Master and deck officers?", "q8_23_9": "Are any operational limitations for towing arrangements (both fwd and aft) available and known to the master and officers?", "q8_23_10": "If fitted are the tension monitors calibrated and in good working order?", "q8_23_11": "Is there a document readily available that clearly states vessel stability criteria and limitations and is there evidence to suggest master is familiar with the document?", "q8_23_12": "Are the vessel’s winch(s) in good working order?", "q8_23_13": "Is the ship assist winch fitted with an emergency release system and is it regularly tested?", "q8_7_1": "Is the vessel classed/certified for Towing and/or Pushing operations?", "q8_7_2": "Is the vessel's fendering in good condition?", "q8_7_3": "Is tow winch, including associated hoses and brake linings, in good order?", "q8_7_4": "Is the towing gear visually in good condition?", "q8_7_5": "Are certificates for the towing wire and anchor handling wire including sockets available onboard?", "q8_7_6": "Is there a formal, time-based retirement/replacement policy for the towing assembly?", "q8_7_7": "Does the vessel maintain a towing log in accordance with IMO guidelines?", "q8_7_8": "Does the vessel adhere to the IMO guidelines with regard to the minimum breaking load (MBL) of the towline?", "q8_7_9": "Does the vessel have procedures, including contingency plans, in place that address towing and pushing activities?", "q8_7_10": "Does the vessel have a searchlight that can be directed from the vessel's main steering station and is it in good working order?", "q8_7_11": "Does the vessel carry a spare towline, stretchers, shackles and associated equipment that meet all the requirements for the main gear?", "q8_7_12": "Are all wire rope terminations on board made with hard eyes with evidence that socketing has been done by a competent person?", "q8_7_13": "Is the winch fitted with equipment to measure the tension of the towline and is the information displayed in the wheelhouse?", "q8_7_14": "Is a tow winch brake alarm fitted and audible in the wheelhouse?", "q8_7_15": "Does the vessel have a tension gauge and/or tension limiter to monitor bollard pull and is it regularly calibrated?", "q8_7_16": "Are records of inspection and service of the towline available on board?", "q8_7_17": "Does the vessel Operator have an adequate replacement policy with valid certificates for the towing line(s) in use?", "q8_7_18": "If using High Modulus Polyethylene (HMPE), is the contact surface for the HMPE tow line clean and sufficiently smooth to avoid damage to tow line?", "q8_7_19": "If applicable is there a system for prevention of chafing of the tow-wire?", "q8_7_20": "If applicable, does the vessel have a suitable towing wire arrangement to prevent girting?", "q8_7_21": "Are emergency release systems regularly tested and records maintained?", "q8_7_22": "If towline is not provided with quick release capability, does the vessel have cutting gear readily available?", "q8_7_23": "If used, do shock lines and/or towing stretchers have the capability to deal with the expected dynamic loads?", "q8_7_24": "Has the Master appropriate experience of towing/pushing operations on this particular type of vessel?", "q8_7_25": "If applicable, have the Master and/or any officers with direct responsibility for ship handling received appropriate formal training in ship handling for non-conventional propulsion system?", "q8_7_26": "Are risk assessments carried out for all towing/pushing operations?", "q8_7_27": "Is the vessel fitted with necessary towing navigation lights for compliance with Collision Regulations?", "q8_7_28": "Are the Master and officers aware of vessel performance capabilities and limitations?", "q8_7_29": "Are deck officers aware of the stability conditions during towing operations and understand limitations associated?", "q8_7_30": "Are the calculated indirect towing forces available to the Master and deck officers?", "q8_7_31": "Does the Operator have good visibility of the work area from the vessel’s control station?", "q8_7_32": "If there are visibility limitations caused by physical vessel design, are there risk mitigations employed to address them such as radios and talk back devices and are they in good working order?", "q8_7_33": "Is there a sufficient number of portable VHF or UHF and spare batteries available on board?", "q8_7_34": "Is there a notice posted on the bridge giving instructions for emergency release procedures?", "q8_7_35": "Are bollard pull figures available for when power is diverted to transverse thrusters or other large power consumers?", "q8_7_36": "Does the operator have a policy in place covering the use of recessed bitts?", "q8_7_37": "If the vessel has a STAPLE, is the SWL for the staple and the angles of operability known to the vessel master and deck officers?", "q8_7_38": "Does the vessel have bow towing capability when conducting static tow operations?", "q8_7_39": "For vessels engaged in static towing operations, does the towing assembly comply with the recommendations of OCIMF Static Towing Assembly Guidelines (STAG)?", "q8_6_1": "Is the vessel classed for anchor handling operations?", "q8_6_2": "Does the vessel have a Bollard Pull certificate?", "q8_6_3": "Are certificates for the towing wire and anchor handling wire including sockets available onboard?", "q8_6_4": "Are all work, tow and anchor handling wires inspected and tested on a periodic basis?", "q8_6_5": "Does the vessel carry out risk assessments for each specific operation?", "q8_6_6": "Does the vessel have contingency plans for operations associated with anchor handling?", "q8_6_7": "Does the vessel have displayed on the bridge a document to show the acceptable vertical and horizontal transverse force/tensions to which the vessel can be exposed?", "q8_6_8": "Is there a notice posted on the bridge giving instructions for emergency release procedures?", "q8_6_9": "Are emergency release systems regularly tested and records maintained?", "q8_6_10": "Does the vessel operating manual have a written procedure for safe anchor handling operations in differing water depths?", "q8_6_11": "Does the vessel operating manual include written procedures for SIMOPS and tandem vessel operations?", "q8_6_12": "Is all anchor handling equipment secured when not in use?", "q8_6_13": "Does the vessel's operating procedure define a minimum of two deck officers capable of taking control of the vessel to be on the bridge throughout anchor handling operations?", "q8_6_14": "Has the effect of slack tanks been addressed within the stability manual?", "q8_6_15": "Do documented procedures address the use of anti-roll tanks during anchor handling?", "q8_6_16": "Is there recorded evidence of regular testing, inspection and maintenance of all anchor handling equipment including emergency release functionality included in vessel maintenance management system?", "q8_6_17": "Does the vessel have a tension gauge and/or tension limiter to monitor bollard pull and is it regularly calibrated?", "q8_6_18": "Are bollard pull figures available for when power is diverted to transverse thrusters or other large power consumers?", "q8_6_19": "Where towing winch render or emergency release systems are not fitted, is the vessel provided with readily available emergency wire cutting equipment?", "q8_6_20": "Are tugger winches and wires in a satisfactory condition?", "q8_6_21": "Does the Master, Bridge Officers and Deck Personnel have appropriate anchor handling training and experience?", "q8_6_22": "Are records available confirming the training of winch operators?", "q8_6_23": "Where winches are not visible from the bridge, is there a system in place to enable remote monitoring?", "q8_6_24": "Is there evidence of anchor handling operations planning?", "q8_6_25": "Are communications between the bridge and working deck, including backup systems, in working order?", "q8_6_26": "Are anchor handling winch, towing pins and wire/chain stopper in good order and reported to be fully operational?", "q8_6_27": "Are safe areas beyond the crash barriers clear of obstructions and easily accessible to the crew from the working deck?", "q8_6_28": "Is the vessel provided with a stability instrument compliant with the requirements of international code on intact stability part B - ship engaged in anchor handling operations?", "q8_6_29": "Is vessel provided with preventive measures to mitigate the risk of water ingress through the inspection openings on the anchor handling systems?", "q8_6_30": "Are appropriate instructions available for application of silicone sealant and/or installation of gasket available to ensure the watertightness of the anchor handling system housing?", "q8_6_31": "Are appropriate instructions available for testing the watertightness of the anchor handling system after completion of any works and installation of the inspection covers?"};
 var Q_NUMS = {"q8_23_1": "8.23.1", "q8_23_2": "8.23.2", "q8_23_3": "8.23.3", "q8_23_4": "8.23.4", "q8_23_5": "8.23.5", "q8_23_6": "8.23.6", "q8_23_7": "8.23.7", "q8_23_8": "8.23.8", "q8_23_9": "8.23.9", "q8_23_10": "8.23.10", "q8_23_11": "8.23.11", "q8_23_12": "8.23.12", "q8_23_13": "8.23.13", "q8_7_1": "8.7.1", "q8_7_2": "8.7.2", "q8_7_3": "8.7.3", "q8_7_4": "8.7.4", "q8_7_5": "8.7.5", "q8_7_6": "8.7.6", "q8_7_7": "8.7.7", "q8_7_8": "8.7.8", "q8_7_9": "8.7.9", "q8_7_10": "8.7.10", "q8_7_11": "8.7.11", "q8_7_12": "8.7.12", "q8_7_13": "8.7.13", "q8_7_14": "8.7.14", "q8_7_15": "8.7.15", "q8_7_16": "8.7.16", "q8_7_17": "8.7.17", "q8_7_18": "8.7.18", "q8_7_19": "8.7.19", "q8_7_20": "8.7.20", "q8_7_21": "8.7.21", "q8_7_22": "8.7.22", "q8_7_23": "8.7.23", "q8_7_24": "8.7.24", "q8_7_25": "8.7.25", "q8_7_26": "8.7.26", "q8_7_27": "8.7.27", "q8_7_28": "8.7.28", "q8_7_29": "8.7.29", "q8_7_30": "8.7.30", "q8_7_31": "8.7.31", "q8_7_32": "8.7.32", "q8_7_33": "8.7.33", "q8_7_34": "8.7.34", "q8_7_35": "8.7.35", "q8_7_36": "8.7.36", "q8_7_37": "8.7.37", "q8_7_38": "8.7.38", "q8_7_39": "8.7.39", "q8_6_1": "8.6.1", "q8_6_2": "8.6.2", "q8_6_3": "8.6.3", "q8_6_4": "8.6.4", "q8_6_5": "8.6.5", "q8_6_6": "8.6.6", "q8_6_7": "8.6.7", "q8_6_8": "8.6.8", "q8_6_9": "8.6.9", "q8_6_10": "8.6.10", "q8_6_11": "8.6.11", "q8_6_12": "8.6.12", "q8_6_13": "8.6.13", "q8_6_14": "8.6.14", "q8_6_15": "8.6.15", "q8_6_16": "8.6.16", "q8_6_17": "8.6.17", "q8_6_18": "8.6.18", "q8_6_19": "8.6.19", "q8_6_20": "8.6.20", "q8_6_21": "8.6.21", "q8_6_22": "8.6.22", "q8_6_23": "8.6.23", "q8_6_24": "8.6.24", "q8_6_25": "8.6.25", "q8_6_26": "8.6.26", "q8_6_27": "8.6.27", "q8_6_28": "8.6.28", "q8_6_29": "8.6.29", "q8_6_30": "8.6.30", "q8_6_31": "8.6.31"};
+var META_IDS = ["vessel", "insp_date", "inspector", "operator", "flag", "imo", "port", "block", "status"];
 var saveTimer = null;
 var photoStore = {};
+
+/* ---- IndexedDB pour les photos (localStorage = 5MB max, insuffisant) ---- */
+var DB_NAME = 'inspectare-photos';
+var idb = null;
+function openDB() {
+  return new Promise(function(resolve, reject) {
+    if (idb) return resolve(idb);
+    var req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = function(e) {
+      e.target.result.createObjectStore('photos');
+    };
+    req.onsuccess = function(e) { idb = e.target.result; resolve(idb); };
+    req.onerror = function(e) { reject(e); };
+  });
+}
+function idbSavePhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction('photos', 'readwrite');
+      tx.objectStore('photos').put(photoStore, STORAGE_KEY);
+      tx.oncomplete = resolve;
+      tx.onerror = reject;
+    });
+  });
+}
+function idbLoadPhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction('photos', 'readonly');
+      var req = tx.objectStore('photos').get(STORAGE_KEY);
+      req.onsuccess = function() { resolve(req.result || {}); };
+      req.onerror = function() { resolve({}); };
+    });
+  });
+}
+function idbClearPhotos() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction('photos', 'readwrite');
+      tx.objectStore('photos').delete(STORAGE_KEY);
+      tx.oncomplete = resolve;
+      tx.onerror = resolve;
+    });
+  });
+}
 
 function compressImage(file, callback) {
   var reader = new FileReader();
@@ -1993,11 +2062,10 @@ function updateProgress() {
 }
 
 function saveData() {
-  var data = { meta: {}, answers: {}, obs: {}, comments: {}, photos: photoStore };
-  var metaIds = ['vessel','insp_date','inspector','operator','flag','imo','port','block','status'];
-  for (var m = 0; m < metaIds.length; m++) {
-    var el = document.getElementById('m-' + metaIds[m]);
-    if (el) data.meta[metaIds[m]] = el.value;
+  var data = { meta: {}, answers: {}, obs: {}, comments: {} };
+  for (var m = 0; m < META_IDS.length; m++) {
+    var el = document.getElementById('m-' + META_IDS[m]);
+    if (el) data.meta[META_IDS[m]] = el.value;
   }
   for (var i = 0; i < ALL_IDS.length; i++) {
     var id = ALL_IDS[i];
@@ -2023,8 +2091,11 @@ function saveData() {
       setTimeout(function(){ ind.style.opacity = '0'; }, 2000);
     }
   } catch(e) {
-    alert('Storage full. Remove some photos to continue saving.');
+    alert('Storage error while saving answers.');
   }
+  idbSavePhotos().catch(function() {
+    alert('Photo storage error. Photo may not be saved.');
+  });
 }
 
 function loadData() {
@@ -2033,10 +2104,9 @@ function loadData() {
     if (!raw) return;
     var data = JSON.parse(raw);
     if (data.meta) {
-      var metaIds = ['vessel','insp_date','inspector','operator','flag','imo','port','block','status'];
-      for (var m = 0; m < metaIds.length; m++) {
-        var el = document.getElementById('m-' + metaIds[m]);
-        if (el && data.meta[metaIds[m]]) el.value = data.meta[metaIds[m]];
+      for (var m = 0; m < META_IDS.length; m++) {
+        var el = document.getElementById('m-' + META_IDS[m]);
+        if (el && data.meta[META_IDS[m]]) el.value = data.meta[META_IDS[m]];
       }
     }
     if (data.answers) {
@@ -2059,15 +2129,27 @@ function loadData() {
         if (cmt) cmt.value = data.comments[cid];
       }
     }
-    if (data.photos) {
-      photoStore = data.photos;
-      for (var pid in photoStore) { renderPhotos(pid); }
-    }
     if (data.general_obs) {
       var gobs = document.getElementById('general-obs');
       if (gobs) gobs.value = data.general_obs;
     }
     updateProgress();
+    // Photos : IDB, avec migration depuis l'ancien format localStorage
+    var legacyPhotos = data.photos || null;
+    idbLoadPhotos().then(function(stored) {
+      photoStore = stored;
+      if (legacyPhotos) {
+        for (var lp in legacyPhotos) {
+          if (!photoStore[lp]) photoStore[lp] = legacyPhotos[lp];
+        }
+        idbSavePhotos().then(function() {
+          // retirer les photos du localStorage pour liberer le quota
+          delete data.photos;
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+        });
+      }
+      for (var pid in photoStore) { renderPhotos(pid); }
+    });
   } catch(e) {}
 }
 
@@ -2075,7 +2157,7 @@ function clearData() {
   if (!confirm('Clear all answers and photos? This cannot be undone.')) return;
   try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
   photoStore = {};
-  location.reload();
+  idbClearPhotos().then(function() { location.reload(); });
 }
 
 function getInitials(name) {
@@ -2088,26 +2170,91 @@ function getInitials(name) {
   return ini;
 }
 
+function shrinkDataUrl(dataUrl, maxDim, quality) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload = function() {
+      var w = img.width, h = img.height;
+      if (w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+      if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+      var c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(c.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = function() { resolve(dataUrl); };
+    img.src = dataUrl;
+  });
+}
+
+function shrinkForBudget(dataUrl, perPhotoBudget) {
+  var steps = [[1000, 0.55], [800, 0.45], [650, 0.35], [500, 0.3]];
+  function tryStep(i) {
+    if (i >= steps.length) return shrinkDataUrl(dataUrl, 500, 0.3);
+    return shrinkDataUrl(dataUrl, steps[i][0], steps[i][1]).then(function(out) {
+      if (out.length <= perPhotoBudget) return out;
+      return tryStep(i + 1);
+    });
+  }
+  if (dataUrl.length <= perPhotoBudget) return Promise.resolve(dataUrl);
+  return tryStep(0);
+}
+
+function preparePrintPhotos() {
+  // budget total ~3.5MB de base64 pour viser un PDF < 5MB
+  var thumbs = document.querySelectorAll('.photo-thumb');
+  if (thumbs.length === 0) return Promise.resolve();
+  var perPhoto = Math.floor(3500000 / thumbs.length);
+  var jobs = [];
+  for (var i = 0; i < thumbs.length; i++) {
+    (function(el) {
+      jobs.push(shrinkForBudget(el.src, perPhoto).then(function(small) {
+        el.setAttribute('data-full', el.src);
+        el.src = small;
+      }));
+    })(thumbs[i]);
+  }
+  return Promise.all(jobs);
+}
+
+function restorePhotos() {
+  var thumbs = document.querySelectorAll('.photo-thumb[data-full]');
+  for (var i = 0; i < thumbs.length; i++) {
+    thumbs[i].src = thumbs[i].getAttribute('data-full');
+    thumbs[i].removeAttribute('data-full');
+  }
+}
+
 function exportPDF() {
-  var vessel = document.getElementById('m-vessel').value || 'Unknown Vessel';
+  var vessel = document.getElementById('m-vessel').value || 'Unknown';
   var inspector = document.getElementById('m-inspector').value || '';
   var date = document.getElementById('m-insp_date').value || '';
   var initials = getInitials(inspector);
-  var fileTitle = 'OVID-AHTS-Ops-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
+  var fileTitle = "ovid-ahts-ops" + '-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
   document.title = fileTitle;
-  var pdfTitle = 'OVID -- AHTS/TUG Operations (Escort Tug, Towing, Anchor Handling)' + ' | ' + vessel;
+  var pdfTitle = "OVID -- AHTS/TUG Operations (Escort Tug, Towing, Anchor Handling)" + ' | ' + vessel;
   if (initials) pdfTitle += ' | ' + initials;
   if (date) pdfTitle += ' | ' + date;
   document.getElementById('pdf-title').textContent = pdfTitle;
 
-  var findings = [];
+  // Findings = ONLY questions with the Observation checkbox ticked.
+  // Photos are evidence attached to answers, they do NOT make a finding.
+  var findingNums = [];
   for (var i = 0; i < ALL_IDS.length; i++) {
     var id = ALL_IDS[i];
+    var wrap = document.getElementById('wrap-' + id);
     var obs = document.getElementById('obs-' + id);
-    var photos = photoStore[id] || [];
-    if ((obs && obs.checked) || photos.length > 0) {
-      var cmt = document.getElementById('cmt-' + id);
-      findings.push({ num: Q_NUMS[id], text: Q_TEXTS[id], comment: cmt ? cmt.value : '', photos: photos });
+    var cmt = document.getElementById('cmt-' + id);
+    var isFinding = obs && obs.checked;
+    if (isFinding) findingNums.push(Q_NUMS[id]);
+    if (wrap) {
+      wrap.classList.toggle('is-finding', !!isFinding);
+      wrap.classList.toggle('no-comment', !(cmt && cmt.value.trim()));
+      var labels = wrap.querySelectorAll('.ans');
+      for (var L = 0; L < labels.length; L++) {
+        var r = labels[L].querySelector('input');
+        labels[L].classList.toggle('checked', !!(r && r.checked));
+      }
     }
   }
   var gobs = document.getElementById('general-obs');
@@ -2116,50 +2263,47 @@ function exportPDF() {
   var na = parseInt(document.getElementById('prog-na').textContent) || 0;
 
   var summaryHtml = '<div class="pdf-summary">';
-  summaryHtml += '<h2>INSPECTION SUMMARY</h2>';
-  summaryHtml += '<div class="summary-meta">';
-  summaryHtml += '<p><strong>Vessel:</strong> ' + vessel + '</p>';
-  summaryHtml += '<p><strong>Inspector:</strong> ' + (inspector || '-') + '</p>';
-  summaryHtml += '<p><strong>Date:</strong> ' + (date || '-') + '</p>';
-  summaryHtml += '<p><strong>Operator:</strong> ' + (document.getElementById('m-operator').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Flag:</strong> ' + (document.getElementById('m-flag').value || '-') + '</p>';
-  summaryHtml += '<p><strong>IMO:</strong> ' + (document.getElementById('m-imo').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Location:</strong> ' + (document.getElementById('m-port').value || '-') + '</p>';
-  summaryHtml += '<p><strong>Block/Field:</strong> ' + (document.getElementById('m-block').value || '-') + '</p>';
-  summaryHtml += '</div>';
+  summaryHtml += '<div class="summary-block"><div class="summary-block-title">Inspection Details</div><table class="summary-table">';
+  for (var m2 = 0; m2 < META_IDS.length; m2++) {
+    var mid2 = META_IDS[m2];
+    var el2 = document.getElementById('m-' + mid2);
+    var lbl2 = el2 && el2.previousElementSibling ? el2.previousElementSibling.textContent : mid2;
+    summaryHtml += '<tr><td class="st-label">' + lbl2 + '</td><td>' + ((el2 && el2.value) || '-') + '</td></tr>';
+  }
+  summaryHtml += '</table></div>';
+
   summaryHtml += '<div class="summary-stats">';
-  summaryHtml += '<span class="stat-yes">YES: ' + yes + '</span>';
-  summaryHtml += '<span class="stat-no">NO: ' + no + '</span>';
-  summaryHtml += '<span class="stat-na">N/A: ' + na + '</span>';
-  summaryHtml += '<span class="stat-findings">Findings: ' + findings.length + '</span>';
+  summaryHtml += '<div class="stat-box stat-yes"><div class="stat-n">' + yes + '</div><div class="stat-l">YES</div></div>';
+  summaryHtml += '<div class="stat-box stat-no"><div class="stat-n">' + no + '</div><div class="stat-l">NO</div></div>';
+  summaryHtml += '<div class="stat-box stat-na"><div class="stat-n">' + na + '</div><div class="stat-l">N/A</div></div>';
+  summaryHtml += '<div class="stat-box stat-findings"><div class="stat-n">' + findingNums.length + '</div><div class="stat-l">FINDINGS</div></div>';
   summaryHtml += '</div>';
 
-  if (findings.length > 0) {
-    summaryHtml += '<h3>OBSERVATIONS / FINDINGS (' + findings.length + ')</h3>';
-    for (var f = 0; f < findings.length; f++) {
-      var fi = findings[f];
-      summaryHtml += '<div class="finding-block">';
-      summaryHtml += '<div class="finding-header"><span class="finding-num">' + fi.num + '</span><span class="finding-text">' + fi.text + '</span></div>';
-      if (fi.comment) summaryHtml += '<div class="finding-comment">' + fi.comment + '</div>';
-      if (fi.photos.length > 0) {
-        summaryHtml += '<div class="finding-photos">';
-        for (var p = 0; p < fi.photos.length; p++) {
-          summaryHtml += '<img src="' + fi.photos[p] + '" class="finding-photo">';
-        }
-        summaryHtml += '</div>';
-      }
-      summaryHtml += '</div>';
+  summaryHtml += '<div class="summary-block"><div class="summary-block-title">Observations / Findings</div>';
+  if (findingNums.length > 0) {
+    summaryHtml += '<div class="finding-chips">';
+    for (var f = 0; f < findingNums.length; f++) {
+      summaryHtml += '<span class="finding-chip">' + findingNums[f] + '</span>';
     }
+    summaryHtml += '</div><p class="finding-note">See flagged questions in the report body for details and photo evidence.</p>';
   } else {
     summaryHtml += '<p class="no-findings">No observations / findings recorded.</p>';
   }
+  summaryHtml += '</div>';
 
-  if (gobs && gobs.value) {
-    summaryHtml += '<h3>GENERAL OBSERVATIONS</h3><p>' + gobs.value + '</p>';
+  if (gobs && gobs.value.trim()) {
+    summaryHtml += '<div class="summary-block"><div class="summary-block-title">General Observations</div><p class="gen-obs-text">' + gobs.value + '</p></div>';
   }
+
   summaryHtml += '</div>';
   document.getElementById('pdf-summary').innerHTML = summaryHtml;
-  window.print();
+  var ind = document.getElementById('save-indicator');
+  if (ind) { ind.textContent = 'Preparing PDF...'; ind.style.opacity = '1'; }
+  preparePrintPhotos().then(function() {
+    if (ind) ind.style.opacity = '0';
+    window.print();
+    setTimeout(restorePhotos, 1000);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
