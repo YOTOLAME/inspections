@@ -163,7 +163,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 
 <div class="section">
-  <div class="section-title">? -- ?</div>
+  <div class="section-title">1 -- Approach passage & pre-entry</div>
 <div class="question" id="wrap-q1_1">
   <div class="q-header">
     <span class="q-num">1.1</span>
@@ -984,7 +984,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 </div>
 <div class="section">
-  <div class="section-title">? -- ?</div>
+  <div class="section-title">2 -- Approach (500m - 200m approx.)</div>
 <div class="question" id="wrap-q2_1">
   <div class="q-header">
     <span class="q-num">2.1</span>
@@ -1008,7 +1008,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 </div>
 <div class="section">
-  <div class="section-title">? -- ?</div>
+  <div class="section-title">3 -- Position setup</div>
 <div class="question" id="wrap-q3_1">
   <div class="q-header">
     <span class="q-num">3.1</span>
@@ -1074,7 +1074,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 </div>
 <div class="section">
-  <div class="section-title">? -- ?</div>
+  <div class="section-title">4 -- Final approach (200m approx.) - Working position & alongside working</div>
 <div class="question" id="wrap-q4_1">
   <div class="q-header">
     <span class="q-num">4.1</span>
@@ -1287,7 +1287,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </div>
 </div>
 <div class="section">
-  <div class="section-title">? -- ?</div>
+  <div class="section-title">5 -- Exiting safety zone</div>
 <div class="question" id="wrap-q5_1">
   <div class="q-header">
     <span class="q-num">5.1</span>
@@ -1742,11 +1742,26 @@ function exportPDF() {
 
   summaryHtml += '</div>';
   document.getElementById('pdf-summary').innerHTML = summaryHtml;
+  // Fix: textareas keep their fixed "rows" height at print time, which makes
+  // multi-line comments overflow and overlap the next block. Auto-fit each
+  // textarea's height to its actual content before printing.
+  var allTextareas = document.querySelectorAll('textarea');
+  var savedTaHeights = [];
+  for (var t = 0; t < allTextareas.length; t++) {
+    var ta = allTextareas[t];
+    savedTaHeights.push(ta.style.height);
+    ta.style.height = 'auto';
+    ta.style.height = (ta.scrollHeight + 2) + 'px';
+  }
+
   var ind = document.getElementById('save-indicator');
   if (ind) { ind.textContent = 'Preparing PDF...'; ind.style.opacity = '1'; }
   preparePrintPhotos().then(function() {
     if (ind) ind.style.opacity = '0';
     window.print();
+    for (var t2 = 0; t2 < allTextareas.length; t2++) {
+      allTextareas[t2].style.height = savedTaHeights[t2];
+    }
     setTimeout(restorePhotos, 1000);
   });
 }

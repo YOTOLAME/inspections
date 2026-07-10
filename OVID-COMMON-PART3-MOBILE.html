@@ -2368,11 +2368,26 @@ function exportPDF() {
 
   summaryHtml += '</div>';
   document.getElementById('pdf-summary').innerHTML = summaryHtml;
+  // Fix: textareas keep their fixed "rows" height at print time, which makes
+  // multi-line comments overflow and overlap the next block. Auto-fit each
+  // textarea's height to its actual content before printing.
+  var allTextareas = document.querySelectorAll('textarea');
+  var savedTaHeights = [];
+  for (var t = 0; t < allTextareas.length; t++) {
+    var ta = allTextareas[t];
+    savedTaHeights.push(ta.style.height);
+    ta.style.height = 'auto';
+    ta.style.height = (ta.scrollHeight + 2) + 'px';
+  }
+
   var ind = document.getElementById('save-indicator');
   if (ind) { ind.textContent = 'Preparing PDF...'; ind.style.opacity = '1'; }
   preparePrintPhotos().then(function() {
     if (ind) ind.style.opacity = '0';
     window.print();
+    for (var t2 = 0; t2 < allTextareas.length; t2++) {
+      allTextareas[t2].style.height = savedTaHeights[t2];
+    }
     setTimeout(restorePhotos, 1000);
   });
 }
