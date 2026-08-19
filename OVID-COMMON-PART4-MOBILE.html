@@ -37,6 +37,7 @@ body { font-family: -apple-system, Arial, sans-serif; font-size: 14px; backgroun
 .section-title { background: #003B6E; color: white; padding: 10px 14px; font-size: 13px; font-weight: 700; }
 .question { border-bottom: 1px solid #eef1f5; padding: 14px; }
 .question:last-child { border-bottom: none; }
+.question.q-unanswered { border-left: 4px solid #e67e22; background: #fff8f0; }
 .q-header { display: flex; gap: 10px; margin-bottom: 8px; }
 .q-num { background: #003B6E; color: white; border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 700; white-space: nowrap; align-self: flex-start; margin-top: 1px; }
 .q-text { font-size: 13px; line-height: 1.5; font-weight: 600; }
@@ -2036,13 +2037,17 @@ function updateProgress() {
   for (var i = 0; i < ALL_IDS.length; i++) {
     var id = ALL_IDS[i];
     var radios = document.querySelectorAll('input[name="' + id + '"]');
+    var isAnswered = false;
     for (var j = 0; j < radios.length; j++) {
       if (radios[j].checked) {
+        isAnswered = true;
         if (radios[j].value === 'YES') yes++;
         else if (radios[j].value === 'NO') no++;
         else if (radios[j].value === 'NA') na++;
       }
     }
+    var wrap = document.getElementById('wrap-' + id);
+    if (wrap) wrap.classList.toggle('q-unanswered', !isAnswered);
   }
   var answered = yes + no + na;
   var pct = total > 0 ? Math.round(answered / total * 100) : 0;
@@ -2316,6 +2321,7 @@ function exportPDF() {
 
 document.addEventListener('DOMContentLoaded', function() {
   loadData();
+  updateProgress();
   var metaEls = document.querySelectorAll('.meta-field input, .meta-field select');
   for (var i = 0; i < metaEls.length; i++) {
     metaEls[i].addEventListener('change', function(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveData, 800); });
