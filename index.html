@@ -13,48 +13,40 @@ body { font-family: -apple-system, Arial, sans-serif; background: #f0f2f5; }
 .header { background: #003B6E; color: white; padding: 20px 16px 16px; }
 .header h1 { font-size: 20px; font-weight: 700; }
 .header p { font-size: 12px; opacity: 0.7; margin-top: 4px; }
-.section-label { padding: 12px 16px 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #888; letter-spacing: 0.5px; }
-.list { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 10px; }
-.card { background: white; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); text-decoration: none; display: flex; align-items: center; padding: 14px; gap: 14px; }
-.card-icon { font-size: 24px; min-width: 32px; text-align: center; }
+.list { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.card { background: white; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); overflow: hidden; text-decoration: none; display: flex; align-items: center; padding: 16px; gap: 14px; }
+.card-icon { font-size: 28px; }
 .card-text { flex: 1; }
-.card-title { font-size: 14px; font-weight: 700; color: #1a2a3a; }
-.card-sub { font-size: 11px; color: #888; margin-top: 2px; }
-.card-arrow { color: #ccc; font-size: 16px; }
-.badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; display: inline-block; margin-top: 4px; }
-.badge-inspectare { background: #e8f4fd; color: #003B6E; }
-.badge-ovid { background: #fdecea; color: #c0392b; }
+.card-title { font-size: 15px; font-weight: 700; color: #1a2a3a; }
+.card-sub { font-size: 12px; color: #888; margin-top: 2px; }
+.card-arrow { color: #ccc; font-size: 18px; }
+.badge-inspectare { background: #e8f4fd; color: #003B6E; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; display: inline-block; margin-top: 4px; }
+.badge-ovid { background: #fdecea; color: #c0392b; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; display: inline-block; margin-top: 4px; }
+.section-header { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #888; margin: 6px 4px 0; }
 </style>
 </head>
 <body>
 <div class="header">
   <h1>&#9875; Inspectare – TEPA</h1>
-  <p>TotalEnergies E&P Angola – Offline Inspection Forms</p>
+  <p>TotalEnergies E&amp;P Angola – Offline Inspection Forms</p>
 </div>
-
-<div class="section-label">Inspectare</div>
 <div class="list">
+  <div class="section-header">Inspectare – TEPA</div>
   <a class="card" href="INSPECTARE-500M-MOBILE.html">
     <span class="card-icon">&#9875;</span>
     <div class="card-text">
-      <div class="card-title">500m Zone Vessel</div>
-      <span class="badge badge-inspectare">Inspectare</span>
+      <div class="card-title">Inspectare 500m Vessel</div>
+      <div class="card-sub">5 sections – 56 questions</div>
+      <span class="badge-inspectare">Inspectare</span>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
   <a class="card" href="INSPECTARE-500M-ASSET-MOBILE.html">
-    <span class="card-icon">&#9875;</span>
+    <span class="card-icon">&#128738;</span>
     <div class="card-text">
-      <div class="card-title">500m Zone Asset</div>
-      <span class="badge badge-inspectare">Inspectare</span>
-    </div>
-    <span class="card-arrow">&#9654;</span>
-  </a>
-  <a class="card" href="INSPECTARE-CREWBOAT-MOBILE.html">
-    <span class="card-icon">&#9971;</span>
-    <div class="card-text">
-      <div class="card-title">Crew Boat</div>
-      <span class="badge badge-inspectare">Inspectare</span>
+      <div class="card-title">500m Zone Asset (Installation)</div>
+      <div class="card-sub">3 sections – 20 questions</div>
+      <span class="badge-inspectare">Inspectare</span>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
@@ -62,15 +54,8 @@ body { font-family: -apple-system, Arial, sans-serif; background: #f0f2f5; }
     <span class="card-icon">&#128674;</span>
     <div class="card-text">
       <div class="card-title">PSV – Platform Supply Vessel</div>
-      <span class="badge badge-inspectare">Inspectare</span>
-    </div>
-    <span class="card-arrow">&#9654;</span>
-  </a>
-  <a class="card" href="INSPECTARE-TUG-MOBILE.html">
-    <span class="card-icon">&#9875;</span>
-    <div class="card-text">
-      <div class="card-title">TUG</div>
-      <span class="badge badge-inspectare">Inspectare</span>
+      <div class="card-sub">12 sections – 111 questions</div>
+      <span class="badge-inspectare">Inspectare</span>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
@@ -78,91 +63,82 @@ body { font-family: -apple-system, Arial, sans-serif; background: #f0f2f5; }
     <span class="card-icon">&#9875;</span>
     <div class="card-text">
       <div class="card-title">AHTS – Anchor Handling Tug Supply</div>
-      <span class="badge badge-inspectare">Inspectare</span>
+      <div class="card-sub">15 sections – 166 questions</div>
+      <span class="badge-inspectare">Inspectare</span>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
-</div>
-
-<div class="section-label">OVID</div>
-<div class="list">
-  <a class="card" href="OVID-COMMON-PART1-MOBILE.html">
-    <span class="card-icon">&#9881;</span>
+  <a class="card" href="INSPECTARE-TUG-MOBILE.html">
+    <span class="card-icon">&#128676;</span>
     <div class="card-text">
-      <div class="card-title">Common – Part 1</div>
-      <span class="badge badge-ovid">OVID</span>
+      <div class="card-title">TUG – Escort / Towing / Pushing</div>
+      <div class="card-sub">11 sections – 141 questions</div>
+      <span class="badge-inspectare">Inspectare</span>
+    </div>
+    <span class="card-arrow">&#9654;</span>
+  </a>
+  <a class="card" href="INSPECTARE-CREWBOAT-MOBILE.html">
+    <span class="card-icon">&#9971;</span>
+    <div class="card-text">
+      <div class="card-title">Crew Boat</div>
+      <div class="card-sub">10 sections – 128 questions</div>
+      <span class="badge-inspectare">Inspectare</span>
+    </div>
+    <span class="card-arrow">&#9654;</span>
+  </a>
+  <div class="section-header">OVID – OVIQ4 Small Craft (Crew Transfer Vessel)</div>
+  <a class="card" href="OVID-CREWBOAT-PART1-MOBILE.html">
+    <span class="card-icon">&#128676;</span>
+    <div class="card-text">
+      <div class="card-title">Crew Transfer Vessel – Part 1/2</div>
+      <div class="card-sub">Certification, Crew, Navigation, Safety, Pollution, Structure – 21 sections – 90 questions</div>
+      <span class="badge-ovid">OVID</span>
+    </div>
+    <span class="card-arrow">&#9654;</span>
+  </a>
+  <a class="card" href="OVID-CREWBOAT-PART2-MOBILE.html">
+    <span class="card-icon">&#128676;</span>
+    <div class="card-text">
+      <div class="card-title">Crew Transfer Vessel – Part 2/2</div>
+      <div class="card-sub">Operations, Mooring, Communications, Machinery, Appearance – 14 sections – 58 questions</div>
+      <span class="badge-ovid">OVID</span>
+    </div>
+    <span class="card-arrow">&#9654;</span>
+  </a>
+  <div class="section-header">OVID – OVIQ4 (AHTS / PSV / MPSV / TUG)</div>
+  <a class="card" href="OVID-COMMON-PART1-MOBILE.html">
+    <span class="card-icon">&#128220;</span>
+    <div class="card-text">
+      <div class="card-title">Commun 1/4 – Certification, Crew, Navigation</div>
+      <div class="card-sub">9 sections – 68 questions</div>
+      <span class="badge-ovid">OVID</span>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
   <a class="card" href="OVID-COMMON-PART2-MOBILE.html">
-    <span class="card-icon">&#9881;</span>
+    <span class="card-icon">&#128737;</span>
     <div class="card-text">
-      <div class="card-title">Common – Part 2</div>
-      <span class="badge badge-ovid">OVID</span>
+      <div class="card-title">Commun 2/4 – Safety and Security</div>
+      <div class="card-sub">11 sections – 115 questions</div>
+      <span class="badge-ovid">OVID</span>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
   <a class="card" href="OVID-COMMON-PART3-MOBILE.html">
-    <span class="card-icon">&#9881;</span>
+    <span class="card-icon">&#9875;</span>
     <div class="card-text">
-      <div class="card-title">Common – Part 3</div>
-      <span class="badge badge-ovid">OVID</span>
+      <div class="card-title">Commun 3/4 – Stability, Mooring, Anchoring, Hull, Electrical, Accommodation</div>
+      <div class="card-sub">14 sections – 85 questions</div>
+      <span class="badge-ovid">OVID</span>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
   <a class="card" href="OVID-COMMON-PART4-MOBILE.html">
     <span class="card-icon">&#9881;</span>
     <div class="card-text">
-      <div class="card-title">Common – Part 4</div>
-      <span class="badge badge-ovid">OVID</span>
-    </div>
-    <span class="card-arrow">&#9654;</span>
-  </a>
-  <a class="card" href="OVID-PSV-OPERATIONS-MOBILE.html">
-    <span class="card-icon">&#9881;</span>
-    <div class="card-text">
-      <div class="card-title">PSV Operations</div>
-      <span class="badge badge-ovid">OVID</span>
-    </div>
-    <span class="card-arrow">&#9654;</span>
-  </a>
-  <a class="card" href="OVID-AHTS-TUG-OPERATIONS-MOBILE.html">
-    <span class="card-icon">&#9881;</span>
-    <div class="card-text">
-      <div class="card-title">AHTS / TUG Operations</div>
-      <span class="badge badge-ovid">OVID</span>
-    </div>
-    <span class="card-arrow">&#9654;</span>
-  </a>
-  <a class="card" href="OVID-CREWBOAT-PART1-MOBILE.html">
-    <span class="card-icon">&#9881;</span>
-    <div class="card-text">
-      <div class="card-title">Crew Boat – Part 1</div>
-      <span class="badge badge-ovid">OVID</span>
-    </div>
-    <span class="card-arrow">&#9654;</span>
-  </a>
-  <a class="card" href="OVID-CREWBOAT-PART2-MOBILE.html">
-    <span class="card-icon">&#9881;</span>
-    <div class="card-text">
-      <div class="card-title">Crew Boat – Part 2</div>
-      <span class="badge badge-ovid">OVID</span>
-    </div>
-    <span class="card-arrow">&#9654;</span>
-  </a>
-  <a class="card" href="OVID-BARGE-OPERATIONS-MOBILE.html">
-    <span class="card-icon">&#9881;</span>
-    <div class="card-text">
-      <div class="card-title">Barge Operations</div>
-      <span class="badge badge-ovid">OVID</span>
-    </div>
-    <span class="card-arrow">&#9654;</span>
-  </a>
-  <a class="card" href="OVID-MPSV-OPERATIONS-MOBILE.html">
-    <span class="card-icon">&#9881;</span>
-    <div class="card-text">
-      <div class="card-title">MPSV Operations</div>
-      <span class="badge badge-ovid">OVID</span>
+      <div class="card-title">Commun 4/4 – Machinery &amp; Pollution Prevention</div>
+      <div class="card-sub">10 sections – 82 questions</div>
+      <span class="badge-ovid">OVID</span>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
@@ -170,12 +146,49 @@ body { font-family: -apple-system, Arial, sans-serif; background: #f0f2f5; }
     <span class="card-icon">&#9881;</span>
     <div class="card-text">
       <div class="card-title">DP Operations (OVIQ4 Ch.15)</div>
-      <span class="badge badge-ovid">OVID</span>
+      <div class="card-sub">4 sections – 41 questions</div>
+      <span class="badge-ovid">OVID</span>
+    </div>
+    <span class="card-arrow">&#9654;</span>
+  </a>
+  <a class="card" href="OVID-PSV-OPERATIONS-MOBILE.html">
+    <span class="card-icon">&#128674;</span>
+    <div class="card-text">
+      <div class="card-title">PSV – Operations (Supply, Oil Recovery)</div>
+      <div class="card-sub">A ajouter aux 4 parties Commun – 2 sections – 47 questions</div>
+      <span class="badge-ovid">OVID</span>
+    </div>
+    <span class="card-arrow">&#9654;</span>
+  </a>
+  <a class="card" href="OVID-AHTS-TUG-OPERATIONS-MOBILE.html">
+    <span class="card-icon">&#9875;</span>
+    <div class="card-text">
+      <div class="card-title">AHTS/TUG – Operations (Escort Tug, Towing, Anchor Handling)</div>
+      <div class="card-sub">A ajouter aux 4 parties Commun – 3 sections – 83 questions</div>
+      <span class="badge-ovid">OVID</span>
+    </div>
+    <span class="card-arrow">&#9654;</span>
+  </a>
+  <a class="card" href="OVID-MPSV-OPERATIONS-MOBILE.html">
+    <span class="card-icon">&#128269;</span>
+    <div class="card-text">
+      <div class="card-title">MPSV – Operations (ROV, Well Servicing, Helicopter)</div>
+      <div class="card-sub">A ajouter aux 4 parties Commun – 7 sections – 69 questions</div>
+      <span class="badge-ovid">OVID</span>
+    </div>
+    <span class="card-arrow">&#9654;</span>
+  </a>
+  <div class="section-header">OVID – OVIQ4 Barge (Unmanned)</div>
+  <a class="card" href="OVID-BARGE-OPERATIONS-MOBILE.html">
+    <span class="card-icon">&#128737;</span>
+    <div class="card-text">
+      <div class="card-title">Barge – Inspection (Certification, Structure, Towing Rig, Appearance)</div>
+      <div class="card-sub">Formulaire autonome – 11 sections – 50 questions</div>
+      <span class="badge-ovid">OVID</span>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
 </div>
-
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/inspections/sw.js', {scope: '/inspections/'})
