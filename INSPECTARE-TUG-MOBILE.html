@@ -3202,9 +3202,9 @@ function exportPDF() {
   var inspector = document.getElementById('m-inspector').value || '';
   var date = document.getElementById('m-insp_date').value || '';
   var initials = getInitials(inspector);
-  var fileTitle = "ovid-ahts-ops" + '-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
+  var fileTitle = "inspectare-tug" + '-' + vessel.replace(/\s+/g,'') + (initials ? '-' + initials : '') + (date ? '-' + date : '');
   document.title = fileTitle;
-  var pdfTitle = "OVID -- AHTS/TUG Operations (Escort Tug, Towing, Anchor Handling)" + ' | ' + vessel;
+  var pdfTitle = "Inspectare -- TUG" + ' | ' + vessel;
   if (initials) pdfTitle += ' | ' + initials;
   if (date) pdfTitle += ' | ' + date;
   document.getElementById('pdf-title').textContent = pdfTitle;
