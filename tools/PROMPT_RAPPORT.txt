@@ -33,6 +33,7 @@ e) "subject" : titre de 3 a 6 mots en Title Case (ex. "Liquid Bulk Manifold Cond
 f) "action" : une phrase "CTR to ... and provide evidence."
 g) "remark" : vide, ou note courte a l'inspecteur (doute de dictee, correspondance faible avec la question, photo a terre, photo qui ne montre pas le defaut...).
 h) "photos" : numeros (1, 2...) des photos de l'observation qui montrent le defaut ; omettre = toutes.
+Tout ce qui est redige est en ANGLAIS (comment, subject, action, remark, tableau de synthese), meme si les notes sont en francais ou en portugais : traduire.
 Ne jamais repondre YES / NO / N/A : c'est l'inspecteur qui coche. Ne jamais inventer un fait, un chiffre, une reference.
 OVID et Inspectare sont distincts : ne pas melanger leurs noms dans les commentaires.
 

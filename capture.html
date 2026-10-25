@@ -121,6 +121,14 @@ a.btn { text-decoration: none; }
 <!-- SESSION -->
 <div id="viewSession" class="view hidden">
   <div class="card meta" id="sessionMeta"></div>
+  <button class="btn btn-light btn-block" id="btnEdit" type="button">Edit inspection details</button>
+  <div class="card hidden" id="editBox">
+    <div class="field"><label class="lbl" for="eVessel">Vessel name</label><input type="text" id="eVessel" autocomplete="off" autocapitalize="characters"></div>
+    <div class="field"><label class="lbl" for="eInspector">Inspector</label><input type="text" id="eInspector" autocomplete="off" placeholder="SURNAME First name"></div>
+    <div class="field"><label class="lbl" for="eLocation">Location</label><input type="text" id="eLocation" autocomplete="off"></div>
+    <div class="field"><label class="lbl" for="eDate">Inspection date</label><input type="date" id="eDate"></div>
+    <div class="row"><button class="btn btn-light" id="btnEditCancel" type="button">Cancel</button><button class="btn btn-primary" id="btnEditSave" type="button">Save</button></div>
+  </div>
   <button class="btn btn-primary btn-block" id="btnNewObs" type="button">+ New observation</button>
   <div class="section-header" id="obsCount">Observations</div>
   <div id="obsList"></div>
@@ -495,15 +503,76 @@ function renderHome() {
 }
 
 /* ---------- SESSION ---------- */
+function tepaInitials(n) {
+  var p = String(n == null ? '' : n).replace(/^\s+|\s+$/g, '').split(/\s+/), s = '', i;
+  if (!p[0]) { return ''; }
+  if (p.length > 1 && p[0].length > 1 && p[0] === p[0].toUpperCase() && p[p.length - 1] !== p[p.length - 1].toUpperCase()) { p.push(p.shift()); }
+  for (i = 0; i < p.length; i++) {
+    var c = p[i].charAt(0);
+    try { c = c.normalize('NFD').charAt(0); } catch (e) {}
+    if (/[A-Za-z]/.test(c)) { s += c.toUpperCase(); }
+  }
+  return s;
+}
+function tepaFileName(ymd, vessel, type, inspector) {
+  var d = String(ymd || '').split('-'), parts = [];
+  if (d.length === 3) { parts.push(d[0] + ' ' + d[1] + ' ' + d[2]); }
+  if (vessel) { parts.push(String(vessel)); }
+  if (type) { parts.push(String(type)); }
+  var ini = tepaInitials(inspector);
+  if (ini) { parts.push(ini); }
+  return parts.join(' ').replace(/[\\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '') || 'Inspection';
+}
+var SHORT_TYPE = {
+  inspectare: { psv: 'PSV', ahts: 'AHTS', tug: 'TUG', crewboat: 'Crew Boat', '500m-vessel': '500m Vessel', '500m-asset': '500m Asset' },
+  ovid: { psv: 'PSV', 'ahts-tug': 'AHTS-TUG', mpsv: 'MPSV', ctv: 'CTV', barge: 'Barge' }
+};
+function shortType(s) {
+  var m = SHORT_TYPE[s.framework] || {};
+  return FW_LABEL[s.framework] + ' ' + (m[s.vesselType] || s.vesselType) + (s.dp ? ' DP' : '');
+}
+function openEdit() {
+  var s = getSession(cur.sessionId);
+  if (!s) { return; }
+  $('eVessel').value = s.vesselName || '';
+  $('eInspector').value = s.inspector || getPrefs().inspector || '';
+  $('eLocation').value = s.location || '';
+  $('eDate').value = s.date || '';
+  $('editBox').className = 'card';
+  $('btnEdit').className = 'btn btn-light btn-block hidden';
+}
+function closeEdit() {
+  $('editBox').className = 'card hidden';
+  $('btnEdit').className = 'btn btn-light btn-block';
+}
+$('btnEdit').onclick = openEdit;
+$('btnEditCancel').onclick = closeEdit;
+$('btnEditSave').onclick = function () {
+  var s = getSession(cur.sessionId);
+  if (!s) { return; }
+  var v = $('eVessel').value.replace(/^\s+|\s+$/g, '');
+  if (!v) { toast('Enter the vessel name'); return; }
+  s.vesselName = v;
+  s.inspector = $('eInspector').value.replace(/^\s+|\s+$/g, '');
+  s.location = $('eLocation').value.replace(/^\s+|\s+$/g, '');
+  s.date = $('eDate').value || s.date;
+  if (s.inspector) { setPref('inspector', s.inspector); }
+  saveData();
+  closeEdit();
+  $('hdrTitle').textContent = s.vesselName;
+  renderSession();
+  toast('Details saved');
+};
 function renderSession() {
   var s = getSession(cur.sessionId);
   if (!s) { return; }
   resetExport();
+  closeEdit();
   $('sessionMeta').innerHTML =
     '<b>Vessel:</b> ' + esc(s.vesselName) + '<br>' +
     '<b>Checklist:</b> ' + esc(typeLabel(s)) + '<br>' +
     '<b>Date:</b> ' + esc(fmtD(s.date)) + (s.location ? '<br><b>Location:</b> ' + esc(s.location) : '') +
-    (s.inspector ? '<br><b>Inspector:</b> ' + esc(s.inspector) : '');
+    '<br><b>Inspector:</b> ' + (s.inspector ? esc(s.inspector) : '<span style="color:#8a2b1f">missing</span>');
   $('obsCount').textContent = 'Observations (' + s.observations.length + ')';
   var box = $('obsList');
   box.innerHTML = '';
@@ -628,6 +697,7 @@ $('btnExport').onclick = function () {
   var s = getSession(cur.sessionId);
   if (!s) { return; }
   if (!s.observations.length) { toast('No observation to export'); return; }
+  if (!s.inspector || !s.location) { toast('Fill in inspector and location first'); openEdit(); return; }
   resetExport();
   $('btnExport').disabled = true;
   $('btnExport').textContent = 'Preparing...';
@@ -678,10 +748,14 @@ $('btnExport').onclick = function () {
     });
   }
   function finish() {
+    var txt = 'Vessel: ' + s.vesselName + '\r\nInspection date: ' + fmtD(s.date) + '\r\nInspector: ' + (s.inspector || '') +
+      '\r\nLocation: ' + (s.location || '') + '\r\nChecklist: ' + typeLabel(s) + '\r\nObservations: ' + s.observations.length +
+      '\r\nExported: ' + fmtDT(meta.exported) + '\r\n';
+    entries.unshift({ name: 'inspection_details.txt', data: utf8Bytes(txt) });
     entries.unshift({ name: 'inspection.json', data: utf8Bytes(JSON.stringify(meta, null, 2)) });
     var blob;
     try { blob = buildZip(entries); } catch (e) { toast('Export failed'); resetExport(); return; }
-    var fname = 'Capture_' + safeName(s.vesselName) + '_' + String(s.date).replace(/-/g, '') + '.zip';
+    var fname = tepaFileName(s.date, s.vesselName, shortType(s), s.inspector) + '.zip';
     try { exportFile = new File([blob], fname, { type: 'application/zip' }); } catch (e) { exportFile = blob; }
     exportUrl = URL.createObjectURL(blob);
     var lnk = $('lnkDownload');

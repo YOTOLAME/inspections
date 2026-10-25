@@ -83,6 +83,7 @@ python3 -I <repo>/tools/build_checklists.py <repo> checklists.json
 
 Rules:
 
+- Everything you write is in **English**: `comment`, `subject`, `action`, `remark` and the summary table, even when the field notes are in French or Portuguese (translate them).
 - Never answer YES / NO / N/A: the inspector does it.
 - Never invent a fact, a figure or a reference.
 - OVID (OCIMF OVIQ4) and Inspectare (TEPA checklists) are different: do not mix their names.
