@@ -127,7 +127,8 @@ The script rejects an unknown checklist or question, a forgotten observation and
 
 ## User guide for the HTML review file
 
-- Open it on a PC in Chrome or Edge. Entries are saved automatically in the browser.
+- PC: open the file in Chrome or Edge (double-click). Entries are saved automatically in the browser.
+- Phone or tablet: save the file (iPhone: in Files), open https://yotolame.github.io/inspections/review.html, press "Open report file" and choose it. The file is read on the device only; nothing is sent to any server.
 - Choose the checklist at the top. The filter "Pre-filled / commented" shows only the questions to review.
 - Under each question, the raw field note is shown above the rewritten comment, to fix any dictation error.
 - Tick YES / NO / N/A, edit the comment, the Synergi subject and the CTR action, remove or add photos.

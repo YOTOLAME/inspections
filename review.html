@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inspection Review</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, "Segoe UI", Arial, sans-serif; background: #f0f2f5; color: #1a2a3a; font-size: 15px; }
+.top { position: sticky; top: 0; z-index: 20; background: #003B6E; color: #fff; padding: 10px 14px; }
+.top h1 { font-size: 17px; margin: 0; }
+.top .sub { font-size: 12px; opacity: .8; margin-top: 2px; }
+.bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+.bar select, .bar button { font-size: 14px; padding: 7px 10px; border-radius: 6px; border: 0; }
+.bar select { background: #fff; color: #1a2a3a; max-width: 100%; }
+.bar button { background: #e8f4fd; color: #003B6E; font-weight: bold; cursor: pointer; }
+.bar .stats { font-size: 12px; margin-left: auto; }
+.wrap { max-width: 980px; margin: 0 auto; padding: 14px; }
+.card { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.1); padding: 14px; margin-bottom: 12px; }
+.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.meta label { font-size: 12px; font-weight: bold; color: #555; display: block; margin-bottom: 3px; }
+input[type=text], input[type=date], textarea { width: 100%; font-size: 15px; padding: 8px; border: 1px solid #ccd3db; border-radius: 6px; font-family: inherit; color: #1a2a3a; background: #fff; }
+textarea { min-height: 70px; resize: vertical; }
+.sec-title { background: #003B6E; color: #fff; font-weight: bold; padding: 8px 12px; border-radius: 8px; margin: 18px 0 8px; }
+.q { background: #fff; border-radius: 8px; padding: 12px; margin-bottom: 8px; border-left: 4px solid #ccd3db; }
+.q.pre { border-left-color: #8a6d3b; }
+.q.ans-YES { border-left-color: #2e7d4f; }
+.q.ans-NO { border-left-color: #b03a2e; }
+.q.ans-NA { border-left-color: #888; }
+.qh { display: flex; gap: 8px; }
+.qn { background: #003B6E; color: #fff; font-weight: bold; font-size: 12px; padding: 2px 7px; border-radius: 5px; height: fit-content; white-space: nowrap; }
+.qt { font-weight: bold; }
+.ans { display: flex; gap: 8px; margin: 10px 0 8px; }
+.ans label { flex: 1; text-align: center; padding: 7px 4px; border: 1.5px solid #ccd3db; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; user-select: none; }
+.ans input { display: none; }
+.ans label.on-YES { background: #e3f3ea; border-color: #2e7d4f; color: #2e7d4f; }
+.ans label.on-NO { background: #f8e6e3; border-color: #b03a2e; color: #b03a2e; }
+.ans label.on-NA { background: #eee; border-color: #888; color: #555; }
+.note { background: #f6f3ec; border: 1px dashed #b9a57a; border-radius: 6px; padding: 7px 9px; font-size: 13px; color: #5a4a2a; margin-bottom: 8px; }
+.note b { color: #6b4a1f; }
+.remark { font-size: 13px; color: #8a2b1f; margin-bottom: 8px; }
+.obsrow { font-size: 13px; margin: 6px 0; }
+.syn { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; margin-top: 8px; }
+.syn label { font-size: 11px; font-weight: bold; color: #666; display: block; margin-bottom: 2px; }
+.syn input { font-size: 13px; padding: 6px; }
+.photos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.ph { position: relative; width: 120px; height: 120px; border-radius: 6px; overflow: hidden; background: #e6eaee; }
+.ph img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; }
+.ph button { position: absolute; top: 3px; right: 3px; width: 24px; height: 24px; border-radius: 12px; border: 0; background: rgba(0,0,0,.6); color: #fff; cursor: pointer; }
+.addph { display: inline-block; margin-top: 8px; font-size: 13px; color: #003B6E; border: 1px solid #003B6E; border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+.addph input { display: none; }
+.un { border: 1.5px solid #b9a57a; }
+.un h2 { font-size: 15px; margin: 0 0 8px; color: #6b4a1f; }
+.unitem { border-top: 1px solid #e3dccb; padding: 8px 0; }
+.assign { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.assign input { width: 90px; font-size: 13px; padding: 5px; }
+.assign button, .smallbtn { font-size: 13px; padding: 5px 10px; border-radius: 6px; border: 1px solid #003B6E; background: #fff; color: #003B6E; cursor: pointer; }
+.hidden { display: none !important; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 20px; background: #1a2a3a; color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 14px; z-index: 50; }
+.viewer { position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 40; display: flex; align-items: center; justify-content: center; }
+.viewer img { max-width: 96%; max-height: 96%; }
+#printView { display: none; }
+@media (max-width: 700px) { .top { position: static; } .syn { grid-template-columns: 1fr; } .bar .stats { margin-left: 0; width: 100%; } }
+
+@media print {
+  @page { size: A4; margin: 12mm; }
+  body { background: #fff; font-size: 10pt; }
+  #app, .toast, .viewer { display: none !important; }
+  #printView { display: block; }
+  .pv-title { font-size: 14pt; font-weight: bold; color: #003B6E; margin-bottom: 8px; }
+  .pv-block { border: 1px solid #ccd3db; border-radius: 6px; padding: 8px; margin-bottom: 8px; page-break-inside: avoid; }
+  .pv-block h3 { font-size: 10.5pt; margin: 0 0 6px; color: #003B6E; }
+  .pv-table td { padding: 2px 8px 2px 0; font-size: 9.5pt; vertical-align: top; }
+  .pv-stats { display: flex; gap: 8px; margin-bottom: 8px; }
+  .pv-stat { flex: 1; text-align: center; border: 1px solid #ccd3db; border-radius: 6px; padding: 4px; }
+  .pv-stat b { display: block; font-size: 15pt; }
+  .pv-chip { display: inline-block; border: 1px solid #b03a2e; color: #b03a2e; border-radius: 10px; padding: 1px 7px; margin: 2px; font-size: 9pt; }
+  .pv-sec { background: #003B6E !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 4px 8px; font-weight: bold; margin: 10px 0 4px; page-break-after: avoid; }
+  .pv-q { border-bottom: 1px solid #e3e6ea; padding: 4px 0; page-break-inside: avoid; }
+  .pv-q.f { border-left: 3px solid #b03a2e; padding-left: 6px; }
+  .pv-qh { display: flex; gap: 8px; }
+  .pv-qh .n { font-weight: bold; min-width: 42px; }
+  .pv-qh .t { flex: 1; }
+  .pv-qh .a { font-weight: bold; min-width: 40px; text-align: right; }
+  .pv-c { margin: 3px 0 0 50px; font-style: italic; white-space: pre-wrap; }
+  .pv-ph { margin: 4px 0 0 50px; }
+  .pv-ph img { width: 150px; height: 112px; object-fit: cover; margin: 0 6px 6px 0; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+<div id="loader" class="hidden">
+  <div class="top"><h1>Inspection Review</h1><div class="sub">Open a report file (Review_....html) received from your assistant</div></div>
+  <div class="wrap">
+    <div class="card">
+      <label class="addph" style="font-size:15px;padding:10px 14px">Open report file<input type="file" id="inReport"></label>
+      <div style="font-size:12px;color:#777;margin-top:8px">On iPhone: save the file in Files first. The file is read on this device only; nothing is sent to any server.</div>
+    </div>
+    <div id="repList"></div>
+  </div>
+</div>
+<div id="app" class="hidden">
+  <div class="top">
+    <h1 id="hTitle">Inspection Review</h1>
+    <div class="sub" id="hSub"></div>
+    <div class="bar">
+      <select id="selTpl"></select>
+      <select id="selFilter">
+        <option value="all">All questions</option>
+        <option value="pre">Pre-filled / commented</option>
+        <option value="no">NO answers</option>
+        <option value="open">Not answered</option>
+      </select>
+      <button id="btnPdf" type="button">Export PDF</button>
+      <button id="btnXls" type="button">Export Excel (Synergi)</button>
+      <button id="btnReports" type="button" class="hidden">Reports</button>
+      <span class="stats" id="stats"></span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <div class="meta">
+        <div><label for="mVessel">Vessel</label><input type="text" id="mVessel"></div>
+        <div><label for="mDate">Inspection date</label><input type="date" id="mDate"></div>
+        <div><label for="mInspector">Inspector</label><input type="text" id="mInspector"></div>
+        <div><label for="mLocation">Location</label><input type="text" id="mLocation"></div>
+        <div><label for="mTag">Synergi comment tag</label><input type="text" id="mTag"></div>
+      </div>
+    </div>
+    <div id="unBox"></div>
+    <div id="qList"></div>
+    <div class="card" style="font-size:12px;color:#777">
+      Answers and edits are saved automatically in this browser.
+      <button class="smallbtn" id="btnReset" type="button" style="margin-left:8px">Revert to original draft</button>
+    </div>
+  </div>
+</div>
+<div id="printView"></div>
+<div id="viewer" class="viewer hidden"><img id="viewerImg" alt=""></div>
+<div id="toast" class="toast hidden"></div>
+
+<script id="review-data" type="application/json">__REVIEW_DATA__</script>
+<script>
+/* Inspection Review - ES5, ASCII only. */
+var CRC_TABLE = null;
+function crc32(u8) {
+  var c, i, k;
+  if (!CRC_TABLE) {
+    CRC_TABLE = [];
+    for (i = 0; i < 256; i++) {
+      c = i;
+      for (k = 0; k < 8; k++) { c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); }
+      CRC_TABLE[i] = c >>> 0;
+    }
+  }
+  c = 0xFFFFFFFF;
+  for (i = 0; i < u8.length; i++) { c = CRC_TABLE[(c ^ u8[i]) & 0xFF] ^ (c >>> 8); }
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+function utf8Bytes(s) {
+  var b = unescape(encodeURIComponent(s));
+  var u = new Uint8Array(b.length);
+  for (var i = 0; i < b.length; i++) { u[i] = b.charCodeAt(i); }
+  return u;
+}
+function dataUrlBytes(d) {
+  var b = atob(d.substr(d.indexOf(',') + 1));
+  var u = new Uint8Array(b.length);
+  for (var i = 0; i < b.length; i++) { u[i] = b.charCodeAt(i); }
+  return u;
+}
+function buildZip(entries) {
+  var now = new Date();
+  var dtime = (now.getHours() << 11) | (now.getMinutes() << 5) | Math.floor(now.getSeconds() / 2);
+  var ddate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+  var parts = [], central = [], offset = 0, i;
+  function u16(v) { return [v & 0xFF, (v >>> 8) & 0xFF]; }
+  function u32(v) { return [v & 0xFF, (v >>> 8) & 0xFF, (v >>> 16) & 0xFF, (v >>> 24) & 0xFF]; }
+  for (i = 0; i < entries.length; i++) {
+    var e = entries[i];
+    var nm = utf8Bytes(e.name);
+    var crc = crc32(e.data);
+    var sz = e.data.length;
+    var common = [].concat(u16(20), u16(0x0800), u16(0), u16(dtime), u16(ddate), u32(crc), u32(sz), u32(sz), u16(nm.length), u16(0));
+    var lh = new Uint8Array([].concat(u32(0x04034b50), common));
+    parts.push(lh, nm, e.data);
+    var ch = new Uint8Array([].concat(u32(0x02014b50), u16(20), common, u16(0), u16(0), u16(0), u32(0), u32(offset)));
+    central.push(ch, nm);
+    offset += lh.length + nm.length + sz;
+  }
+  var cdSize = 0;
+  for (i = 0; i < central.length; i++) { cdSize += central[i].length; }
+  var end = new Uint8Array([].concat(u32(0x06054b50), u16(0), u16(0), u16(entries.length), u16(entries.length), u32(cdSize), u32(offset), u16(0)));
+  return new Blob(parts.concat(central, [end]), { type: 'application/zip' });
+}
+function safeName(s) { return String(s).replace(/[^A-Za-z0-9_-]+/g, '_').replace(/^_+|_+$/g, '') || 'vessel'; }
+var TPL_STYLES = 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pg0KPHN0eWxlU2hlZXQgeG1sbnM9Imh0dHA6Ly9zY2hlbWFzLm9wZW54bWxmb3JtYXRzLm9yZy9zcHJlYWRzaGVldG1sLzIwMDYvbWFpbiIgeG1sbnM6bWM9Imh0dHA6Ly9zY2hlbWFzLm9wZW54bWxmb3JtYXRzLm9yZy9tYXJrdXAtY29tcGF0aWJpbGl0eS8yMDA2IiBtYzpJZ25vcmFibGU9IngxNGFjIHgxNnIyIHhyIiB4bWxuczp4MTRhYz0iaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS9vZmZpY2Uvc3ByZWFkc2hlZXRtbC8yMDA5LzkvYWMiIHhtbG5zOngxNnIyPSJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL29mZmljZS9zcHJlYWRzaGVldG1sLzIwMTUvMDIvbWFpbiIgeG1sbnM6eHI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vb2ZmaWNlL3NwcmVhZHNoZWV0bWwvMjAxNC9yZXZpc2lvbiI+PGZvbnRzIGNvdW50PSI0IiB4MTRhYzprbm93bkZvbnRzPSIxIj48Zm9udD48c3ogdmFsPSIxMSIvPjxjb2xvciB0aGVtZT0iMSIvPjxuYW1lIHZhbD0iQ2FsaWJyaSIvPjxmYW1pbHkgdmFsPSIyIi8+PHNjaGVtZSB2YWw9Im1pbm9yIi8+PC9mb250Pjxmb250PjxiLz48c3ogdmFsPSIxMCIvPjxjb2xvciByZ2I9IkZGRkZGRkZGIi8+PG5hbWUgdmFsPSJBcmlhbCIvPjwvZm9udD48Zm9udD48c3ogdmFsPSIxMCIvPjxuYW1lIHZhbD0iQXJpYWwiLz48L2ZvbnQ+PGZvbnQ+PHN6IHZhbD0iMTAiLz48bmFtZSB2YWw9IkFyaWFsIi8+PGZhbWlseSB2YWw9IjIiLz48L2ZvbnQ+PC9mb250cz48ZmlsbHMgY291bnQ9IjMiPjxmaWxsPjxwYXR0ZXJuRmlsbCBwYXR0ZXJuVHlwZT0ibm9uZSIvPjwvZmlsbD48ZmlsbD48cGF0dGVybkZpbGwgcGF0dGVyblR5cGU9ImdyYXkxMjUiLz48L2ZpbGw+PGZpbGw+PHBhdHRlcm5GaWxsIHBhdHRlcm5UeXBlPSJzb2xpZCI+PGZnQ29sb3IgcmdiPSJGRjFGNEU3OCIvPjwvcGF0dGVybkZpbGw+PC9maWxsPjwvZmlsbHM+PGJvcmRlcnMgY291bnQ9IjIiPjxib3JkZXI+PGxlZnQvPjxyaWdodC8+PHRvcC8+PGJvdHRvbS8+PGRpYWdvbmFsLz48L2JvcmRlcj48Ym9yZGVyPjxsZWZ0IHN0eWxlPSJ0aGluIj48Y29sb3IgcmdiPSJGRkQ5RDlEOSIvPjwvbGVmdD48cmlnaHQgc3R5bGU9InRoaW4iPjxjb2xvciByZ2I9IkZGRDlEOUQ5Ii8+PC9yaWdodD48dG9wIHN0eWxlPSJ0aGluIj48Y29sb3IgcmdiPSJGRkQ5RDlEOSIvPjwvdG9wPjxib3R0b20gc3R5bGU9InRoaW4iPjxjb2xvciByZ2I9IkZGRDlEOUQ5Ii8+PC9ib3R0b20+PGRpYWdvbmFsLz48L2JvcmRlcj48L2JvcmRlcnM+PGNlbGxTdHlsZVhmcyBjb3VudD0iMSI+PHhmIG51bUZtdElkPSIwIiBmb250SWQ9IjAiIGZpbGxJZD0iMCIgYm9yZGVySWQ9IjAiLz48L2NlbGxTdHlsZVhmcz48Y2VsbFhmcyBjb3VudD0iNSI+PHhmIG51bUZtdElkPSIwIiBmb250SWQ9IjAiIGZpbGxJZD0iMCIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiLz48eGYgbnVtRm10SWQ9IjAiIGZvbnRJZD0iMSIgZmlsbElkPSIyIiBib3JkZXJJZD0iMSIgeGZJZD0iMCIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PGFsaWdubWVudCBob3Jpem9udGFsPSJjZW50ZXIiIHZlcnRpY2FsPSJjZW50ZXIiIHdyYXBUZXh0PSIxIi8+PC94Zj48eGYgbnVtRm10SWQ9IjAiIGZvbnRJZD0iMiIgZmlsbElkPSIwIiBib3JkZXJJZD0iMSIgeGZJZD0iMCIgYXBwbHlGb250PSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjxhbGlnbm1lbnQgdmVydGljYWw9InRvcCIgd3JhcFRleHQ9IjEiLz48L3hmPjx4ZiBudW1GbXRJZD0iMTQiIGZvbnRJZD0iMiIgZmlsbElkPSIwIiBib3JkZXJJZD0iMSIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48YWxpZ25tZW50IHZlcnRpY2FsPSJ0b3AiIHdyYXBUZXh0PSIxIi8+PC94Zj48eGYgbnVtRm10SWQ9IjAiIGZvbnRJZD0iMyIgZmlsbElkPSIwIiBib3JkZXJJZD0iMSIgeGZJZD0iMCIgYXBwbHlGb250PSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjxhbGlnbm1lbnQgdmVydGljYWw9InRvcCIgd3JhcFRleHQ9IjEiLz48L3hmPjwvY2VsbFhmcz48Y2VsbFN0eWxlcyBjb3VudD0iMSI+PGNlbGxTdHlsZSBuYW1lPSJOb3JtYWwiIHhmSWQ9IjAiIGJ1aWx0aW5JZD0iMCIvPjwvY2VsbFN0eWxlcz48ZHhmcyBjb3VudD0iNCI+PGR4Zj48ZmlsbD48cGF0dGVybkZpbGwgcGF0dGVyblR5cGU9InNvbGlkIj48ZmdDb2xvciByZ2I9IkZGRkYwMDAwIi8+PGJnQ29sb3IgcmdiPSJGRkZGMDAwMCIvPjwvcGF0dGVybkZpbGw+PC9maWxsPjwvZHhmPjxkeGY+PGZpbGw+PHBhdHRlcm5GaWxsIHBhdHRlcm5UeXBlPSJzb2xpZCI+PGZnQ29sb3IgcmdiPSJGRkZGRkYwMCIvPjxiZ0NvbG9yIHJnYj0iRkZGRkZGMDAiLz48L3BhdHRlcm5GaWxsPjwvZmlsbD48L2R4Zj48ZHhmPjxmaWxsPjxwYXR0ZXJuRmlsbCBwYXR0ZXJuVHlwZT0ic29saWQiPjxmZ0NvbG9yIHJnYj0iRkZGRkZGMDAiLz48YmdDb2xvciByZ2I9IkZGRkZGRjAwIi8+PC9wYXR0ZXJuRmlsbD48L2ZpbGw+PC9keGY+PGR4Zj48ZmlsbD48cGF0dGVybkZpbGwgcGF0dGVyblR5cGU9InNvbGlkIj48ZmdDb2xvciByZ2I9IkZGMDBCMDUwIi8+PGJnQ29sb3IgcmdiPSJGRjAwQjA1MCIvPjwvcGF0dGVybkZpbGw+PC9maWxsPjwvZHhmPjwvZHhmcz48dGFibGVTdHlsZXMgY291bnQ9IjAiIGRlZmF1bHRUYWJsZVN0eWxlPSJUYWJsZVN0eWxlTWVkaXVtOSIgZGVmYXVsdFBpdm90U3R5bGU9IlBpdm90U3R5bGVMaWdodDE2Ii8+PGV4dExzdD48ZXh0IHVyaT0ie0VCNzlERUYyLTgwQjgtNDNlNS05NUJELTU0Q0JEREY5MDIwQ30iIHhtbG5zOngxND0iaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS9vZmZpY2Uvc3ByZWFkc2hlZXRtbC8yMDA5LzkvbWFpbiI+PHgxNDpzbGljZXJTdHlsZXMgZGVmYXVsdFNsaWNlclN0eWxlPSJTbGljZXJTdHlsZUxpZ2h0MSIvPjwvZXh0PjxleHQgdXJpPSJ7OTI2MEE1MTAtRjMwMS00NmE4LTg2MzUtRjUxMkQ2NEJFNUY1fSIgeG1sbnM6eDE1PSJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL29mZmljZS9zcHJlYWRzaGVldG1sLzIwMTAvMTEvbWFpbiI+PHgxNTp0aW1lbGluZVN0eWxlcyBkZWZhdWx0VGltZWxpbmVTdHlsZT0iVGltZVNsaWNlclN0eWxlTGlnaHQxIi8+PC9leHQ+PC9leHRMc3Q+PC9zdHlsZVNoZWV0Pg==';
+var TPL_THEME = 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pg0KPGE6dGhlbWUgeG1sbnM6YT0iaHR0cDovL3NjaGVtYXMub3BlbnhtbGZvcm1hdHMub3JnL2RyYXdpbmdtbC8yMDA2L21haW4iIG5hbWU9Ik9mZmljZSBUaGVtZSI+PGE6dGhlbWVFbGVtZW50cz48YTpjbHJTY2hlbWUgbmFtZT0iT2ZmaWNlIj48YTpkazE+PGE6c3lzQ2xyIHZhbD0id2luZG93VGV4dCIgbGFzdENscj0iMDAwMDAwIi8+PC9hOmRrMT48YTpsdDE+PGE6c3lzQ2xyIHZhbD0id2luZG93IiBsYXN0Q2xyPSJGRkZGRkYiLz48L2E6bHQxPjxhOmRrMj48YTpzcmdiQ2xyIHZhbD0iMUY0OTdEIi8+PC9hOmRrMj48YTpsdDI+PGE6c3JnYkNsciB2YWw9IkVFRUNFMSIvPjwvYTpsdDI+PGE6YWNjZW50MT48YTpzcmdiQ2xyIHZhbD0iNEY4MUJEIi8+PC9hOmFjY2VudDE+PGE6YWNjZW50Mj48YTpzcmdiQ2xyIHZhbD0iQzA1MDREIi8+PC9hOmFjY2VudDI+PGE6YWNjZW50Mz48YTpzcmdiQ2xyIHZhbD0iOUJCQjU5Ii8+PC9hOmFjY2VudDM+PGE6YWNjZW50ND48YTpzcmdiQ2xyIHZhbD0iODA2NEEyIi8+PC9hOmFjY2VudDQ+PGE6YWNjZW50NT48YTpzcmdiQ2xyIHZhbD0iNEJBQ0M2Ii8+PC9hOmFjY2VudDU+PGE6YWNjZW50Nj48YTpzcmdiQ2xyIHZhbD0iRjc5NjQ2Ii8+PC9hOmFjY2VudDY+PGE6aGxpbms+PGE6c3JnYkNsciB2YWw9IjAwMDBGRiIvPjwvYTpobGluaz48YTpmb2xIbGluaz48YTpzcmdiQ2xyIHZhbD0iODAwMDgwIi8+PC9hOmZvbEhsaW5rPjwvYTpjbHJTY2hlbWU+PGE6Zm9udFNjaGVtZSBuYW1lPSJPZmZpY2UiPjxhOm1ham9yRm9udD48YTpsYXRpbiB0eXBlZmFjZT0iQ2FtYnJpYSIvPjxhOmVhIHR5cGVmYWNlPSIiLz48YTpjcyB0eXBlZmFjZT0iIi8+PGE6Zm9udCBzY3JpcHQ9IkpwYW4iIHR5cGVmYWNlPSLvvK3vvLMg77yw44K044K344OD44KvIi8+PGE6Zm9udCBzY3JpcHQ9IkhhbmciIHR5cGVmYWNlPSLrp5HsnYAg6rOg65SVIi8+PGE6Zm9udCBzY3JpcHQ9IkhhbnMiIHR5cGVmYWNlPSLlrovkvZMiLz48YTpmb250IHNjcmlwdD0iSGFudCIgdHlwZWZhY2U9IuaWsOe0sOaYjumrlCIvPjxhOmZvbnQgc2NyaXB0PSJBcmFiIiB0eXBlZmFjZT0iVGltZXMgTmV3IFJvbWFuIi8+PGE6Zm9udCBzY3JpcHQ9IkhlYnIiIHR5cGVmYWNlPSJUaW1lcyBOZXcgUm9tYW4iLz48YTpmb250IHNjcmlwdD0iVGhhaSIgdHlwZWZhY2U9IlRhaG9tYSIvPjxhOmZvbnQgc2NyaXB0PSJFdGhpIiB0eXBlZmFjZT0iTnlhbGEiLz48YTpmb250IHNjcmlwdD0iQmVuZyIgdHlwZWZhY2U9IlZyaW5kYSIvPjxhOmZvbnQgc2NyaXB0PSJHdWpyIiB0eXBlZmFjZT0iU2hydXRpIi8+PGE6Zm9udCBzY3JpcHQ9IktobXIiIHR5cGVmYWNlPSJNb29sQm9yYW4iLz48YTpmb250IHNjcmlwdD0iS25kYSIgdHlwZWZhY2U9IlR1bmdhIi8+PGE6Zm9udCBzY3JpcHQ9Ikd1cnUiIHR5cGVmYWNlPSJSYWF2aSIvPjxhOmZvbnQgc2NyaXB0PSJDYW5zIiB0eXBlZmFjZT0iRXVwaGVtaWEiLz48YTpmb250IHNjcmlwdD0iQ2hlciIgdHlwZWZhY2U9IlBsYW50YWdlbmV0IENoZXJva2VlIi8+PGE6Zm9udCBzY3JpcHQ9IllpaWkiIHR5cGVmYWNlPSJNaWNyb3NvZnQgWWkgQmFpdGkiLz48YTpmb250IHNjcmlwdD0iVGlidCIgdHlwZWZhY2U9Ik1pY3Jvc29mdCBIaW1hbGF5YSIvPjxhOmZvbnQgc2NyaXB0PSJUaGFhIiB0eXBlZmFjZT0iTVYgQm9saSIvPjxhOmZvbnQgc2NyaXB0PSJEZXZhIiB0eXBlZmFjZT0iTWFuZ2FsIi8+PGE6Zm9udCBzY3JpcHQ9IlRlbHUiIHR5cGVmYWNlPSJHYXV0YW1pIi8+PGE6Zm9udCBzY3JpcHQ9IlRhbWwiIHR5cGVmYWNlPSJMYXRoYSIvPjxhOmZvbnQgc2NyaXB0PSJTeXJjIiB0eXBlZmFjZT0iRXN0cmFuZ2VsbyBFZGVzc2EiLz48YTpmb250IHNjcmlwdD0iT3J5YSIgdHlwZWZhY2U9IkthbGluZ2EiLz48YTpmb250IHNjcmlwdD0iTWx5bSIgdHlwZWZhY2U9IkthcnRpa2EiLz48YTpmb250IHNjcmlwdD0iTGFvbyIgdHlwZWZhY2U9IkRva0NoYW1wYSIvPjxhOmZvbnQgc2NyaXB0PSJTaW5oIiB0eXBlZmFjZT0iSXNrb29sYSBQb3RhIi8+PGE6Zm9udCBzY3JpcHQ9Ik1vbmciIHR5cGVmYWNlPSJNb25nb2xpYW4gQmFpdGkiLz48YTpmb250IHNjcmlwdD0iVmlldCIgdHlwZWZhY2U9IlRpbWVzIE5ldyBSb21hbiIvPjxhOmZvbnQgc2NyaXB0PSJVaWdoIiB0eXBlZmFjZT0iTWljcm9zb2Z0IFVpZ2h1ciIvPjwvYTptYWpvckZvbnQ+PGE6bWlub3JGb250PjxhOmxhdGluIHR5cGVmYWNlPSJDYWxpYnJpIi8+PGE6ZWEgdHlwZWZhY2U9IiIvPjxhOmNzIHR5cGVmYWNlPSIiLz48YTpmb250IHNjcmlwdD0iSnBhbiIgdHlwZWZhY2U9Iu+8re+8syDvvLDjgrTjgrfjg4Pjgq8iLz48YTpmb250IHNjcmlwdD0iSGFuZyIgdHlwZWZhY2U9IuunkeydgCDqs6DrlJUiLz48YTpmb250IHNjcmlwdD0iSGFucyIgdHlwZWZhY2U9IuWui+S9kyIvPjxhOmZvbnQgc2NyaXB0PSJIYW50IiB0eXBlZmFjZT0i5paw57Sw5piO6auUIi8+PGE6Zm9udCBzY3JpcHQ9IkFyYWIiIHR5cGVmYWNlPSJBcmlhbCIvPjxhOmZvbnQgc2NyaXB0PSJIZWJyIiB0eXBlZmFjZT0iQXJpYWwiLz48YTpmb250IHNjcmlwdD0iVGhhaSIgdHlwZWZhY2U9IlRhaG9tYSIvPjxhOmZvbnQgc2NyaXB0PSJFdGhpIiB0eXBlZmFjZT0iTnlhbGEiLz48YTpmb250IHNjcmlwdD0iQmVuZyIgdHlwZWZhY2U9IlZyaW5kYSIvPjxhOmZvbnQgc2NyaXB0PSJHdWpyIiB0eXBlZmFjZT0iU2hydXRpIi8+PGE6Zm9udCBzY3JpcHQ9IktobXIiIHR5cGVmYWNlPSJEYXVuUGVuaCIvPjxhOmZvbnQgc2NyaXB0PSJLbmRhIiB0eXBlZmFjZT0iVHVuZ2EiLz48YTpmb250IHNjcmlwdD0iR3VydSIgdHlwZWZhY2U9IlJhYXZpIi8+PGE6Zm9udCBzY3JpcHQ9IkNhbnMiIHR5cGVmYWNlPSJFdXBoZW1pYSIvPjxhOmZvbnQgc2NyaXB0PSJDaGVyIiB0eXBlZmFjZT0iUGxhbnRhZ2VuZXQgQ2hlcm9rZWUiLz48YTpmb250IHNjcmlwdD0iWWlpaSIgdHlwZWZhY2U9Ik1pY3Jvc29mdCBZaSBCYWl0aSIvPjxhOmZvbnQgc2NyaXB0PSJUaWJ0IiB0eXBlZmFjZT0iTWljcm9zb2Z0IEhpbWFsYXlhIi8+PGE6Zm9udCBzY3JpcHQ9IlRoYWEiIHR5cGVmYWNlPSJNViBCb2xpIi8+PGE6Zm9udCBzY3JpcHQ9IkRldmEiIHR5cGVmYWNlPSJNYW5nYWwiLz48YTpmb250IHNjcmlwdD0iVGVsdSIgdHlwZWZhY2U9IkdhdXRhbWkiLz48YTpmb250IHNjcmlwdD0iVGFtbCIgdHlwZWZhY2U9IkxhdGhhIi8+PGE6Zm9udCBzY3JpcHQ9IlN5cmMiIHR5cGVmYWNlPSJFc3RyYW5nZWxvIEVkZXNzYSIvPjxhOmZvbnQgc2NyaXB0PSJPcnlhIiB0eXBlZmFjZT0iS2FsaW5nYSIvPjxhOmZvbnQgc2NyaXB0PSJNbHltIiB0eXBlZmFjZT0iS2FydGlrYSIvPjxhOmZvbnQgc2NyaXB0PSJMYW9vIiB0eXBlZmFjZT0iRG9rQ2hhbXBhIi8+PGE6Zm9udCBzY3JpcHQ9IlNpbmgiIHR5cGVmYWNlPSJJc2tvb2xhIFBvdGEiLz48YTpmb250IHNjcmlwdD0iTW9uZyIgdHlwZWZhY2U9Ik1vbmdvbGlhbiBCYWl0aSIvPjxhOmZvbnQgc2NyaXB0PSJWaWV0IiB0eXBlZmFjZT0iQXJpYWwiLz48YTpmb250IHNjcmlwdD0iVWlnaCIgdHlwZWZhY2U9Ik1pY3Jvc29mdCBVaWdodXIiLz48L2E6bWlub3JGb250PjwvYTpmb250U2NoZW1lPjxhOmZtdFNjaGVtZSBuYW1lPSJPZmZpY2UiPjxhOmZpbGxTdHlsZUxzdD48YTpzb2xpZEZpbGw+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiLz48L2E6c29saWRGaWxsPjxhOmdyYWRGaWxsIHJvdFdpdGhTaGFwZT0iMSI+PGE6Z3NMc3Q+PGE6Z3MgcG9zPSIwIj48YTpzY2hlbWVDbHIgdmFsPSJwaENsciI+PGE6dGludCB2YWw9IjUwMDAwIi8+PGE6c2F0TW9kIHZhbD0iMzAwMDAwIi8+PC9hOnNjaGVtZUNscj48L2E6Z3M+PGE6Z3MgcG9zPSIzNTAwMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnRpbnQgdmFsPSIzNzAwMCIvPjxhOnNhdE1vZCB2YWw9IjMwMDAwMCIvPjwvYTpzY2hlbWVDbHI+PC9hOmdzPjxhOmdzIHBvcz0iMTAwMDAwIj48YTpzY2hlbWVDbHIgdmFsPSJwaENsciI+PGE6dGludCB2YWw9IjE1MDAwIi8+PGE6c2F0TW9kIHZhbD0iMzUwMDAwIi8+PC9hOnNjaGVtZUNscj48L2E6Z3M+PC9hOmdzTHN0PjxhOmxpbiBhbmc9IjE2MjAwMDAwIiBzY2FsZWQ9IjEiLz48L2E6Z3JhZEZpbGw+PGE6Z3JhZEZpbGwgcm90V2l0aFNoYXBlPSIxIj48YTpnc0xzdD48YTpncyBwb3M9IjAiPjxhOnNjaGVtZUNsciB2YWw9InBoQ2xyIj48YTpzaGFkZSB2YWw9IjUxMDAwIi8+PGE6c2F0TW9kIHZhbD0iMTMwMDAwIi8+PC9hOnNjaGVtZUNscj48L2E6Z3M+PGE6Z3MgcG9zPSI4MDAwMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnNoYWRlIHZhbD0iOTMwMDAiLz48YTpzYXRNb2QgdmFsPSIxMzAwMDAiLz48L2E6c2NoZW1lQ2xyPjwvYTpncz48YTpncyBwb3M9IjEwMDAwMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnNoYWRlIHZhbD0iOTQwMDAiLz48YTpzYXRNb2QgdmFsPSIxMzUwMDAiLz48L2E6c2NoZW1lQ2xyPjwvYTpncz48L2E6Z3NMc3Q+PGE6bGluIGFuZz0iMTYyMDAwMDAiIHNjYWxlZD0iMCIvPjwvYTpncmFkRmlsbD48L2E6ZmlsbFN0eWxlTHN0PjxhOmxuU3R5bGVMc3Q+PGE6bG4gdz0iOTUyNSIgY2FwPSJmbGF0IiBjbXBkPSJzbmciIGFsZ249ImN0ciI+PGE6c29saWRGaWxsPjxhOnNjaGVtZUNsciB2YWw9InBoQ2xyIj48YTpzaGFkZSB2YWw9Ijk1MDAwIi8+PGE6c2F0TW9kIHZhbD0iMTA1MDAwIi8+PC9hOnNjaGVtZUNscj48L2E6c29saWRGaWxsPjxhOnByc3REYXNoIHZhbD0ic29saWQiLz48L2E6bG4+PGE6bG4gdz0iMjU0MDAiIGNhcD0iZmxhdCIgY21wZD0ic25nIiBhbGduPSJjdHIiPjxhOnNvbGlkRmlsbD48YTpzY2hlbWVDbHIgdmFsPSJwaENsciIvPjwvYTpzb2xpZEZpbGw+PGE6cHJzdERhc2ggdmFsPSJzb2xpZCIvPjwvYTpsbj48YTpsbiB3PSIzODEwMCIgY2FwPSJmbGF0IiBjbXBkPSJzbmciIGFsZ249ImN0ciI+PGE6c29saWRGaWxsPjxhOnNjaGVtZUNsciB2YWw9InBoQ2xyIi8+PC9hOnNvbGlkRmlsbD48YTpwcnN0RGFzaCB2YWw9InNvbGlkIi8+PC9hOmxuPjwvYTpsblN0eWxlTHN0PjxhOmVmZmVjdFN0eWxlTHN0PjxhOmVmZmVjdFN0eWxlPjxhOmVmZmVjdExzdD48YTpvdXRlclNoZHcgYmx1clJhZD0iNDAwMDAiIGRpc3Q9IjIwMDAwIiBkaXI9IjU0MDAwMDAiIHJvdFdpdGhTaGFwZT0iMCI+PGE6c3JnYkNsciB2YWw9IjAwMDAwMCI+PGE6YWxwaGEgdmFsPSIzODAwMCIvPjwvYTpzcmdiQ2xyPjwvYTpvdXRlclNoZHc+PC9hOmVmZmVjdExzdD48L2E6ZWZmZWN0U3R5bGU+PGE6ZWZmZWN0U3R5bGU+PGE6ZWZmZWN0THN0PjxhOm91dGVyU2hkdyBibHVyUmFkPSI0MDAwMCIgZGlzdD0iMjMwMDAiIGRpcj0iNTQwMDAwMCIgcm90V2l0aFNoYXBlPSIwIj48YTpzcmdiQ2xyIHZhbD0iMDAwMDAwIj48YTphbHBoYSB2YWw9IjM1MDAwIi8+PC9hOnNyZ2JDbHI+PC9hOm91dGVyU2hkdz48L2E6ZWZmZWN0THN0PjwvYTplZmZlY3RTdHlsZT48YTplZmZlY3RTdHlsZT48YTplZmZlY3RMc3Q+PGE6b3V0ZXJTaGR3IGJsdXJSYWQ9IjQwMDAwIiBkaXN0PSIyMzAwMCIgZGlyPSI1NDAwMDAwIiByb3RXaXRoU2hhcGU9IjAiPjxhOnNyZ2JDbHIgdmFsPSIwMDAwMDAiPjxhOmFscGhhIHZhbD0iMzUwMDAiLz48L2E6c3JnYkNscj48L2E6b3V0ZXJTaGR3PjwvYTplZmZlY3RMc3Q+PGE6c2NlbmUzZD48YTpjYW1lcmEgcHJzdD0ib3J0aG9ncmFwaGljRnJvbnQiPjxhOnJvdCBsYXQ9IjAiIGxvbj0iMCIgcmV2PSIwIi8+PC9hOmNhbWVyYT48YTpsaWdodFJpZyByaWc9InRocmVlUHQiIGRpcj0idCI+PGE6cm90IGxhdD0iMCIgbG9uPSIwIiByZXY9IjEyMDAwMDAiLz48L2E6bGlnaHRSaWc+PC9hOnNjZW5lM2Q+PGE6c3AzZD48YTpiZXZlbFQgdz0iNjM1MDAiIGg9IjI1NDAwIi8+PC9hOnNwM2Q+PC9hOmVmZmVjdFN0eWxlPjwvYTplZmZlY3RTdHlsZUxzdD48YTpiZ0ZpbGxTdHlsZUxzdD48YTpzb2xpZEZpbGw+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiLz48L2E6c29saWRGaWxsPjxhOmdyYWRGaWxsIHJvdFdpdGhTaGFwZT0iMSI+PGE6Z3NMc3Q+PGE6Z3MgcG9zPSIwIj48YTpzY2hlbWVDbHIgdmFsPSJwaENsciI+PGE6dGludCB2YWw9IjQwMDAwIi8+PGE6c2F0TW9kIHZhbD0iMzUwMDAwIi8+PC9hOnNjaGVtZUNscj48L2E6Z3M+PGE6Z3MgcG9zPSI0MDAwMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnRpbnQgdmFsPSI0NTAwMCIvPjxhOnNoYWRlIHZhbD0iOTkwMDAiLz48YTpzYXRNb2QgdmFsPSIzNTAwMDAiLz48L2E6c2NoZW1lQ2xyPjwvYTpncz48YTpncyBwb3M9IjEwMDAwMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnNoYWRlIHZhbD0iMjAwMDAiLz48YTpzYXRNb2QgdmFsPSIyNTUwMDAiLz48L2E6c2NoZW1lQ2xyPjwvYTpncz48L2E6Z3NMc3Q+PGE6cGF0aCBwYXRoPSJjaXJjbGUiPjxhOmZpbGxUb1JlY3QgbD0iNTAwMDAiIHQ9Ii04MDAwMCIgcj0iNTAwMDAiIGI9IjE4MDAwMCIvPjwvYTpwYXRoPjwvYTpncmFkRmlsbD48YTpncmFkRmlsbCByb3RXaXRoU2hhcGU9IjEiPjxhOmdzTHN0PjxhOmdzIHBvcz0iMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnRpbnQgdmFsPSI4MDAwMCIvPjxhOnNhdE1vZCB2YWw9IjMwMDAwMCIvPjwvYTpzY2hlbWVDbHI+PC9hOmdzPjxhOmdzIHBvcz0iMTAwMDAwIj48YTpzY2hlbWVDbHIgdmFsPSJwaENsciI+PGE6c2hhZGUgdmFsPSIzMDAwMCIvPjxhOnNhdE1vZCB2YWw9IjIwMDAwMCIvPjwvYTpzY2hlbWVDbHI+PC9hOmdzPjwvYTpnc0xzdD48YTpwYXRoIHBhdGg9ImNpcmNsZSI+PGE6ZmlsbFRvUmVjdCBsPSI1MDAwMCIgdD0iNTAwMDAiIHI9IjUwMDAwIiBiPSI1MDAwMCIvPjwvYTpwYXRoPjwvYTpncmFkRmlsbD48L2E6YmdGaWxsU3R5bGVMc3Q+PC9hOmZtdFNjaGVtZT48L2E6dGhlbWVFbGVtZW50cz48YTpvYmplY3REZWZhdWx0cy8+PGE6ZXh0cmFDbHJTY2hlbWVMc3QvPjwvYTp0aGVtZT4=';
+function xmlEsc(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '');
+}
+function b64Bytes(b) {
+  var s = atob(b), u = new Uint8Array(s.length);
+  for (var i = 0; i < s.length; i++) { u[i] = s.charCodeAt(i); }
+  return u;
+}
+function excelSerial(ymd) {
+  var p = String(ymd || '').split('-');
+  if (p.length !== 3) { return null; }
+  return Math.round((Date.UTC(+p[0], +p[1] - 1, +p[2]) - Date.UTC(1899, 11, 30)) / 86400000);
+}
+function synCell(ref, style, text) {
+  return '<c r="' + ref + '" s="' + style + '" t="inlineStr"><is><t xml:space="preserve">' + xmlEsc(text) + '</t></is></c>';
+}
+
+var D = null;
+var SKEY = '';
+var LOADER = false;
+var ST = null;           /* saved state */
+var ADDED = {};          /* added photos: key tplIndex|q -> [dataUrl] (IndexedDB) */
+var CUR = 0;             /* current template index */
+
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function trim(s) { return String(s == null ? '' : s).replace(/^\s+|\s+$/g, ''); }
+var tt = null;
+function toast(m) { var t = $('toast'); t.textContent = m; t.className = 'toast'; if (tt) { clearTimeout(tt); } tt = setTimeout(function () { t.className = 'toast hidden'; }, 2800); }
+
+/* ---------- state ---------- */
+function freshState() {
+  var s = { meta: { vessel: D.meta.vessel || '', date: D.meta.date || '', inspector: D.meta.inspector || '', location: D.meta.location || '', tag: D.meta.tag || 'TEPA DP NAV-DP1' }, t: [], moved: {} };
+  for (var i = 0; i < D.templates.length; i++) {
+    var T = D.templates[i], ts = { ans: {}, cmt: {}, obs: {}, subj: {}, act: {}, removed: {} };
+    for (var q in T.items) {
+      var it = T.items[q];
+      ts.cmt[q] = it.comment || '';
+      ts.obs[q] = true;
+      ts.subj[q] = it.subject || '';
+      ts.act[q] = it.action || '';
+    }
+    s.t.push(ts);
+  }
+  return s;
+}
+function loadState() {
+  try { ST = JSON.parse(localStorage.getItem(SKEY)); } catch (e) { ST = null; }
+  if (!ST || !ST.t || ST.t.length !== D.templates.length) { ST = freshState(); }
+}
+var saveT = null;
+function save() {
+  if (saveT) { clearTimeout(saveT); }
+  saveT = setTimeout(function () {
+    try { localStorage.setItem(SKEY, JSON.stringify(ST)); } catch (e) { toast('Browser storage full: export now'); }
+  }, 400);
+}
+
+/* ---------- IndexedDB for added photos ---------- */
+var idb = null;
+function dbOpen(cb) {
+  if (idb) { cb(idb); return; }
+  if (!window.indexedDB) { cb(null); return; }
+  var r;
+  try { r = indexedDB.open('tepa-review', 2); } catch (e) { cb(null); return; }
+  r.onupgradeneeded = function (e) {
+    var d = e.target.result;
+    if (!d.objectStoreNames.contains('photos')) { d.createObjectStore('photos'); }
+    if (!d.objectStoreNames.contains('reports')) { d.createObjectStore('reports'); }
+  };
+  r.onsuccess = function (e) { idb = e.target.result; cb(idb); };
+  r.onerror = function () { cb(null); };
+}
+function loadAdded(cb) {
+  dbOpen(function (db) {
+    if (!db) { cb(); return; }
+    var g = db.transaction('photos', 'readonly').objectStore('photos').get(SKEY);
+    g.onsuccess = function () { ADDED = g.result || {}; cb(); };
+    g.onerror = function () { cb(); };
+  });
+}
+function saveAdded() {
+  dbOpen(function (db) {
+    if (!db) { toast('Photo storage not available'); return; }
+    var tx = db.transaction('photos', 'readwrite');
+    tx.objectStore('photos').put(ADDED, SKEY);
+    tx.onerror = function () { toast('Photo could not be saved'); };
+  });
+}
+function compress(file, cb) {
+  var u = URL.createObjectURL(file), img = new Image();
+  img.onload = function () {
+    var r = Math.min(1, 1200 / Math.max(img.naturalWidth, img.naturalHeight));
+    var c = document.createElement('canvas');
+    c.width = Math.round(img.naturalWidth * r); c.height = Math.round(img.naturalHeight * r);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    URL.revokeObjectURL(u);
+    cb(c.toDataURL('image/jpeg', 0.6));
+  };
+  img.onerror = function () { URL.revokeObjectURL(u); cb(null); };
+  img.src = u;
+}
+
+/* ---------- photos per question ---------- */
+function basePhotos(ti, q) {
+  var it = D.templates[ti].items[q];
+  var list = it && it.photos ? it.photos.slice(0) : [];
+  var mv = ST.moved[ti + '|' + q] || [];
+  for (var i = 0; i < mv.length; i++) {
+    var u = D.unassigned[mv[i]];
+    if (u) { list = list.concat(u.photos || []); }
+  }
+  return list;
+}
+function photosOf(ti, q) {
+  var out = [], b = basePhotos(ti, q), rm = ST.t[ti].removed[q] || [], i;
+  for (i = 0; i < b.length; i++) { if (rm.indexOf('b' + i) < 0) { out.push({ src: b[i], id: 'b' + i }); } }
+  var a = ADDED[ti + '|' + q] || [];
+  for (i = 0; i < a.length; i++) { out.push({ src: a[i], id: 'a' + i }); }
+  return out;
+}
+function removePhoto(ti, q, id) {
+  if (id.charAt(0) === 'b') {
+    var rm = ST.t[ti].removed[q] || (ST.t[ti].removed[q] = []);
+    rm.push(id); save();
+  } else {
+    var a = ADDED[ti + '|' + q] || [];
+    a.splice(parseInt(id.substr(1), 10), 1);
+    ADDED[ti + '|' + q] = a; saveAdded();
+  }
+}
+
+/* ---------- rendering ---------- */
+function answerOf(ti, q) { return ST.t[ti].ans[q] || ''; }
+function isPre(ti, q) {
+  var ts = ST.t[ti];
+  return !!(D.templates[ti].items[q] || ts.obs[q] || trim(ts.cmt[q]) || ST.moved[ti + '|' + q]);
+}
+function notesOf(ti, q) {
+  var it = D.templates[ti].items[q], out = [];
+  if (it && it.notes) { out = out.concat(it.notes); }
+  var mv = ST.moved[ti + '|' + q] || [];
+  for (var i = 0; i < mv.length; i++) { var u = D.unassigned[mv[i]]; if (u) { out.push({ obs: u.obs, text: u.note }); } }
+  return out;
+}
+function renderHeader() {
+  var T = D.templates[CUR];
+  $('hTitle').textContent = T.title;
+  $('hSub').textContent = (ST.meta.vessel || '') + ' - ' + (ST.meta.date || '') + (ST.meta.location ? ' - ' + ST.meta.location : '');
+  document.title = T.title + ' | ' + (ST.meta.vessel || '');
+}
+function renderStats() {
+  var T = D.templates[CUR], ts = ST.t[CUR], y = 0, n = 0, na = 0, tot = 0;
+  for (var s = 0; s < T.sections.length; s++) {
+    for (var k = 0; k < T.sections[s].questions.length; k++) {
+      tot++;
+      var a = ts.ans[T.sections[s].questions[k].q];
+      if (a === 'YES') { y++; } else if (a === 'NO') { n++; } else if (a === 'NA') { na++; }
+    }
+  }
+  $('stats').textContent = (y + n + na) + '/' + tot + ' answered - YES ' + y + ' - NO ' + n + ' - N/A ' + na;
+}
+function renderUnassigned() {
+  var box = $('unBox'), h = '', any = false;
+  for (var i = 0; i < (D.unassigned || []).length; i++) {
+    if (isMoved(i)) { continue; }
+    var u = D.unassigned[i]; any = true;
+    h += '<div class="unitem"><div class="note"><b>Obs ' + esc(u.obs) + ' (field note):</b> ' + esc(u.note) + '</div>' +
+      (u.reason ? '<div class="remark">' + esc(u.reason) + '</div>' : '') + '<div class="photos">';
+    for (var p = 0; p < (u.photos || []).length; p++) { h += '<div class="ph"><img src="' + u.photos[p] + '" alt=""></div>'; }
+    h += '</div><div class="assign"><input type="text" placeholder="Q no." id="as' + i + '"><button type="button" data-un="' + i + '">Move to this checklist question</button></div></div>';
+  }
+  box.innerHTML = any ? '<div class="card un"><h2>Observations not placed</h2>' + h + '</div>' : '';
+  var bs = box.querySelectorAll('button[data-un]');
+  for (var b = 0; b < bs.length; b++) {
+    bs[b].onclick = function () {
+      var idx = parseInt(this.getAttribute('data-un'), 10), qn = trim($('as' + idx).value);
+      if (!qExists(CUR, qn)) { toast('Question ' + qn + ' not found in this checklist'); return; }
+      var key = CUR + '|' + qn;
+      (ST.moved[key] || (ST.moved[key] = [])).push(idx);
+      ST.t[CUR].obs[qn] = true;
+      save(); renderAll(); goTo(qn);
+    };
+  }
+  var im = box.querySelectorAll('img');
+  for (var m = 0; m < im.length; m++) { im[m].onclick = zoom; }
+}
+function isMoved(i) {
+  for (var k in ST.moved) { if (ST.moved[k].indexOf(i) >= 0) { return true; } }
+  return false;
+}
+function qExists(ti, qn) {
+  var T = D.templates[ti];
+  for (var s = 0; s < T.sections.length; s++) {
+    for (var k = 0; k < T.sections[s].questions.length; k++) { if (T.sections[s].questions[k].q === qn) { return true; } }
+  }
+  return false;
+}
+function zoom() { $('viewerImg').src = this.src; $('viewer').className = 'viewer'; }
+$('viewer').onclick = function () { $('viewer').className = 'viewer hidden'; $('viewerImg').src = ''; };
+function goTo(qn) {
+  var el = document.getElementById('q-' + qn.replace(/\./g, '_'));
+  if (el) { el.scrollIntoView(); window.scrollBy(0, -130); }
+}
+
+function qHtml(ti, q, text) {
+  var ts = ST.t[ti], it = D.templates[ti].items[q] || {}, a = answerOf(ti, q), id = q.replace(/\./g, '_');
+  var h = '<div class="q' + (a ? ' ans-' + a : (isPre(ti, q) ? ' pre' : '')) + '" id="q-' + id + '" data-q="' + esc(q) + '">' +
+    '<div class="qh"><span class="qn">' + esc(q) + '</span><span class="qt">' + esc(text) + '</span></div><div class="ans">';
+  var opts = [['YES', 'YES'], ['NO', 'NO'], ['NA', 'N/A']];
+  for (var i = 0; i < opts.length; i++) {
+    h += '<label class="' + (a === opts[i][0] ? 'on-' + opts[i][0] : '') + '"><input type="radio" name="a-' + id + '" value="' + opts[i][0] + '">' + opts[i][1] + '</label>';
+  }
+  h += '</div>';
+  var notes = notesOf(ti, q);
+  for (var n = 0; n < notes.length; n++) { h += '<div class="note"><b>Obs ' + esc(notes[n].obs) + ' (field note):</b> ' + esc(notes[n].text) + '</div>'; }
+  if (it.remark) { h += '<div class="remark">Check: ' + esc(it.remark) + '</div>'; }
+  h += '<div class="obsrow"><label><input type="checkbox" class="f-obs"' + (ts.obs[q] ? ' checked' : '') + '> Observation / Finding</label></div>' +
+    '<textarea class="f-cmt" placeholder="Comment / Evidence...">' + esc(ts.cmt[q] || '') + '</textarea>';
+  var showSyn = !!(it.subject || ts.subj[q] || a === 'NO' || ts.obs[q]);
+  h += '<div class="syn' + (showSyn ? '' : ' hidden') + '"><div><label>Synergi subject</label><input type="text" class="f-subj" value="' + esc(ts.subj[q] || '') + '"></div>' +
+    '<div><label>CTR action</label><input type="text" class="f-act" value="' + esc(ts.act[q] || '') + '"></div></div>';
+  var ph = photosOf(ti, q);
+  h += '<div class="photos">';
+  for (var p = 0; p < ph.length; p++) { h += '<div class="ph"><img src="' + ph[p].src + '" alt=""><button type="button" data-ph="' + ph[p].id + '">&#10005;</button></div>'; }
+  h += '</div><label class="addph">+ Add photo<input type="file" accept="image/*" class="f-add"></label></div>';
+  return h;
+}
+function passes(ti, q) {
+  var f = $('selFilter').value, a = answerOf(ti, q);
+  if (f === 'pre') { return isPre(ti, q); }
+  if (f === 'no') { return a === 'NO'; }
+  if (f === 'open') { return !a; }
+  return true;
+}
+function renderList() {
+  var T = D.templates[CUR], h = '';
+  for (var s = 0; s < T.sections.length; s++) {
+    var S = T.sections[s], body = '';
+    for (var k = 0; k < S.questions.length; k++) {
+      if (passes(CUR, S.questions[k].q)) { body += qHtml(CUR, S.questions[k].q, S.questions[k].text); }
+    }
+    if (body) { h += '<div class="sec-title">' + esc(S.title) + '</div>' + body; }
+  }
+  $('qList').innerHTML = h || '<div class="card">No question matches this filter.</div>';
+  bindList();
+}
+function refreshQ(el) {
+  var q = el.getAttribute('data-q'), T = D.templates[CUR];
+  var text = '';
+  for (var s = 0; s < T.sections.length; s++) {
+    for (var k = 0; k < T.sections[s].questions.length; k++) { if (T.sections[s].questions[k].q === q) { text = T.sections[s].questions[k].text; } }
+  }
+  var tmp = document.createElement('div');
+  tmp.innerHTML = qHtml(CUR, q, text);
+  var nw = tmp.firstChild;
+  el.parentNode.replaceChild(nw, el);
+  bindQ(nw);
+}
+function bindQ(el) {
+  var q = el.getAttribute('data-q'), ts = ST.t[CUR];
+  var rs = el.querySelectorAll('.ans input');
+  for (var i = 0; i < rs.length; i++) {
+    rs[i].parentNode.onclick = (function (v) {
+      return function (ev) {
+        ev.preventDefault();
+        ts.ans[q] = ts.ans[q] === v ? '' : v;
+        if (v === 'NO' && ts.ans[q] === 'NO') { ts.obs[q] = true; }
+        save(); renderStats(); refreshQ(el);
+      };
+    })(rs[i].value);
+  }
+  el.querySelector('.f-obs').onchange = function () { ts.obs[q] = this.checked; save(); refreshQ(el); };
+  el.querySelector('.f-cmt').oninput = function () { ts.cmt[q] = this.value; save(); };
+  el.querySelector('.f-subj').oninput = function () { ts.subj[q] = this.value; save(); };
+  el.querySelector('.f-act').oninput = function () { ts.act[q] = this.value; save(); };
+  var bs = el.querySelectorAll('button[data-ph]');
+  for (var b = 0; b < bs.length; b++) {
+    bs[b].onclick = function () {
+      if (!window.confirm('Remove this photo?')) { return; }
+      removePhoto(CUR, q, this.getAttribute('data-ph')); refreshQ(el);
+    };
+  }
+  var im = el.querySelectorAll('.ph img');
+  for (var m = 0; m < im.length; m++) { im[m].onclick = zoom; }
+  el.querySelector('.f-add').onchange = function () {
+    var f = this.files && this.files[0], ti = CUR;
+    if (!f) { return; }
+    compress(f, function (d) {
+      if (!d) { toast('Photo could not be read'); return; }
+      (ADDED[ti + '|' + q] || (ADDED[ti + '|' + q] = [])).push(d);
+      saveAdded(); refreshQ(el);
+    });
+  };
+}
+function bindList() {
+  var qs = $('qList').querySelectorAll('.q');
+  for (var i = 0; i < qs.length; i++) { bindQ(qs[i]); }
+}
+function renderAll() { renderHeader(); renderStats(); renderUnassigned(); renderList(); }
+
+/* ---------- meta ---------- */
+function bindMeta() {
+  var map = { mVessel: 'vessel', mDate: 'date', mInspector: 'inspector', mLocation: 'location', mTag: 'tag' };
+  for (var id in map) {
+    $(id).value = ST.meta[map[id]] || '';
+    $(id).oninput = (function (k) { return function () { ST.meta[k] = this.value; save(); renderHeader(); }; })(map[id]);
+  }
+}
+
+/* ---------- PDF ---------- */
+function initials(n) {
+  var p = trim(n).split(/\s+/), s = '';
+  for (var i = 0; i < p.length; i++) { if (p[i]) { s += p[i].charAt(0).toUpperCase(); } }
+  return s;
+}
+function shrink(src, max, q, cb) {
+  var img = new Image();
+  img.onload = function () {
+    var r = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    var c = document.createElement('canvas');
+    c.width = Math.round(img.naturalWidth * r); c.height = Math.round(img.naturalHeight * r);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    cb(c.toDataURL('image/jpeg', q));
+  };
+  img.onerror = function () { cb(src); };
+  img.src = src;
+}
+$('btnPdf').onclick = function () {
+  var T = D.templates[CUR], ts = ST.t[CUR], M = ST.meta;
+  var y = 0, n = 0, na = 0, chips = [], body = '', imgs = [];
+  for (var s = 0; s < T.sections.length; s++) {
+    var S = T.sections[s];
+    body += '<div class="pv-sec">' + esc(S.title) + '</div>';
+    for (var k = 0; k < S.questions.length; k++) {
+      var q = S.questions[k].q, a = ts.ans[q] || '';
+      if (a === 'YES') { y++; } else if (a === 'NO') { n++; } else if (a === 'NA') { na++; }
+      if (ts.obs[q]) { chips.push(q); }
+      body += '<div class="pv-q' + (ts.obs[q] ? ' f' : '') + '"><div class="pv-qh"><span class="n">' + esc(q) + '</span><span class="t">' + esc(S.questions[k].text) +
+        '</span><span class="a">' + (a === 'NA' ? 'N/A' : a) + '</span></div>';
+      if (trim(ts.cmt[q])) { body += '<div class="pv-c">' + esc(trim(ts.cmt[q])) + '</div>'; }
+      var ph = photosOf(CUR, q);
+      if (ph.length) {
+        body += '<div class="pv-ph">';
+        for (var p = 0; p < ph.length; p++) { imgs.push(ph[p].src); body += '<img data-i="' + (imgs.length - 1) + '" alt="">'; }
+        body += '</div>';
+      }
+      body += '</div>';
+    }
+  }
+  var ini = initials(M.inspector);
+  var head = '<div class="pv-title">' + esc(T.title) + ' | ' + esc(M.vessel) + (ini ? ' | ' + esc(ini) : '') + (M.date ? ' | ' + esc(M.date) : '') + '</div>' +
+    '<div class="pv-block"><h3>Inspection Details</h3><table class="pv-table">' +
+    '<tr><td><b>Vessel</b></td><td>' + esc(M.vessel) + '</td></tr><tr><td><b>Inspection date</b></td><td>' + esc(M.date) + '</td></tr>' +
+    '<tr><td><b>Inspector</b></td><td>' + esc(M.inspector) + '</td></tr><tr><td><b>Location</b></td><td>' + esc(M.location) + '</td></tr></table></div>' +
+    '<div class="pv-stats"><div class="pv-stat"><b>' + y + '</b>YES</div><div class="pv-stat"><b>' + n + '</b>NO</div><div class="pv-stat"><b>' + na + '</b>N/A</div><div class="pv-stat"><b>' + chips.length + '</b>FINDINGS</div></div>' +
+    '<div class="pv-block"><h3>Observations / Findings</h3>';
+  if (chips.length) {
+    for (var c = 0; c < chips.length; c++) { head += '<span class="pv-chip">' + esc(chips[c]) + '</span>'; }
+  } else { head += 'No observations / findings recorded.'; }
+  head += '</div>';
+  var pv = $('printView');
+  pv.innerHTML = head + body;
+  var budget = imgs.length ? Math.floor(3500000 / imgs.length) : 0, left = imgs.length;
+  var tags = pv.querySelectorAll('img[data-i]');
+  function go() {
+    var vessel = String(M.vessel || 'Unknown').replace(/\s+/g, '');
+    document.title = T.pdfPrefix + '-' + vessel + (ini ? '-' + ini : '') + (M.date ? '-' + M.date : '');
+    setTimeout(function () { window.print(); }, 200);
+  }
+  if (!left) { go(); return; }
+  toast('Preparing PDF...');
+  for (var t = 0; t < tags.length; t++) {
+    (function (el) {
+      var src = imgs[parseInt(el.getAttribute('data-i'), 10)];
+      var dim = src.length > budget ? 700 : 1000, qq = src.length > budget ? 0.45 : 0.6;
+      shrink(src, dim, qq, function (out) { el.src = out; left--; if (!left) { go(); } });
+    })(tags[t]);
+  }
+};
+
+/* ---------- Excel (Synergi, DP Inspection FU) ---------- */
+function qOrder(T) {
+  var out = [];
+  for (var s = 0; s < T.sections.length; s++) { for (var k = 0; k < T.sections[s].questions.length; k++) { out.push(T.sections[s].questions[k].q); } }
+  return out;
+}
+$('btnXls').onclick = function () {
+  var M = ST.meta, rows = [];
+  var dsp = String(M.date || '').replace(/-/g, ' '), vessel = String(M.vessel || '').toUpperCase();
+  for (var ti = 0; ti < D.templates.length; ti++) {
+    var T = D.templates[ti], ts = ST.t[ti], qs = qOrder(T);
+    for (var j = 0; j < qs.length; j++) {
+      var q = qs[j];
+      if (ts.ans[q] !== 'NO') { continue; }
+      var subj = trim(ts.subj[q]).replace(/[\s.]+$/, '');
+      subj = subj ? subj + ' (Q' + q + ')' : 'Question ' + q;
+      var com = trim(String(ts.cmt[q] || '').replace(/\s*\n+\s*/g, ' '));
+      var f = subj + '. > ' + dsp + ' - ' + (trim(M.tag) || 'TEPA DP NAV-DP1') + ' COMMENT: ' + com;
+      if (trim(ts.act[q])) { f += ' --> ' + trim(ts.act[q]); }
+      rows.push({ vessel: vessel, type: T.synergiType, subject: T.synergiLabel + ' - ' + dsp + ' - ' + vessel,
+        date: excelSerial(M.date), inspector: M.inspector || '', finding: f });
+    }
+  }
+  if (!rows.length) { toast('No NO answer in any checklist'); return; }
+  var H = ['Navire', 'Type d\'inspection', 'Sujet / R\u00e9f\u00e9rence', 'Date inspection', 'Inspecteur', 'Finding', 'R\u00e9ponse armateur', 'Date de cl\u00f4ture', 'Statut du finding'];
+  var COLS = 'ABCDEFGHI', nr = rows.length + 1;
+  var sd = '<row r="1" spans="1:9" ht="30" customHeight="1">';
+  for (var h = 0; h < H.length; h++) { sd += synCell(COLS.charAt(h) + '1', 1, H[h]); }
+  sd += '</row>';
+  for (var r = 0; r < rows.length; r++) {
+    var R = r + 2, w = rows[r];
+    sd += '<row r="' + R + '" spans="1:9" ht="90" customHeight="1">' +
+      synCell('A' + R, 2, w.vessel) + synCell('B' + R, 2, w.type) + synCell('C' + R, 2, w.subject) +
+      (w.date !== null ? '<c r="D' + R + '" s="3"><v>' + w.date + '</v></c>' : '<c r="D' + R + '" s="3"/>') +
+      synCell('E' + R, 2, w.inspector) + synCell('F' + R, 4, w.finding) + synCell('G' + R, 2, 'None') +
+      '<c r="H' + R + '" s="3"/>' + synCell('I' + R, 2, 'Open') + '</row>';
+  }
+  var NS = 'xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"';
+  var HEAD = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n';
+  var widths = [18, 15, 40, 13, 16, 60, 50, 15.7109375, 14], cols = '<cols>';
+  for (var k = 0; k < widths.length; k++) { cols += '<col min="' + (k + 1) + '" max="' + (k + 1) + '" width="' + widths[k] + '" customWidth="1"/>'; }
+  cols += '</cols>';
+  var sheet = HEAD + '<worksheet ' + NS + '><dimension ref="A1:I' + nr + '"/>' +
+    '<sheetViews><sheetView tabSelected="1" workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/><selection pane="bottomLeft" activeCell="A2" sqref="A2"/></sheetView></sheetViews>' +
+    '<sheetFormatPr defaultRowHeight="15"/>' + cols + '<sheetData>' + sd + '</sheetData><autoFilter ref="A1:I1"/>' +
+    '<conditionalFormatting sqref="I2:I' + nr + '">' +
+    '<cfRule type="cellIs" dxfId="3" priority="5" operator="equal"><formula>"Closed"</formula></cfRule>' +
+    '<cfRule type="cellIs" dxfId="2" priority="6" operator="equal"><formula>"In Progress"</formula></cfRule>' +
+    '<cfRule type="cellIs" dxfId="1" priority="7" operator="equal"><formula>"In progress"</formula></cfRule>' +
+    '<cfRule type="cellIs" dxfId="0" priority="8" operator="equal"><formula>"Open"</formula></cfRule>' +
+    '</conditionalFormatting><pageMargins left="0.75" right="0.75" top="1" bottom="1" header="0.5" footer="0.5"/></worksheet>';
+  var wb = HEAD + '<workbook ' + NS + '><workbookPr/><bookViews><workbookView/></bookViews>' +
+    '<sheets><sheet name="DP Inspection FU" sheetId="1" r:id="rId1"/></sheets>' +
+    '<definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="0" hidden="1">\'DP Inspection FU\'!$A$1:$I$1</definedName></definedNames>' +
+    '<calcPr calcId="191029"/></workbook>';
+  var wbRels = HEAD + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>' +
+    '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="theme/theme1.xml"/>' +
+    '<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';
+  var rels = HEAD + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+  var ct = HEAD + '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>' +
+    '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>' +
+    '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>' +
+    '<Override PartName="/xl/theme/theme1.xml" ContentType="application/vnd.openxmlformats-officedocument.theme+xml"/>' +
+    '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>';
+  var blob = buildZip([
+    { name: '[Content_Types].xml', data: utf8Bytes(ct) },
+    { name: '_rels/.rels', data: utf8Bytes(rels) },
+    { name: 'xl/workbook.xml', data: utf8Bytes(wb) },
+    { name: 'xl/_rels/workbook.xml.rels', data: utf8Bytes(wbRels) },
+    { name: 'xl/styles.xml', data: b64Bytes(TPL_STYLES) },
+    { name: 'xl/theme/theme1.xml', data: b64Bytes(TPL_THEME) },
+    { name: 'xl/worksheets/sheet1.xml', data: utf8Bytes(sheet) }
+  ]);
+  blob = new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  var fname = safeName(M.vessel) + '_MarineDP_Inspection.xlsx';
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = fname;
+  document.body.appendChild(a); a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 2000);
+  toast(rows.length + ' finding(s) exported');
+};
+
+/* ---------- init ---------- */
+$('selFilter').onchange = renderList;
+window.addEventListener('afterprint', function () { renderHeader(); });
+$('selTpl').onchange = function () { CUR = parseInt(this.value, 10); renderAll(); window.scrollTo(0, 0); };
+$('btnReset').onclick = function () {
+  if (!window.confirm('Discard all answers and edits in this browser and go back to the original draft?')) { return; }
+  try { localStorage.removeItem(SKEY); } catch (e) {}
+  ADDED = {}; saveAdded(); ST = freshState(); bindMeta(); renderAll();
+};
+function start(data) {
+  D = data; SKEY = 'tepa-review:' + D.id; CUR = 0; ST = null; ADDED = {};
+  loadState();
+  var sel = $('selTpl');
+  sel.innerHTML = '';
+  for (var i = 0; i < D.templates.length; i++) {
+    var o = document.createElement('option'), cnt = 0;
+    for (var q in D.templates[i].items) { cnt++; }
+    o.value = i; o.textContent = D.templates[i].title + ' (' + cnt + ')';
+    sel.appendChild(o);
+  }
+  sel.className = D.templates.length < 2 ? 'hidden' : '';
+  $('selFilter').value = 'all';
+  bindMeta();
+  $('loader').className = 'hidden';
+  $('app').className = '';
+  $('btnReports').className = LOADER ? '' : 'hidden';
+  loadAdded(function () { renderAll(); window.scrollTo(0, 0); });
+}
+
+/* ---------- loader mode (hosted page: reports stored on this device only) ---------- */
+function repGetAll(cb) {
+  dbOpen(function (db) {
+    if (!db) { cb([]); return; }
+    var out = [], st = db.transaction('reports', 'readonly').objectStore('reports');
+    var cur = st.openCursor();
+    cur.onsuccess = function (e) {
+      var c = e.target.result;
+      if (c) { out.push(c.value); c['continue'](); } else { cb(out); }
+    };
+    cur.onerror = function () { cb(out); };
+  });
+}
+function repPut(rec, cb) {
+  dbOpen(function (db) {
+    if (!db) { cb(false); return; }
+    var tx = db.transaction('reports', 'readwrite');
+    tx.objectStore('reports').put(rec, rec.id);
+    tx.oncomplete = function () { cb(true); };
+    tx.onerror = function () { cb(false); };
+    tx.onabort = function () { cb(false); };
+  });
+}
+function repDel(id, cb) {
+  dbOpen(function (db) {
+    if (!db) { cb(); return; }
+    var tx = db.transaction('reports', 'readwrite');
+    tx.objectStore('reports')['delete'](id);
+    tx.oncomplete = function () { cb(); };
+    tx.onerror = function () { cb(); };
+  });
+}
+function showLoader() {
+  $('app').className = 'hidden';
+  $('loader').className = '';
+  repGetAll(function (list) {
+    list.sort(function (a, b) { return a.loaded < b.loaded ? 1 : -1; });
+    var box = $('repList'), h = '';
+    for (var i = 0; i < list.length; i++) {
+      var d = list[i].data, names = [];
+      for (var t = 0; t < d.templates.length; t++) { names.push(d.templates[t].title); }
+      h += '<div class="card"><div style="font-weight:bold">' + esc(d.meta.vessel) + ' - ' + esc(d.meta.date) + '</div>' +
+        '<div style="font-size:12px;color:#777;margin:3px 0 8px">' + esc(names.join(' / ')) + '</div>' +
+        '<button class="smallbtn" type="button" data-open="' + i + '">Open</button> ' +
+        '<button class="smallbtn" type="button" data-del="' + i + '" style="border-color:#8a2b1f;color:#8a2b1f">Remove from this device</button></div>';
+    }
+    box.innerHTML = h || '<div class="card" style="color:#777">No report on this device.</div>';
+    var b = box.querySelectorAll('button[data-open]');
+    for (var k = 0; k < b.length; k++) {
+      b[k].onclick = function () { start(list[parseInt(this.getAttribute('data-open'), 10)].data); };
+    }
+    var dl = box.querySelectorAll('button[data-del]');
+    for (var m = 0; m < dl.length; m++) {
+      dl[m].onclick = function () {
+        var rec = list[parseInt(this.getAttribute('data-del'), 10)];
+        if (!window.confirm('Remove report ' + rec.data.meta.vessel + ' and its answers from this device?')) { return; }
+        try { localStorage.removeItem('tepa-review:' + rec.id); } catch (e) {}
+        repDel(rec.id, function () {
+          dbOpen(function (db) {
+            if (db) { db.transaction('photos', 'readwrite').objectStore('photos')['delete']('tepa-review:' + rec.id); }
+            showLoader();
+          });
+        });
+      };
+    }
+  });
+}
+function extractData(text) {
+  var m = /<script id="review-data" type="application\/json">([\s\S]*?)<\/script>/.exec(text);
+  var raw = m ? m[1] : text;
+  raw = raw.replace(/^\s+|\s+$/g, '');
+  if (raw.charAt(0) !== '{') { return null; }
+  try {
+    var d = JSON.parse(raw);
+    return d && d.id && d.templates && d.meta ? d : null;
+  } catch (e) { return null; }
+}
+$('inReport').onchange = function () {
+  var f = this.files && this.files[0];
+  this.value = '';
+  if (!f) { return; }
+  var fr = new FileReader();
+  fr.onload = function () {
+    var d = extractData(String(fr.result));
+    if (!d) { toast('Not a report file'); return; }
+    repPut({ id: d.id, loaded: new Date().toISOString(), data: d }, function (ok) {
+      if (!ok) { toast('Not enough storage on this device'); return; }
+      start(d);
+    });
+  };
+  fr.onerror = function () { toast('File could not be read'); };
+  fr.readAsText(f);
+};
+$('btnReports').onclick = function () { showLoader(); };
+
+(function init() {
+  var embedded = extractData(document.getElementById('review-data').textContent);
+  if (embedded) { start(embedded); return; }
+  LOADER = true;
+  showLoader();
+})();
+</script>
+</body>
+</html>

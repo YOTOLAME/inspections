@@ -60,6 +60,7 @@ textarea { min-height: 70px; resize: vertical; }
 .viewer { position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 40; display: flex; align-items: center; justify-content: center; }
 .viewer img { max-width: 96%; max-height: 96%; }
 #printView { display: none; }
+@media (max-width: 700px) { .top { position: static; } .syn { grid-template-columns: 1fr; } .bar .stats { margin-left: 0; width: 100%; } }
 
 @media print {
   @page { size: A4; margin: 12mm; }
@@ -88,7 +89,17 @@ textarea { min-height: 70px; resize: vertical; }
 </style>
 </head>
 <body>
-<div id="app">
+<div id="loader" class="hidden">
+  <div class="top"><h1>Inspection Review</h1><div class="sub">Open a report file (Review_....html) received from your assistant</div></div>
+  <div class="wrap">
+    <div class="card">
+      <label class="addph" style="font-size:15px;padding:10px 14px">Open report file<input type="file" id="inReport"></label>
+      <div style="font-size:12px;color:#777;margin-top:8px">On iPhone: save the file in Files first. The file is read on this device only; nothing is sent to any server.</div>
+    </div>
+    <div id="repList"></div>
+  </div>
+</div>
+<div id="app" class="hidden">
   <div class="top">
     <h1 id="hTitle">Inspection Review</h1>
     <div class="sub" id="hSub"></div>
@@ -102,6 +113,7 @@ textarea { min-height: 70px; resize: vertical; }
       </select>
       <button id="btnPdf" type="button">Export PDF</button>
       <button id="btnXls" type="button">Export Excel (Synergi)</button>
+      <button id="btnReports" type="button" class="hidden">Reports</button>
       <span class="stats" id="stats"></span>
     </div>
   </div>
@@ -202,8 +214,9 @@ function synCell(ref, style, text) {
   return '<c r="' + ref + '" s="' + style + '" t="inlineStr"><is><t xml:space="preserve">' + xmlEsc(text) + '</t></is></c>';
 }
 
-var D = JSON.parse(document.getElementById('review-data').textContent);
-var SKEY = 'tepa-review:' + D.id;
+var D = null;
+var SKEY = '';
+var LOADER = false;
 var ST = null;           /* saved state */
 var ADDED = {};          /* added photos: key tplIndex|q -> [dataUrl] (IndexedDB) */
 var CUR = 0;             /* current template index */
@@ -248,8 +261,12 @@ function dbOpen(cb) {
   if (idb) { cb(idb); return; }
   if (!window.indexedDB) { cb(null); return; }
   var r;
-  try { r = indexedDB.open('tepa-review', 1); } catch (e) { cb(null); return; }
-  r.onupgradeneeded = function (e) { e.target.result.createObjectStore('photos'); };
+  try { r = indexedDB.open('tepa-review', 2); } catch (e) { cb(null); return; }
+  r.onupgradeneeded = function (e) {
+    var d = e.target.result;
+    if (!d.objectStoreNames.contains('photos')) { d.createObjectStore('photos'); }
+    if (!d.objectStoreNames.contains('reports')) { d.createObjectStore('reports'); }
+  };
   r.onsuccess = function (e) { idb = e.target.result; cb(idb); };
   r.onerror = function () { cb(null); };
 }
@@ -655,18 +672,126 @@ $('btnReset').onclick = function () {
   try { localStorage.removeItem(SKEY); } catch (e) {}
   ADDED = {}; saveAdded(); ST = freshState(); bindMeta(); renderAll();
 };
-(function init() {
+function start(data) {
+  D = data; SKEY = 'tepa-review:' + D.id; CUR = 0; ST = null; ADDED = {};
   loadState();
   var sel = $('selTpl');
+  sel.innerHTML = '';
   for (var i = 0; i < D.templates.length; i++) {
     var o = document.createElement('option'), cnt = 0;
     for (var q in D.templates[i].items) { cnt++; }
     o.value = i; o.textContent = D.templates[i].title + ' (' + cnt + ')';
     sel.appendChild(o);
   }
-  if (D.templates.length < 2) { sel.className = 'hidden'; }
+  sel.className = D.templates.length < 2 ? 'hidden' : '';
+  $('selFilter').value = 'all';
   bindMeta();
-  loadAdded(function () { renderAll(); });
+  $('loader').className = 'hidden';
+  $('app').className = '';
+  $('btnReports').className = LOADER ? '' : 'hidden';
+  loadAdded(function () { renderAll(); window.scrollTo(0, 0); });
+}
+
+/* ---------- loader mode (hosted page: reports stored on this device only) ---------- */
+function repGetAll(cb) {
+  dbOpen(function (db) {
+    if (!db) { cb([]); return; }
+    var out = [], st = db.transaction('reports', 'readonly').objectStore('reports');
+    var cur = st.openCursor();
+    cur.onsuccess = function (e) {
+      var c = e.target.result;
+      if (c) { out.push(c.value); c['continue'](); } else { cb(out); }
+    };
+    cur.onerror = function () { cb(out); };
+  });
+}
+function repPut(rec, cb) {
+  dbOpen(function (db) {
+    if (!db) { cb(false); return; }
+    var tx = db.transaction('reports', 'readwrite');
+    tx.objectStore('reports').put(rec, rec.id);
+    tx.oncomplete = function () { cb(true); };
+    tx.onerror = function () { cb(false); };
+    tx.onabort = function () { cb(false); };
+  });
+}
+function repDel(id, cb) {
+  dbOpen(function (db) {
+    if (!db) { cb(); return; }
+    var tx = db.transaction('reports', 'readwrite');
+    tx.objectStore('reports')['delete'](id);
+    tx.oncomplete = function () { cb(); };
+    tx.onerror = function () { cb(); };
+  });
+}
+function showLoader() {
+  $('app').className = 'hidden';
+  $('loader').className = '';
+  repGetAll(function (list) {
+    list.sort(function (a, b) { return a.loaded < b.loaded ? 1 : -1; });
+    var box = $('repList'), h = '';
+    for (var i = 0; i < list.length; i++) {
+      var d = list[i].data, names = [];
+      for (var t = 0; t < d.templates.length; t++) { names.push(d.templates[t].title); }
+      h += '<div class="card"><div style="font-weight:bold">' + esc(d.meta.vessel) + ' - ' + esc(d.meta.date) + '</div>' +
+        '<div style="font-size:12px;color:#777;margin:3px 0 8px">' + esc(names.join(' / ')) + '</div>' +
+        '<button class="smallbtn" type="button" data-open="' + i + '">Open</button> ' +
+        '<button class="smallbtn" type="button" data-del="' + i + '" style="border-color:#8a2b1f;color:#8a2b1f">Remove from this device</button></div>';
+    }
+    box.innerHTML = h || '<div class="card" style="color:#777">No report on this device.</div>';
+    var b = box.querySelectorAll('button[data-open]');
+    for (var k = 0; k < b.length; k++) {
+      b[k].onclick = function () { start(list[parseInt(this.getAttribute('data-open'), 10)].data); };
+    }
+    var dl = box.querySelectorAll('button[data-del]');
+    for (var m = 0; m < dl.length; m++) {
+      dl[m].onclick = function () {
+        var rec = list[parseInt(this.getAttribute('data-del'), 10)];
+        if (!window.confirm('Remove report ' + rec.data.meta.vessel + ' and its answers from this device?')) { return; }
+        try { localStorage.removeItem('tepa-review:' + rec.id); } catch (e) {}
+        repDel(rec.id, function () {
+          dbOpen(function (db) {
+            if (db) { db.transaction('photos', 'readwrite').objectStore('photos')['delete']('tepa-review:' + rec.id); }
+            showLoader();
+          });
+        });
+      };
+    }
+  });
+}
+function extractData(text) {
+  var m = /<script id="review-data" type="application\/json">([\s\S]*?)<\/script>/.exec(text);
+  var raw = m ? m[1] : text;
+  raw = raw.replace(/^\s+|\s+$/g, '');
+  if (raw.charAt(0) !== '{') { return null; }
+  try {
+    var d = JSON.parse(raw);
+    return d && d.id && d.templates && d.meta ? d : null;
+  } catch (e) { return null; }
+}
+$('inReport').onchange = function () {
+  var f = this.files && this.files[0];
+  this.value = '';
+  if (!f) { return; }
+  var fr = new FileReader();
+  fr.onload = function () {
+    var d = extractData(String(fr.result));
+    if (!d) { toast('Not a report file'); return; }
+    repPut({ id: d.id, loaded: new Date().toISOString(), data: d }, function (ok) {
+      if (!ok) { toast('Not enough storage on this device'); return; }
+      start(d);
+    });
+  };
+  fr.onerror = function () { toast('File could not be read'); };
+  fr.readAsText(f);
+};
+$('btnReports').onclick = function () { showLoader(); };
+
+(function init() {
+  var embedded = extractData(document.getElementById('review-data').textContent);
+  if (embedded) { start(embedded); return; }
+  LOADER = true;
+  showLoader();
 })();
 </script>
 </body>

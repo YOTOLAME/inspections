@@ -54,7 +54,8 @@ ETAPE 5 - LIVRER
 - Dans la reponse, un tableau court : Obs | Template | Question | Commentaire | Remarque. Puis les observations non placees. Rien d'autre.
 
 UTILISATION DU HTML (pour rappel a l'inspecteur)
-- Ouvrir sur PC (Chrome ou Edge). Saisie sauvegardee automatiquement dans le navigateur.
+- PC : ouvrir le fichier dans Chrome ou Edge (double-clic). Saisie sauvegardee automatiquement dans le navigateur.
+- Telephone / tablette : enregistrer le fichier (iPhone : dans Fichiers), ouvrir https://yotolame.github.io/inspections/review.html, "Open report file" et choisir le fichier. Le fichier est lu sur l'appareil uniquement, rien n'est envoye a un serveur.
 - Choisir le template en haut ; filtre "Pre-filled / commented" pour ne voir que les questions pre-remplies.
 - Pour chaque question : la note brute du terrain est affichee au-dessus du commentaire retravaille, pour corriger une erreur de dictee.
 - Cocher YES / NO / N/A, corriger le commentaire, le sujet Synergi et l'action CTR, retirer ou ajouter des photos.

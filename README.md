@@ -5,6 +5,7 @@ Offline inspection tools for vessels (TotalEnergies E&P Angola, DT/LOG-NAV).
 ## Web app
 - Forms and Field Capture: https://yotolame.github.io/inspections/
 - Field Capture (photos + dictated notes, ZIP export): https://yotolame.github.io/inspections/capture.html
+- Open a report (Review file) on phone, tablet or PC: https://yotolame.github.io/inspections/review.html
 
 Open once with network in Safari (iPhone) or Chrome (Android) and reload twice: everything then works offline.
 
