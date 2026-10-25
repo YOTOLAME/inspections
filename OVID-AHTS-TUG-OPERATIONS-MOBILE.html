@@ -2342,8 +2342,9 @@ document.addEventListener('DOMContentLoaded', function() {
 <style>
 .dict-btn { display: inline-block; margin: 4px 0 2px; font-size: 13px; padding: 5px 10px; border-radius: 6px; border: 1px solid #003B6E; background: #fff; color: #003B6E; cursor: pointer; }
 .dict-btn.on { background: #8a2b1f; border-color: #8a2b1f; color: #fff; }
-.dict-lang { font-size: 12px; margin-left: 6px; padding: 4px; border-radius: 6px; border: 1px solid #ccd3db; }
-@media print { .dict-btn, .dict-lang { display: none !important; } }
+.dict-bar { background: #fff; border: 1px solid #ccd3db; border-radius: 8px; padding: 8px 12px; margin: 10px 0; font-size: 13px; font-weight: bold; color: #003B6E; }
+.dict-lang { font-size: 14px; margin-left: 6px; padding: 4px 6px; border-radius: 6px; border: 1px solid #ccd3db; }
+@media print { .dict-btn, .dict-lang, .dict-bar { display: none !important; } }
 </style>
 <script>
 /* Comment dictation - ES5, ASCII only */
@@ -2390,25 +2391,30 @@ document.addEventListener('DOMContentLoaded', function() {
   var tas = document.querySelectorAll('textarea[id^="cmt-"], textarea#general-obs');
   for (var i = 0; i < tas.length; i++) {
     (function (ta) {
-      var wrap = document.createElement('div');
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'dict-btn'; b.innerHTML = '&#127908; Dictate';
       b.onclick = function () { start(ta, b); };
-      var s = document.createElement('select');
-      s.className = 'dict-lang';
-      var opts = [['en-GB', 'EN'], ['fr-FR', 'FR'], ['pt-PT', 'PT']];
-      for (var k = 0; k < opts.length; k++) {
-        var o = document.createElement('option'); o.value = opts[k][0]; o.textContent = opts[k][1]; s.appendChild(o);
-      }
-      s.value = lang();
-      s.onchange = function () {
-        setLang(this.value);
-        var all = document.querySelectorAll('select.dict-lang');
-        for (var j = 0; j < all.length; j++) { all[j].value = this.value; }
-      };
-      wrap.appendChild(b); wrap.appendChild(s);
+      var wrap = document.createElement('div');
+      wrap.appendChild(b);
       ta.parentNode.insertBefore(wrap, ta.nextSibling);
     })(tas[i]);
+  }
+  /* one language choice for the whole questionnaire (shared by all checklists) */
+  var first = document.querySelector('.section');
+  if (first && tas.length) {
+    var bar = document.createElement('div');
+    bar.className = 'dict-bar';
+    bar.innerHTML = '<span>&#127908; Dictation language (all questions):</span> ';
+    var s = document.createElement('select');
+    s.className = 'dict-lang';
+    var opts = [['en-GB', 'English'], ['fr-FR', 'Francais'], ['pt-PT', 'Portugues']];
+    for (var k = 0; k < opts.length; k++) {
+      var o = document.createElement('option'); o.value = opts[k][0]; o.textContent = opts[k][1]; s.appendChild(o);
+    }
+    s.value = lang();
+    s.onchange = function () { setLang(this.value); };
+    bar.appendChild(s);
+    first.parentNode.insertBefore(bar, first);
   }
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') { stop(); } });
 })();
