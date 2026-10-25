@@ -1,6 +1,6 @@
 # Inspections - TEPA Marine
 
-Offline inspection tools for vessels (TotalEnergies E&P Angola, DT/LOG-NAV).
+Offline inspection tools for vessels (DT/LOG-NAV).
 
 ## Web app
 - Forms and Field Capture: https://yotolame.github.io/inspections/
