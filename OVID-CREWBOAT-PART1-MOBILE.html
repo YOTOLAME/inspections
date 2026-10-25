@@ -2567,7 +2567,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function start(ta, btn) {
     if (active) { var same = active.ta === ta; stop(); if (same) { return; } }
     if (!SR) { alert('Live dictation is not available in this browser. Use the microphone key of the phone keyboard.'); return; }
-    if (navigator.onLine === false) { alert('No network: use the microphone key of the phone keyboard (works offline).'); return; }
+    if (navigator.onLine === false) { alert('No network: dictation needs internet. Type the comment.'); return; }
     var rec;
     try { rec = new SR(); } catch (e) { alert('Live dictation is not available.'); return; }
     rec.lang = lang(); rec.continuous = true; rec.interimResults = true;
