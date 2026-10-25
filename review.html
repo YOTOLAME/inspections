@@ -634,7 +634,7 @@ $('btnXls').onclick = function () {
     }
   }
   if (!rows.length) { toast('No NO answer in any checklist'); return; }
-  var H = ['Navire', 'Type d\'inspection', 'Sujet / R\u00e9f\u00e9rence', 'Date inspection', 'Inspecteur', 'Finding', 'R\u00e9ponse armateur', 'Date de cl\u00f4ture', 'Statut du finding'];
+  var H = ['Vessel', 'Inspection Type', 'Subject / Reference', 'Inspection Date', 'Inspector', 'Finding', 'Owner Response', 'Closure Date', 'Finding Status'];
   var COLS = 'ABCDEFGHI', nr = rows.length + 1;
   var sd = '<row r="1" spans="1:9" ht="30" customHeight="1">';
   for (var h = 0; h < H.length; h++) { sd += synCell(COLS.charAt(h) + '1', 1, H[h]); }
