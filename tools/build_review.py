@@ -3,8 +3,8 @@
 
 Usage:
   python3 -I build_review.py CAPTURE.zip MAPPING.json INSPECTIONS_DIR OUT_DIR
-  (OUT_DIR = output folder; the file is named "YYYY MM DD <Vessel> <Inspection type> <Initials>.html".
-   A path ending in .html is also accepted and used as is.)
+  (OUT_DIR = output folder: ONE file per checklist, named "YYYY MM DD <Vessel> <Inspection type> <Initials>.html".
+   A path ending in .html gives a single file with all checklists.)
 
 INSPECTIONS_DIR = clone of github.com/YOTOLAME/inspections (checklist templates).
 MAPPING.json:
@@ -130,28 +130,30 @@ def main(zpath, mpath, src, out):
         sys.exit('ERRORS:\n- ' + '\n- '.join(errors))
 
     now = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S')
-    data = {
-        'id': '%s|%s|%s' % (insp['vesselName'], insp['inspectionDate'], now),
-        'meta': {'vessel': insp['vesselName'], 'date': insp['inspectionDate'],
-                 'inspector': mp.get('inspector') or insp.get('inspector', ''), 'location': insp.get('location', ''),
-                 'tag': mp.get('synergiTag') or 'TEPA DP NAV-DP1'},
-        'templates': templates, 'unassigned': unassigned,
-    }
-    if not out.lower().endswith('.html'):
-        os.makedirs(out, exist_ok=True)
-        out = os.path.join(out, file_name(data['meta']['date'], data['meta']['vessel'], combined_type(templates), data['meta']['inspector']) + '.html')
+    meta = {'vessel': insp['vesselName'], 'date': insp['inspectionDate'],
+            'inspector': mp.get('inspector') or insp.get('inspector', ''), 'location': insp.get('location', ''),
+            'tag': mp.get('synergiTag') or 'TEPA DP NAV-DP1'}
     tpl = open(os.path.join(HERE, 'review_template.html'), encoding='utf-8').read()
-    payload = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
     assert tpl.count('__REVIEW_DATA__') == 1
-    html = tpl.replace('__REVIEW_DATA__', payload)
-    open(out, 'w', encoding='utf-8').write(html)
-    size = os.path.getsize(out) / 1048576.0
-    print('OK %s  %.1f MB' % (out, size))
-    for t in templates:
-        print('  %-40s %3d questions, %2d pre-filled' % (t['form'], t['questionCount'], len(t['items'])))
-    print('  observations: %d, unassigned: %d' % (len(obs), len(unassigned)))
-    if size > 15: print('WARNING: file larger than 15 MB')
 
+    def write(path, tlist):
+        data = {'id': '%s|%s|%s|%s' % (meta['vessel'], meta['date'], '+'.join(t['form'] for t in tlist), now),
+                'meta': meta, 'templates': tlist, 'unassigned': unassigned}
+        payload = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+        open(path, 'w', encoding='utf-8').write(tpl.replace('__REVIEW_DATA__', payload))
+        size = os.path.getsize(path) / 1048576.0
+        print('OK %s  %.1f MB' % (path, size))
+        for t in tlist:
+            print('  %-40s %3d questions, %2d pre-filled' % (t['form'], t['questionCount'], len(t['items'])))
+        if size > 15: print('WARNING: file larger than 15 MB')
+
+    if out.lower().endswith('.html'):
+        write(out, templates)                      # one file with all checklists
+    else:
+        os.makedirs(out, exist_ok=True)            # one file per checklist
+        for t in templates:
+            write(os.path.join(out, file_name(meta['date'], meta['vessel'], t.get('shortName') or t['title'], meta['inspector']) + '.html'), [t])
+    print('observations: %d, unassigned: %d' % (len(obs), len(unassigned)))
 
 if __name__ == '__main__':
     if len(sys.argv) != 5:

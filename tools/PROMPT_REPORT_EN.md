@@ -6,7 +6,7 @@ Prompt to paste into your AI assistant, with the capture ZIP attached.
 
 | Field | Value | If empty |
 |---|---|---|
-| Checklists | e.g. Inspectare PSV + OVID DP Operations | checklists recorded in the ZIP |
+| Checklists | e.g. Inspectare PSV + OVID DP Operations (one or several) | the AI asks you |
 | Inspector | SURNAME First name | value recorded in the ZIP |
 | Synergi tag | e.g. TEPA DP NAV-DP1 | TEPA DP NAV-DP1 |
 
@@ -24,7 +24,11 @@ The attached ZIP was exported by the Field Capture app (https://yotolame.github.
 
 ### Goal
 
-Produce **one self-contained HTML review file**. For each requested checklist it shows the complete list of questions, with the ZIP observations rewritten and placed under the right question, photos included. The inspector then ticks YES / NO / N/A himself, edits or adds comments, and exports a PDF (one per checklist) and a Synergi Excel file (all NO answers).
+Produce **one self-contained HTML review file per requested checklist**. Each file shows the complete list of questions of its checklist, with the ZIP observations rewritten and placed under the right question, photos included. The inspector then ticks YES / NO / N/A himself, edits or adds comments, and exports the PDF and the Synergi Excel file (NO answers) of that checklist.
+
+### First: ask which checklists
+
+If the "Checklists" field above is empty, **ask the user first, before any other work**: "Which inspection template(s) do you want the report on? You can choose several." Show the list of checklist names below (and the checklists recorded in `inspection.json` as a suggestion). Wait for the answer. The same ZIP can be used for several checklists: one HTML file will be produced for each.
 
 ### Step 0 - Get the checklist templates and the tools from GitHub
 
@@ -109,10 +113,10 @@ Write `mapping.json`:
 Run:
 
 ```
-python3 -I <repo>/tools/build_review.py CAPTURE.zip mapping.json <repo> .
+python3 -I <repo>/tools/build_review.py CAPTURE.zip mapping.json <repo> out
 ```
 
-The file is named automatically: `YYYY MM DD <Vessel> <Inspection type> <Initials>.html` (e.g. `2026 09 13 MAMOLA RELIANCE Inspectare PSV + OVID DP Ops LP.html`). The script rejects an unknown checklist or question, a forgotten observation and empty fields: fix `mapping.json` and run again until it prints `OK`.
+The script writes **one HTML file per checklist** in the folder `out`, named automatically `YYYY MM DD <Vessel> <Inspection type> <Initials>.html` (e.g. `2026 09 13 MAMOLA RELIANCE Inspectare PSV LP.html` and `2026 09 13 MAMOLA RELIANCE OVID DP Ops LP.html`). The script rejects an unknown checklist or question, a forgotten observation and empty fields: fix `mapping.json` and run again until it prints `OK`.
 
 ### Step 4 - Check
 
@@ -122,7 +126,7 @@ The file is named automatically: `YYYY MM DD <Vessel> <Inspection type> <Initial
 
 ### Step 5 - Deliver
 
-- Give the HTML file for download.
+- Give every HTML file for download (one per checklist).
 - In the answer, a short table: Obs | Checklist | Question | Comment | Remark. Then the observations not placed. Nothing else.
 - Then repeat the user guide below in one short paragraph.
 
@@ -130,9 +134,9 @@ The file is named automatically: `YYYY MM DD <Vessel> <Inspection type> <Initial
 
 - PC: open the file in Chrome or Edge (double-click). Entries are saved automatically in the browser.
 - Phone or tablet: save the file (iPhone: in Files), open https://yotolame.github.io/inspections/review.html, press "Open report file" and choose it. The file is read on the device only; nothing is sent to any server.
-- Choose the checklist at the top. The filter "Pre-filled / commented" shows only the questions to review.
+- One file per checklist. The filter "Pre-filled / commented" shows only the questions to review.
 - Under each question, the raw field note is shown above the rewritten comment, to fix any dictation error.
 - Tick YES / NO / N/A, edit the comment, the Synergi subject and the CTR action, remove or add photos.
 - Observation not placed: type a question number and press "Move to this checklist question".
-- "Export PDF" exports the checklist on screen. "Export Excel (Synergi)" exports all NO answers of all checklists.
+- "Export PDF" exports the checklist. "Export Excel (Synergi)" exports its NO answers.
 - File names follow: YYYY MM DD Vessel Inspection type Initials (e.g. "2026 09 13 MAMOLA RELIANCE Inspectare PSV LP.pdf").

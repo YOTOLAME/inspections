@@ -1,12 +1,14 @@
 RAPPORT D'INSPECTION A PARTIR D'UN ZIP FIELD CAPTURE
 
-Templates : [ex. Inspectare PSV + OVID DP Operations]   (vide = templates du ZIP)
+Templates : [ex. Inspectare PSV + OVID DP Operations, un ou plusieurs]   (vide = l'IA demande)
 Inspecteur : [NOM Prenom]   (vide = valeur du ZIP)
 
 Le ZIP joint vient de l'appli Field Capture (yotolame.github.io/inspections/capture.html). Il contient inspection.json (navire, date, lieu, inspecteur, observations : note dictee + noms des photos) et le dossier photos/. Les enregistrements audio ne sont pas a exploiter.
 
 OBJECTIF
-Produire un seul fichier HTML de revue, autonome, qui contient pour chaque template demande la liste complete des questions, avec les observations du ZIP retravaillees et placees sous la bonne question, photos incluses. L'inspecteur coche lui-meme YES / NO / N/A, corrige les commentaires, en ajoute, puis exporte en PDF (un par template) et en Excel Synergi (toutes les reponses NO).
+Produire UN fichier HTML de revue autonome PAR template demande, avec la liste complete des questions, avec les observations du ZIP retravaillees et placees sous la bonne question, photos incluses. L'inspecteur coche lui-meme YES / NO / N/A, corrige les commentaires, en ajoute, puis exporte en PDF (un par template) et en Excel Synergi (toutes les reponses NO).
+
+AVANT TOUT : si le champ Templates est vide, demander a l'utilisateur sur quel(s) template(s) d'inspection il veut le rapport (plusieurs possibles), en montrant la liste ci-dessous et ceux du ZIP en suggestion. Attendre la reponse. Un HTML sera produit pour chaque template.
 
 ETAPE 0 - OUTILS
 - git clone --depth 1 https://github.com/YOTOLAME/inspections  (templates = formulaires *-MOBILE.html a la racine ; outils dans tools/)
@@ -42,8 +44,8 @@ ETAPE 3 - CONSTRUIRE LE HTML
   {"inspector": "...", "templates": ["INSPECTARE-PSV-MOBILE.html", "OVID-DP-OPERATIONS-MOBILE.html"],
    "items": [{"obs": 1, "form": "INSPECTARE-PSV-MOBILE.html", "q": "12.41", "comment": "...", "subject": "...", "action": "CTR to ... and provide evidence.", "remark": "", "photos": [1]}],
    "unassigned": [{"obs": 4, "reason": "..."}]}
-- Lancer : python3 -I inspections/tools/build_review.py CAPTURE.zip mapping.json inspections .
-  (nom automatique : "AAAA MM JJ <Navire> <Type d'inspection> <Initiales>.html")
+- Lancer : python3 -I inspections/tools/build_review.py CAPTURE.zip mapping.json inspections out
+  (un fichier par template dans "out", nom automatique : "AAAA MM JJ <Navire> <Type d'inspection> <Initiales>.html")
 - Le script refuse un template ou une question inexistants, une observation oubliee, un champ vide : corriger et relancer jusqu'a "OK".
 
 ETAPE 4 - QC
@@ -52,7 +54,7 @@ ETAPE 4 - QC
 - Ouvrir le HTML dans un navigateur headless : aucune erreur JavaScript, bon nombre de questions par template, taille < 15 Mo.
 
 ETAPE 5 - LIVRER
-- Envoyer le fichier HTML.
+- Envoyer tous les fichiers HTML (un par template).
 - Dans la reponse, un tableau court : Obs | Template | Question | Commentaire | Remarque. Puis les observations non placees. Rien d'autre.
 
 UTILISATION DU HTML (pour rappel a l'inspecteur)
