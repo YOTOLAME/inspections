@@ -755,7 +755,7 @@ $('btnExport').onclick = function () {
     entries.unshift({ name: 'inspection.json', data: utf8Bytes(JSON.stringify(meta, null, 2)) });
     var blob;
     try { blob = buildZip(entries); } catch (e) { toast('Export failed'); resetExport(); return; }
-    var fname = tepaFileName(s.date, s.vesselName, shortType(s), s.inspector) + '.zip';
+    var fname = tepaFileName(s.date, s.vesselName, '', s.inspector) + '.zip';
     try { exportFile = new File([blob], fname, { type: 'application/zip' }); } catch (e) { exportFile = blob; }
     exportUrl = URL.createObjectURL(blob);
     var lnk = $('lnkDownload');
