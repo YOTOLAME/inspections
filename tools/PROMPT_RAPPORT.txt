@@ -1,0 +1,63 @@
+RAPPORT D'INSPECTION A PARTIR D'UN ZIP FIELD CAPTURE
+
+Templates : [ex. Inspectare PSV + OVID DP Operations]   (vide = templates du ZIP)
+Inspecteur : [NOM Prenom]   (vide = valeur du ZIP)
+
+Le ZIP joint vient de l'appli Field Capture (yotolame.github.io/inspections/capture.html). Il contient inspection.json (navire, date, lieu, inspecteur, observations : note dictee + noms des photos) et le dossier photos/. Les enregistrements audio ne sont pas a exploiter.
+
+OBJECTIF
+Produire un seul fichier HTML de revue, autonome, qui contient pour chaque template demande la liste complete des questions, avec les observations du ZIP retravaillees et placees sous la bonne question, photos incluses. L'inspecteur coche lui-meme YES / NO / N/A, corrige les commentaires, en ajoute, puis exporte en PDF (un par template) et en Excel Synergi (toutes les reponses NO).
+
+ETAPE 0 - OUTILS
+- git clone --depth 1 https://github.com/YOTOLAME/inspections  (templates = formulaires *-MOBILE.html a la racine ; outils dans tools/)
+- Correspondance des templates :
+  Inspectare PSV = INSPECTARE-PSV-MOBILE.html | Inspectare AHTS = INSPECTARE-AHTS-MOBILE.html | Inspectare TUG = INSPECTARE-TUG-MOBILE.html | Inspectare Crew Boat = INSPECTARE-CREWBOAT-MOBILE.html | Inspectare 500m Zone Vessel = INSPECTARE-500M-MOBILE.html | Inspectare 500m Zone Asset = INSPECTARE-500M-ASSET-MOBILE.html
+  OVID Commun 1/4 a 4/4 = OVID-COMMON-PART1..4-MOBILE.html | OVID PSV Ops = OVID-PSV-OPERATIONS-MOBILE.html | OVID AHTS/TUG Ops = OVID-AHTS-TUG-OPERATIONS-MOBILE.html | OVID MPSV Ops = OVID-MPSV-OPERATIONS-MOBILE.html | OVID DP Ops (Ch.15) = OVID-DP-OPERATIONS-MOBILE.html | OVID CTV 1/2 et 2/2 = OVID-CREWBOAT-PART1/2-MOBILE.html | OVID Barge = OVID-BARGE-OPERATIONS-MOBILE.html
+- Lire la liste des questions de chaque template demande : python3 -I inspections/tools/build_checklists.py inspections checklists.json
+
+ETAPE 1 - LIRE TOUT
+- Lire inspection.json en entier.
+- Ouvrir et regarder CHAQUE photo (pas seulement la premiere de chaque observation).
+
+ETAPE 2 - RETRAVAILLER CHAQUE OBSERVATION
+a) Note dictee : elle peut etre mal retranscrite (homophones, jargon maritime deforme, melange FR/EN, ponctuation absente). Corriger seulement quand le sens est evident par le contexte ou la photo. Sinon garder le sens litteral et le signaler en "remark".
+b) Photo : identifier l'objet, l'emplacement (indices visibles : plaques, marquages, couleurs de zone, signaletique), le defaut, le texte lisible (plaque constructeur, date d'inspection, etiquette). Utiliser la photo pour preciser le commentaire, jamais pour ajouter un defaut qui n'est ni dans la note ni clairement visible. Si la photo contredit la note, est floue, ou ne montre pas le defaut : le dire en "remark".
+c) Commentaire (champ "comment") : anglais, passe, factuel, style OVID.
+   - Structure : emplacement + objet + defaut constate. 1 a 2 phrases courtes.
+   - Formules : "was found ...", "were found ...", "was not sighted", "was observed".
+   - Aucun jugement d'acceptabilite, aucune recommandation, aucun nom de personne, pas de "I/we".
+   - Exemples : "The aft starboard liquid bulk manifold was not clearly labelled and the manifold valves were found corroded." / "The CCTV recording computer located on the bridge was found not operational."
+d) Question : dans CHAQUE template demande, choisir la question dont le sujet couvre le mieux le defaut. Une meme observation peut etre placee dans plusieurs templates si une question y correspond. Ne jamais forcer : si aucune question ne convient dans aucun template, mettre l'observation en "unassigned" avec la raison.
+   Une observation qui contient deux defauts distincts peut donner deux items (meme numero "obs").
+e) "subject" : titre de 3 a 6 mots en Title Case (ex. "Liquid Bulk Manifold Condition").
+f) "action" : une phrase "CTR to ... and provide evidence."
+g) "remark" : vide, ou note courte a l'inspecteur (doute de dictee, correspondance faible avec la question, photo a terre, photo qui ne montre pas le defaut...).
+h) "photos" : numeros (1, 2...) des photos de l'observation qui montrent le defaut ; omettre = toutes.
+Ne jamais repondre YES / NO / N/A : c'est l'inspecteur qui coche. Ne jamais inventer un fait, un chiffre, une reference.
+OVID et Inspectare sont distincts : ne pas melanger leurs noms dans les commentaires.
+
+ETAPE 3 - CONSTRUIRE LE HTML
+- Ecrire mapping.json :
+  {"inspector": "...", "templates": ["INSPECTARE-PSV-MOBILE.html", "OVID-DP-OPERATIONS-MOBILE.html"],
+   "items": [{"obs": 1, "form": "INSPECTARE-PSV-MOBILE.html", "q": "12.41", "comment": "...", "subject": "...", "action": "CTR to ... and provide evidence.", "remark": "", "photos": [1]}],
+   "unassigned": [{"obs": 4, "reason": "..."}]}
+- Lancer : python3 -I inspections/tools/build_review.py CAPTURE.zip mapping.json inspections Review_<NAVIRE>_<AAAAMMJJ>.html
+- Le script refuse un template ou une question inexistants, une observation oubliee, un champ vide : corriger et relancer jusqu'a "OK".
+
+ETAPE 4 - QC
+- Chaque observation du ZIP est placee ou listee en "unassigned".
+- Relire chaque commentaire contre la note et les photos : rien d'invente, passe, anglais, pas de jugement.
+- Ouvrir le HTML dans un navigateur headless : aucune erreur JavaScript, bon nombre de questions par template, taille < 15 Mo.
+
+ETAPE 5 - LIVRER
+- Envoyer le fichier HTML.
+- Dans la reponse, un tableau court : Obs | Template | Question | Commentaire | Remarque. Puis les observations non placees. Rien d'autre.
+
+UTILISATION DU HTML (pour rappel a l'inspecteur)
+- Ouvrir sur PC (Chrome ou Edge). Saisie sauvegardee automatiquement dans le navigateur.
+- Choisir le template en haut ; filtre "Pre-filled / commented" pour ne voir que les questions pre-remplies.
+- Pour chaque question : la note brute du terrain est affichee au-dessus du commentaire retravaille, pour corriger une erreur de dictee.
+- Cocher YES / NO / N/A, corriger le commentaire, le sujet Synergi et l'action CTR, retirer ou ajouter des photos.
+- Observations non placees : saisir un numero de question puis "Move to this checklist question".
+- Export PDF : template affiche, nom de fichier type inspectare-psv-NAVIRE-INITIALES-DATE.
+- Export Excel (Synergi) : toutes les reponses NO de tous les templates, format "DP Inspection FU".

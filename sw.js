@@ -1,7 +1,8 @@
-const CACHE_NAME = 'inspectare-v6';
+const CACHE_NAME = 'inspectare-v7';
 const FILES = [
   '/inspections/',
   '/inspections/index.html',
+  '/inspections/capture.html',
   '/inspections/INSPECTARE-500M-ASSET-MOBILE.html',
   '/inspections/INSPECTARE-500M-MOBILE.html',
   '/inspections/INSPECTARE-AHTS-MOBILE.html',
