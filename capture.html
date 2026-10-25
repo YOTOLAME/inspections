@@ -165,13 +165,14 @@ a.btn { text-decoration: none; }
   <div class="section-header">Observation note</div>
   <div class="card">
     <textarea id="txtNote" placeholder="Where + what + defect, e.g. Aft deck STB, liquid bulk manifold valves corroded"></textarea>
-    <div class="hint">Dictate with the microphone key of the phone keyboard (works offline). French or English. Say: location, object, defect.</div>
+    <div class="hint">Dictate with the microphone key of the phone keyboard (works offline). English, French or Portuguese. Say: location, object, defect.</div>
     <div id="liveBox" class="hidden" style="margin-top:10px">
       <div class="row">
         <button class="btn btn-light" id="btnLive" type="button">Live dictation (online)</button>
         <select id="selLang" style="flex:0 0 96px">
           <option value="en-GB">EN</option>
           <option value="fr-FR">FR</option>
+          <option value="pt-PT">PT</option>
         </select>
       </div>
       <div class="hint" id="liveStatus"></div>
@@ -800,7 +801,9 @@ function renderObs() {
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   $('liveBox').className = SR ? '' : 'hidden';
   $('liveStatus').textContent = '';
-  $('selLang').value = getPrefs().lang || 'en-GB';
+  var dl = '';
+  try { dl = localStorage.getItem('tepa-dictation-lang') || ''; } catch (e) {}
+  $('selLang').value = dl || getPrefs().lang || 'en-GB';
   $('btnRec').disabled = !(window.MediaRecorder && navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
   if ($('btnRec').disabled) { $('recHint').textContent = 'Audio recording not supported by this browser.'; }
 }
@@ -901,7 +904,7 @@ var recog = null;
 function stopLive() {
   if (recog) { try { recog.stop(); } catch (e) {} }
 }
-$('selLang').onchange = function () { setPref('lang', this.value); };
+$('selLang').onchange = function () { setPref('lang', this.value); try { localStorage.setItem('tepa-dictation-lang', this.value); } catch (e) {} };
 $('btnLive').onclick = function () {
   if (recog) { stopLive(); return; }
   if (!navigator.onLine) { $('liveStatus').textContent = 'No network: use the keyboard microphone instead.'; return; }
