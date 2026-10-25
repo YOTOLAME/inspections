@@ -165,7 +165,7 @@ a.btn { text-decoration: none; }
   <div class="section-header">Observation note</div>
   <div class="card">
     <textarea id="txtNote" placeholder="Where + what + defect, e.g. Aft deck STB, liquid bulk manifold valves corroded"></textarea>
-    <div class="hint">Dictation (keyboard microphone or Live dictation) needs internet. Offline: type the note. English, French or Portuguese. Say: location, object, defect.</div>
+    <div class="hint">Offline: use the microphone key of the phone keyboard. Live dictation needs internet. English, French or Portuguese. Say: location, object, defect.</div>
     <div id="liveBox" class="hidden" style="margin-top:10px">
       <div class="row">
         <button class="btn btn-light" id="btnLive" type="button">Live dictation (online)</button>
@@ -907,7 +907,7 @@ function stopLive() {
 $('selLang').onchange = function () { setPref('lang', this.value); try { localStorage.setItem('tepa-dictation-lang', this.value); } catch (e) {} };
 $('btnLive').onclick = function () {
   if (recog) { stopLive(); return; }
-  if (!navigator.onLine) { $('liveStatus').textContent = 'No network: dictation needs internet. Type the note.'; return; }
+  if (!navigator.onLine) { $('liveStatus').textContent = 'No network: use the microphone key of the phone keyboard (works offline).'; return; }
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   var r;
   try { r = new SR(); } catch (e) { $('liveStatus').textContent = 'Live dictation not available.'; return; }
