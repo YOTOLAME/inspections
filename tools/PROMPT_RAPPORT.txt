@@ -41,7 +41,8 @@ ETAPE 3 - CONSTRUIRE LE HTML
   {"inspector": "...", "templates": ["INSPECTARE-PSV-MOBILE.html", "OVID-DP-OPERATIONS-MOBILE.html"],
    "items": [{"obs": 1, "form": "INSPECTARE-PSV-MOBILE.html", "q": "12.41", "comment": "...", "subject": "...", "action": "CTR to ... and provide evidence.", "remark": "", "photos": [1]}],
    "unassigned": [{"obs": 4, "reason": "..."}]}
-- Lancer : python3 -I inspections/tools/build_review.py CAPTURE.zip mapping.json inspections Review_<NAVIRE>_<AAAAMMJJ>.html
+- Lancer : python3 -I inspections/tools/build_review.py CAPTURE.zip mapping.json inspections .
+  (nom automatique : "AAAA MM JJ <Navire> <Type d'inspection> <Initiales>.html")
 - Le script refuse un template ou une question inexistants, une observation oubliee, un champ vide : corriger et relancer jusqu'a "OK".
 
 ETAPE 4 - QC
@@ -60,5 +61,5 @@ UTILISATION DU HTML (pour rappel a l'inspecteur)
 - Pour chaque question : la note brute du terrain est affichee au-dessus du commentaire retravaille, pour corriger une erreur de dictee.
 - Cocher YES / NO / N/A, corriger le commentaire, le sujet Synergi et l'action CTR, retirer ou ajouter des photos.
 - Observations non placees : saisir un numero de question puis "Move to this checklist question".
-- Export PDF : template affiche, nom de fichier type inspectare-psv-NAVIRE-INITIALES-DATE.
+- Export PDF : template affiche. Noms des fichiers (HTML, PDF, Excel) : AAAA MM JJ Navire Type d'inspection Initiales.
 - Export Excel (Synergi) : toutes les reponses NO de tous les templates, format "DP Inspection FU".

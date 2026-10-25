@@ -2,7 +2,9 @@
 """Build the inspection review HTML from a Field Capture ZIP and a mapping file.
 
 Usage:
-  python3 -I build_review.py CAPTURE.zip MAPPING.json INSPECTIONS_DIR OUT.html
+  python3 -I build_review.py CAPTURE.zip MAPPING.json INSPECTIONS_DIR OUT_DIR
+  (OUT_DIR = output folder; the file is named "YYYY MM DD <Vessel> <Inspection type> <Initials>.html".
+   A path ending in .html is also accepted and used as is.)
 
 INSPECTIONS_DIR = clone of github.com/YOTOLAME/inspections (checklist templates).
 MAPPING.json:
@@ -19,7 +21,7 @@ MAPPING.json:
 }
 Every observation of the ZIP must appear at least once in "items" or in "unassigned".
 """
-import base64, datetime, json, os, sys, zipfile
+import base64, datetime, json, os, re, sys, unicodedata, zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -32,6 +34,40 @@ def load_templates(src):
     data = json.load(open(tmp, encoding='utf-8'))
     os.remove(tmp)
     return {t['form']: t for t in data}
+
+
+def initials(name):
+    p = str(name or '').split()
+    if not p:
+        return ''
+    if len(p) > 1 and len(p[0]) > 1 and p[0] == p[0].upper() and p[-1] != p[-1].upper():
+        p = p[1:] + p[:1]
+    out = ''
+    for w in p:
+        c = unicodedata.normalize('NFD', w[0])[0]
+        if c.isascii() and c.isalpha():
+            out += c.upper()
+    return out
+
+
+def combined_type(templates):
+    common = [t for t in templates if t['form'].startswith('OVID-COMMON-PART')]
+    names = []
+    for t in templates:
+        n = t.get('shortName') or t['title']
+        if len(common) == 4 and t in common:
+            n = 'OVID Common'
+        if n not in names:
+            names.append(n)
+    return ' + '.join(names)
+
+
+def file_name(ymd, vessel, typ, inspector):
+    d = str(ymd or '').split('-')
+    parts = [' '.join(d)] if len(d) == 3 else []
+    parts += [p for p in (vessel, typ, initials(inspector)) if p]
+    s = re.sub(r'[\\/:*?"<>|]+', ' ', ' '.join(parts))
+    return re.sub(r'\s+', ' ', s).strip() or 'Inspection'
 
 
 def main(zpath, mpath, src, out):
@@ -101,6 +137,9 @@ def main(zpath, mpath, src, out):
                  'tag': mp.get('synergiTag') or 'TEPA DP NAV-DP1'},
         'templates': templates, 'unassigned': unassigned,
     }
+    if not out.lower().endswith('.html'):
+        os.makedirs(out, exist_ok=True)
+        out = os.path.join(out, file_name(data['meta']['date'], data['meta']['vessel'], combined_type(templates), data['meta']['inspector']) + '.html')
     tpl = open(os.path.join(HERE, 'review_template.html'), encoding='utf-8').read()
     payload = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
     assert tpl.count('__REVIEW_DATA__') == 1

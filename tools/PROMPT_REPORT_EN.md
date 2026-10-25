@@ -108,10 +108,10 @@ Write `mapping.json`:
 Run:
 
 ```
-python3 -I <repo>/tools/build_review.py CAPTURE.zip mapping.json <repo> Review_<VESSEL>_<YYYYMMDD>.html
+python3 -I <repo>/tools/build_review.py CAPTURE.zip mapping.json <repo> .
 ```
 
-The script rejects an unknown checklist or question, a forgotten observation and empty fields: fix `mapping.json` and run again until it prints `OK`.
+The file is named automatically: `YYYY MM DD <Vessel> <Inspection type> <Initials>.html` (e.g. `2026 09 13 MAMOLA RELIANCE Inspectare PSV + OVID DP Ops LP.html`). The script rejects an unknown checklist or question, a forgotten observation and empty fields: fix `mapping.json` and run again until it prints `OK`.
 
 ### Step 4 - Check
 
@@ -134,3 +134,4 @@ The script rejects an unknown checklist or question, a forgotten observation and
 - Tick YES / NO / N/A, edit the comment, the Synergi subject and the CTR action, remove or add photos.
 - Observation not placed: type a question number and press "Move to this checklist question".
 - "Export PDF" exports the checklist on screen. "Export Excel (Synergi)" exports all NO answers of all checklists.
+- File names follow: YYYY MM DD Vessel Inspection type Initials (e.g. "2026 09 13 MAMOLA RELIANCE Inspectare PSV LP.pdf").

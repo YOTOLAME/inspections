@@ -508,6 +508,38 @@ function bindMeta() {
 }
 
 /* ---------- PDF ---------- */
+function tepaInitials(n) {
+  var p = String(n == null ? '' : n).replace(/^\s+|\s+$/g, '').split(/\s+/), s = '', i;
+  if (!p[0]) { return ''; }
+  if (p.length > 1 && p[0].length > 1 && p[0] === p[0].toUpperCase() && p[p.length - 1] !== p[p.length - 1].toUpperCase()) { p.push(p.shift()); }
+  for (i = 0; i < p.length; i++) {
+    var c = p[i].charAt(0);
+    try { c = c.normalize('NFD').charAt(0); } catch (e) {}
+    if (/[A-Za-z]/.test(c)) { s += c.toUpperCase(); }
+  }
+  return s;
+}
+function tepaFileName(ymd, vessel, type, inspector) {
+  var d = String(ymd || '').split('-'), parts = [];
+  if (d.length === 3) { parts.push(d[0] + ' ' + d[1] + ' ' + d[2]); }
+  if (vessel) { parts.push(String(vessel)); }
+  if (type) { parts.push(String(type)); }
+  var ini = tepaInitials(inspector);
+  if (ini) { parts.push(ini); }
+  return parts.join(' ').replace(/[\\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '') || 'Inspection';
+}
+function typeName(T) { return T.shortName || String(T.title || '').replace(' -- ', ' '); }
+function combinedType() {
+  var names = [], i, common = 0;
+  for (i = 0; i < D.templates.length; i++) { if (/^OVID-COMMON-PART[1-4]-/.test(D.templates[i].form)) { common++; } }
+  for (i = 0; i < D.templates.length; i++) {
+    var T = D.templates[i];
+    if (common === 4 && /^OVID-COMMON-PART[1-4]-/.test(T.form)) {
+      if (names.indexOf('OVID Common') < 0) { names.push('OVID Common'); }
+    } else { names.push(typeName(T)); }
+  }
+  return names.join(' + ');
+}
 function initials(n) {
   var p = trim(n).split(/\s+/), s = '';
   for (var i = 0; i < p.length; i++) { if (p[i]) { s += p[i].charAt(0).toUpperCase(); } }
@@ -564,7 +596,7 @@ $('btnPdf').onclick = function () {
   var tags = pv.querySelectorAll('img[data-i]');
   function go() {
     var vessel = String(M.vessel || 'Unknown').replace(/\s+/g, '');
-    document.title = T.pdfPrefix + '-' + vessel + (ini ? '-' + ini : '') + (M.date ? '-' + M.date : '');
+    document.title = tepaFileName(M.date, M.vessel, typeName(T), M.inspector);
     setTimeout(function () { window.print(); }, 200);
   }
   if (!left) { go(); return; }
@@ -655,7 +687,7 @@ $('btnXls').onclick = function () {
     { name: 'xl/worksheets/sheet1.xml', data: utf8Bytes(sheet) }
   ]);
   blob = new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  var fname = safeName(M.vessel) + '_MarineDP_Inspection.xlsx';
+  var fname = tepaFileName(M.date, M.vessel, combinedType(), M.inspector) + '.xlsx';
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = fname;
   document.body.appendChild(a); a.click();
