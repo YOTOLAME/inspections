@@ -23,31 +23,45 @@ body { font-family: -apple-system, Arial, sans-serif; background: #f0f2f5; }
 .badge-inspectare { background: #e8f4fd; color: #003B6E; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; display: inline-block; margin-top: 4px; }
 .badge-ovid { background: #fdecea; color: #c0392b; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; display: inline-block; margin-top: 4px; }
 .section-header { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #888; margin: 6px 4px 0; }
+.mode-title { font-size: 16px; font-weight: 700; color: #003B6E; margin: 14px 4px 0; padding-bottom: 4px; border-bottom: 2px solid #003B6E; }
+.mode-title:first-child { margin-top: 0; }
+.mode-sub { font-size: 12px; color: #666; margin: 0 4px 2px; }
 </style>
 </head>
 <body>
 <div class="header">
   <h1>&#9875; Inspectare – TEPA</h1>
-  <p>TotalEnergies E&amp;P Angola – Offline Inspection Forms</p>
+  <p>TotalEnergies E&amp;P Angola – Offline inspection tools</p>
 </div>
 <div class="list">
-  <div class="section-header">Field Capture</div>
+  <div class="mode-title">1 &ndash; Defects mode</div>
+  <div class="mode-sub">Photos + dictated notes on board, then report drafted by your AI assistant</div>
   <a class="card" href="capture.html">
     <span class="card-icon">&#128247;</span>
     <div class="card-text">
-      <div class="card-title">Field Capture &ndash; Photos &amp; Notes</div>
-      <div class="card-sub">Offline capture of observations, export ZIP for the report</div>
+      <div class="card-title">Capture defects</div>
+      <div class="card-sub">Photos and dictated notes, offline &ndash; export ZIP for the AI</div>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
   <a class="card" href="review.html">
     <span class="card-icon">&#128203;</span>
     <div class="card-text">
-      <div class="card-title">Open a report (Review file)</div>
-      <div class="card-sub">Tick YES / NO / N/A, edit comments, export PDF and Synergi Excel</div>
+      <div class="card-title">Open a defect report</div>
+      <div class="card-sub">Review file from the AI: YES / NO / N/A, comments, PDF and Synergi Excel</div>
     </div>
     <span class="card-arrow">&#9654;</span>
   </a>
+  <a class="card" href="https://github.com/YOTOLAME/inspections/blob/main/tools/PROMPT_REPORT_EN.md">
+    <span class="card-icon">&#128196;</span>
+    <div class="card-text">
+      <div class="card-title">AI prompt</div>
+      <div class="card-sub">Prompt to paste into your AI assistant with the ZIP (needs network)</div>
+    </div>
+    <span class="card-arrow">&#9654;</span>
+  </a>
+  <div class="mode-title">2 &ndash; Inspection mode</div>
+  <div class="mode-sub">Fill the checklist question by question, as before</div>
   <div class="section-header">Inspectare – TEPA</div>
   <a class="card" href="INSPECTARE-500M-MOBILE.html">
     <span class="card-icon">&#9875;</span>
