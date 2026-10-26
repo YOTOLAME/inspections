@@ -142,7 +142,7 @@ a.btn { text-decoration: none; }
         <a class="btn btn-light" id="lnkDownload" href="#" download="capture.zip">Download</a>
       </div>
     </div>
-    <div class="hint">Creates one ZIP file (notes, photos, recordings) for report drafting.</div>
+    <div class="hint">Creates one ZIP file (notes, photos, report kit and AI prompt) for report drafting.</div>
   </div>
   <button class="btn btn-danger btn-block" id="btnDelSession" type="button">Delete this inspection</button>
 </div>
@@ -748,7 +748,26 @@ $('btnExport').onclick = function () {
       next();
     });
   }
-  function finish() {
+  function addKit(cb) {
+    var files = [['report_kit.py', 'report_kit.py'], ['tools/PROMPT_REPORT_EN.md', 'AI_PROMPT.md']], got = 0, k;
+    function one(src, dst) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', src, true);
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = function () {
+        if ((xhr.status === 200 || xhr.status === 0) && xhr.response) { entries.push({ name: dst, data: new Uint8Array(xhr.response) }); got++; }
+        done();
+      };
+      xhr.onerror = done;
+      xhr.send();
+    }
+    var left = files.length;
+    function done() { left--; if (!left) { cb(got === files.length); } }
+    for (k = 0; k < files.length; k++) { one(files[k][0], files[k][1]); }
+  }
+  var kitOk = true;
+  function finish() { addKit(function (ok) { kitOk = ok; finish2(); }); }
+  function finish2() {
     var txt = 'Vessel: ' + s.vesselName + '\r\nInspection date: ' + fmtD(s.date) + '\r\nInspector: ' + (s.inspector || '') +
       '\r\nLocation: ' + (s.location || '') + '\r\nChecklist: ' + typeLabel(s) + '\r\nObservations: ' + s.observations.length +
       '\r\nExported: ' + fmtDT(meta.exported) + '\r\n';
@@ -763,7 +782,8 @@ $('btnExport').onclick = function () {
     lnk.href = exportUrl;
     lnk.setAttribute('download', fname);
     $('exportInfo').innerHTML = '<b>File:</b> ' + esc(fname) + '<br><b>Size:</b> ' + (blob.size / 1048576).toFixed(1) + ' MB - ' +
-      s.observations.length + ' observation(s)' + (missing ? '<br><b>Missing media:</b> ' + missing : '');
+      s.observations.length + ' observation(s)' + (missing ? '<br><b>Missing media:</b> ' + missing : '') +
+      (kitOk ? '' : '<br><b>Report kit missing</b> (open the app once with network, then export again)');
     var canShare = false;
     try { canShare = !!(navigator.canShare && exportFile.name && navigator.canShare({ files: [exportFile] })); } catch (e) {}
     $('btnShare').className = canShare ? 'btn btn-primary' : 'btn btn-primary hidden';

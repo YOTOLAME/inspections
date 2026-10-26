@@ -11,11 +11,12 @@ Produire UN fichier HTML de revue autonome PAR template demande, avec la liste c
 AVANT TOUT : si le champ Templates est vide, demander a l'utilisateur sur quel(s) template(s) d'inspection il veut le rapport (plusieurs possibles), en montrant la liste ci-dessous et ceux du ZIP en suggestion. Attendre la reponse. Un HTML sera produit pour chaque template.
 
 ETAPE 0 - OUTILS
-- git clone --depth 1 https://github.com/YOTOLAME/inspections  (templates = formulaires *-MOBILE.html a la racine ; outils dans tools/)
+- Utiliser report_kit.py fourni avec le ZIP (outil autonome : templates + generateur ; pas besoin d'internet ni de GitHub). Les fichiers peuvent etre envoyes dezippes, photos en vrac et en plusieurs messages : verifier que toutes les photos listees dans inspection.json sont recues avant de construire.
+- Questions des templates : python3 -I report_kit.py --questions INSPECTARE-PSV-MOBILE.html OVID-DP-OPERATIONS-MOBILE.html
+- Ancien export sans report_kit.py : outils sur https://github.com/YOTOLAME/inspections (dossier tools).
 - Correspondance des templates :
   Inspectare PSV = INSPECTARE-PSV-MOBILE.html | Inspectare AHTS = INSPECTARE-AHTS-MOBILE.html | Inspectare TUG = INSPECTARE-TUG-MOBILE.html | Inspectare Crew Boat = INSPECTARE-CREWBOAT-MOBILE.html | Inspectare 500m Zone Vessel = INSPECTARE-500M-MOBILE.html | Inspectare 500m Zone Asset = INSPECTARE-500M-ASSET-MOBILE.html
   OVID Commun 1/4 a 4/4 = OVID-COMMON-PART1..4-MOBILE.html | OVID PSV Ops = OVID-PSV-OPERATIONS-MOBILE.html | OVID AHTS/TUG Ops = OVID-AHTS-TUG-OPERATIONS-MOBILE.html | OVID MPSV Ops = OVID-MPSV-OPERATIONS-MOBILE.html | OVID DP Ops (Ch.15) = OVID-DP-OPERATIONS-MOBILE.html | OVID CTV 1/2 et 2/2 = OVID-CREWBOAT-PART1/2-MOBILE.html | OVID Barge = OVID-BARGE-OPERATIONS-MOBILE.html
-- Lire la liste des questions de chaque template demande : python3 -I inspections/tools/build_checklists.py inspections checklists.json
 
 ETAPE 1 - LIRE TOUT
 - Lire inspection.json en entier.
@@ -44,7 +45,7 @@ ETAPE 3 - CONSTRUIRE LE HTML
   {"inspector": "...", "templates": ["INSPECTARE-PSV-MOBILE.html", "OVID-DP-OPERATIONS-MOBILE.html"],
    "items": [{"obs": 1, "form": "INSPECTARE-PSV-MOBILE.html", "q": "12.41", "comment": "...", "subject": "...", "action": "CTR to ... and provide evidence.", "remark": "", "photos": [1]}],
    "unassigned": [{"obs": 4, "reason": "..."}]}
-- Lancer : python3 -I inspections/tools/build_review.py CAPTURE.zip mapping.json inspections out
+- Lancer : python3 -I report_kit.py <ZIP ou dossier> mapping.json out
   (un fichier par template dans "out", nom automatique : "AAAA MM JJ <Navire> <Type d'inspection> <Initiales>.html")
 - Le script refuse un template ou une question inexistants, une observation oubliee, un champ vide : corriger et relancer jusqu'a "OK".
 

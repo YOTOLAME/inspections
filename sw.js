@@ -1,9 +1,11 @@
-var CACHE_NAME = 'inspectare-v21';
+var CACHE_NAME = 'inspectare-v22';
 var FILES = [
   '/inspections/',
   '/inspections/index.html',
   '/inspections/capture.html',
   '/inspections/review.html',
+  '/inspections/report_kit.py',
+  '/inspections/tools/PROMPT_REPORT_EN.md',
   '/inspections/INSPECTARE-500M-ASSET-MOBILE.html',
   '/inspections/INSPECTARE-500M-MOBILE.html',
   '/inspections/INSPECTARE-AHTS-MOBILE.html',

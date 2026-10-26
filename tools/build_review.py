@@ -2,7 +2,11 @@
 """Build the inspection review HTML from a Field Capture ZIP and a mapping file.
 
 Usage:
-  python3 -I build_review.py CAPTURE.zip MAPPING.json INSPECTIONS_DIR OUT_DIR
+  python3 -I build_review.py CAPTURE MAPPING.json INSPECTIONS_DIR OUT_DIR
+  python3 -I report_kit.py   CAPTURE MAPPING.json OUT_DIR          (self-contained kit, no GitHub needed)
+  CAPTURE = the Field Capture ZIP, or a folder with its unzipped files (photos may be flat, without photos/).
+  python3 -I report_kit.py --questions                      list of checklist templates
+  python3 -I report_kit.py --questions FORM.html [...]      questions of these templates
   (OUT_DIR = output folder: ONE file per checklist, named "YYYY MM DD <Vessel> <Inspection type> <Initials>.html".
    A path ending in .html gives a single file with all checklists.)
 
@@ -24,16 +28,50 @@ Every observation of the ZIP must appear at least once in "items" or in "unassig
 import base64, datetime, json, os, re, sys, unicodedata, zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
-import build_checklists  # noqa: E402
+EMBEDDED_CHECKLISTS = None   # filled in report_kit.py
+EMBEDDED_TEMPLATE = None     # filled in report_kit.py
 
 
 def load_templates(src):
-    tmp = os.path.join(HERE, '.checklists.tmp.json')
-    build_checklists.main(src, tmp)
-    data = json.load(open(tmp, encoding='utf-8'))
-    os.remove(tmp)
+    if src is None:
+        data = json.loads(EMBEDDED_CHECKLISTS)
+    elif src.lower().endswith('.json'):
+        data = json.load(open(src, encoding='utf-8'))
+    else:
+        sys.path.insert(0, HERE)
+        import build_checklists
+        tmp = os.path.join(HERE, '.checklists.tmp.json')
+        build_checklists.main(src, tmp)
+        data = json.load(open(tmp, encoding='utf-8'))
+        os.remove(tmp)
     return {t['form']: t for t in data}
+
+
+def review_template():
+    if EMBEDDED_TEMPLATE is not None:
+        return EMBEDDED_TEMPLATE
+    return open(os.path.join(HERE, 'review_template.html'), encoding='utf-8').read()
+
+
+class Capture:
+    """Field Capture export: the ZIP itself or a folder with its files (photos may be flat)."""
+    def __init__(self, path):
+        self.zip = zipfile.ZipFile(path) if os.path.isfile(path) and zipfile.is_zipfile(path) else None
+        self.files = {}
+        if self.zip is None:
+            for root, _, names in os.walk(path):
+                for n in names:
+                    full = os.path.join(root, n)
+                    self.files.setdefault(os.path.relpath(full, path).replace(os.sep, '/'), full)
+                    self.files.setdefault(n, full)
+
+    def read(self, name):
+        if self.zip is not None:
+            return self.zip.read(name)
+        for key in (name, os.path.basename(name)):
+            if key in self.files:
+                return open(self.files[key], 'rb').read()
+        raise KeyError(name)
 
 
 def initials(name):
@@ -71,7 +109,7 @@ def file_name(ymd, vessel, typ, inspector):
 
 
 def main(zpath, mpath, src, out):
-    z = zipfile.ZipFile(zpath)
+    z = Capture(zpath)
     insp = json.loads(z.read('inspection.json').decode('utf-8'))
     mp = json.load(open(mpath, encoding='utf-8'))
     allt = load_templates(src)
@@ -133,7 +171,7 @@ def main(zpath, mpath, src, out):
     meta = {'vessel': insp['vesselName'], 'date': insp['inspectionDate'],
             'inspector': mp.get('inspector') or insp.get('inspector', ''), 'location': insp.get('location', ''),
             'tag': mp.get('synergiTag') or 'TEPA DP NAV-DP1'}
-    tpl = open(os.path.join(HERE, 'review_template.html'), encoding='utf-8').read()
+    tpl = review_template()
     assert tpl.count('__REVIEW_DATA__') == 1
 
     def write(path, tlist):
@@ -155,7 +193,35 @@ def main(zpath, mpath, src, out):
             write(os.path.join(out, file_name(meta['date'], meta['vessel'], t.get('shortName') or t['title'], meta['inspector']) + '.html'), [t])
     print('observations: %d, unassigned: %d' % (len(obs), len(unassigned)))
 
+def print_questions(src, forms):
+    allt = load_templates(src)
+    if not forms:
+        for f, t in allt.items():
+            print('%-40s %s (%d questions)' % (f, t.get('shortName') or t['title'], t['questionCount']))
+        return
+    for f in forms:
+        t = allt.get(f)
+        if not t:
+            print('UNKNOWN TEMPLATE ' + f); continue
+        print('### %s | %s' % (f, t['title']))
+        for sec in t['sections']:
+            print('## ' + sec['title'])
+            for q in sec['questions']:
+                print('%s  %s' % (q['q'], q['text']))
+        print()
+
+
 if __name__ == '__main__':
-    if len(sys.argv) != 5:
+    if len(sys.argv) >= 2 and sys.argv[1] == '--questions':
+        # report_kit.py --questions [FORM.html ...]   |   build_review.py --questions INSPECTIONS_DIR [FORM.html ...]
+        args = sys.argv[2:]
+        if EMBEDDED_CHECKLISTS is not None:
+            print_questions(None, args)
+        else:
+            print_questions(args[0], args[1:])
+    elif EMBEDDED_CHECKLISTS is not None and len(sys.argv) == 4:
+        main(sys.argv[1], sys.argv[2], None, sys.argv[3])
+    elif len(sys.argv) == 5:
+        main(*sys.argv[1:])
+    else:
         sys.exit(__doc__)
-    main(*sys.argv[1:])

@@ -1,6 +1,7 @@
 # Inspection report from a Field Capture ZIP
 
 Prompt to paste into your AI assistant, with the capture ZIP attached.
+If your AI does not open ZIP files: unzip it and attach the files themselves (`inspection.json`, `report_kit.py` and all photos; photos can be sent in several messages).
 
 ## Fill in before sending
 
@@ -16,11 +17,15 @@ Prompt to paste into your AI assistant, with the capture ZIP attached.
 
 You are assisting a marine superintendent / vessel inspector.
 
-The attached ZIP was exported by the Field Capture app (https://yotolame.github.io/inspections/capture.html). It contains:
+The attached files were exported by the Field Capture app (https://yotolame.github.io/inspections/capture.html), as one ZIP or as its unzipped files:
 
 - `inspection.json`: vessel, date, location, inspector, checklist(s) selected, and the field observations (dictated note + photo file names).
-- `photos/`: the photos of each observation.
+- `photos/` (or loose `obsNN_N.jpg` files): the photos of each observation.
+- `report_kit.py`: self-contained tool with all checklist templates and the report builder. **No internet or GitHub access is needed.**
+- `inspection_details.txt`, `AI_PROMPT.md`: for information.
 - `audio/`: voice memos. Do not use them.
+
+**Check that you have every photo listed in `inspection.json`.** If the user sends the photos in several messages, list the missing ones and wait until all are received before building.
 
 ### Goal
 
@@ -30,17 +35,13 @@ Produce **one self-contained HTML review file per requested checklist**. Each fi
 
 If the "Checklists" field above is empty, **ask the user first, before any other work**: "Which inspection template(s) do you want the report on? You can choose several." Show the list of checklist names below (and the checklists recorded in `inspection.json` as a suggestion). Wait for the answer. The same ZIP can be used for several checklists: one HTML file will be produced for each.
 
-### Step 0 - Get the checklist templates and the tools from GitHub
+### Step 0 - Tools
 
-- Everything is in one repository: https://github.com/YOTOLAME/inspections
-  - checklist templates (Inspectare and OVID forms): `*-MOBILE.html` files at the root
-  - report tools: folder `tools` (`build_checklists.py`, `build_review.py`, `review_template.html`)
-  - download as archive: https://github.com/YOTOLAME/inspections/archive/refs/heads/main.zip
-- If you can run code with internet access: `git clone --depth 1 https://github.com/YOTOLAME/inspections` (or download the archive and unzip it).
-- If you can run code but have no internet access: ask the user to download the archive link above and attach it, then unzip it.
+- Normal case: use `report_kit.py` from the attachments. Put all attached files (unzipped) in one working folder; photos may be loose, without the `photos/` folder.
+- If `report_kit.py` is missing (old export): get the same tools from GitHub, https://github.com/YOTOLAME/inspections (archive: https://github.com/YOTOLAME/inspections/archive/refs/heads/main.zip, tools in folder `tools`). If you cannot download, ask the user to attach that archive.
 - If you cannot run Python at all: say so in one line and stop. Do not try to write the HTML by hand.
 
-Checklist names and template files (root of the repository):
+Checklist names and template files:
 
 | Checklist | Template file |
 |---|---|
@@ -58,17 +59,17 @@ Checklist names and template files (root of the repository):
 | OVID Crew Transfer Vessel 1/2, 2/2 | `OVID-CREWBOAT-PART1-MOBILE.html`, `OVID-CREWBOAT-PART2-MOBILE.html` |
 | OVID Barge | `OVID-BARGE-OPERATIONS-MOBILE.html` |
 
-Extract the questions of all checklists (`<repo>` = the repository folder, e.g. `inspections` or `inspections-main`):
+Read the questions of the requested checklists:
 
 ```
-python3 -I <repo>/tools/build_checklists.py <repo> checklists.json
+python3 -I report_kit.py --questions INSPECTARE-PSV-MOBILE.html OVID-DP-OPERATIONS-MOBILE.html
 ```
 
 ### Step 1 - Read everything
 
 - Read `inspection.json` completely.
 - Open and look at **every** photo, not only the first one of each observation.
-- Read the questions of each requested checklist in `checklists.json`.
+- Read all the questions of each requested checklist (output of `--questions`).
 
 ### Step 2 - Rework each observation
 
@@ -113,7 +114,7 @@ Write `mapping.json`:
 Run:
 
 ```
-python3 -I <repo>/tools/build_review.py CAPTURE.zip mapping.json <repo> out
+python3 -I report_kit.py <ZIP file or working folder> mapping.json out
 ```
 
 The script writes **one HTML file per checklist** in the folder `out`, named automatically `YYYY MM DD <Vessel> <Inspection type> <Initials>.html` (e.g. `2026 09 13 MAMOLA RELIANCE Inspectare PSV LP.html` and `2026 09 13 MAMOLA RELIANCE OVID DP Ops LP.html`). The script rejects an unknown checklist or question, a forgotten observation and empty fields: fix `mapping.json` and run again until it prints `OK`.
