@@ -86,6 +86,7 @@ textarea { min-height: 70px; resize: vertical; }
   .pv-ph { margin: 4px 0 0 50px; }
   .pv-ph img { width: 150px; height: 112px; object-fit: cover; margin: 0 6px 6px 0; border: 1px solid #ccc; }
 }
+.mv{display:flex;gap:6px;margin-top:6px}.mv input{max-width:90px;font-size:13px;padding:5px}.mv button{font-size:12px;padding:5px 9px;border:1px solid #003B6E;border-radius:6px;background:#fff;color:#003B6E;cursor:pointer}
 .fl{margin:8px 0 4px;font-size:12px;font-weight:bold;color:#003B6E}
 .fx{margin-top:10px;padding-top:6px;border-top:1px dashed #ccd3db}
 .linked{margin:6px 0;padding:6px 9px;border-radius:6px;background:#e8f0fb;color:#00396b;font-size:12.5px}
@@ -233,7 +234,7 @@ function toast(m) { var t = $('toast'); t.textContent = m; t.className = 'toast'
 
 /* ---------- state ---------- */
 function freshState() {
-  var s = { meta: { vessel: D.meta.vessel || '', date: D.meta.date || '', inspector: D.meta.inspector || '', location: D.meta.location || '', tag: D.meta.tag || 'TEPA DP NAV-DP1' }, t: [], moved: {} };
+  var s = { meta: { vessel: D.meta.vessel || '', date: D.meta.date || '', inspector: D.meta.inspector || '', location: D.meta.location || '', tag: D.meta.tag || 'TEPA DP NAV-DP1' }, t: [], moved: {}, relo: {} };
   for (var i = 0; i < D.templates.length; i++) {
     var T = D.templates[i], ts = { ans: {}, cmt: {}, obs: {}, subj: {}, act: {}, removed: {} };
     for (var s0 = 0; s0 < T.sections.length; s0++) { for (var k0 = 0; k0 < T.sections[s0].questions.length; k0++) { var q0 = T.sections[s0].questions[k0].q; ts.ans[q0] = 'NA'; if (!T.items[q0]) { ts.cmt[q0] = NOT_ASSESSED; } } }
@@ -400,15 +401,96 @@ function extraHtml(ti, q) {
     h += '<div class="fx" data-k="' + esc(k) + '"><div class="fl">Finding ' + (i + 2) + ' - Obs ' + esc(ks[i].obs) + '</div>' +
       '<textarea class="x-cmt" placeholder="Comment / Evidence...">' + esc(ts.cmt[k] || '') + '</textarea>' +
       '<div class="syn"><div><label>Synergi subject</label><input type="text" class="x-subj" value="' + esc(ts.subj[k] || '') + '"></div>' +
-      '<div><label>CTR action</label><input type="text" class="x-act" value="' + esc(ts.act[k] || '') + '"></div></div></div>';
+      '<div><label>CTR action</label><input type="text" class="x-act" value="' + esc(ts.act[k] || '') + '"></div></div>' +
+      moveHtml(ti, ks[i].obs) + '</div>';
   }
   return h;
+}
+/* ---------- move a placed observation to another question ---------- */
+var ORIG = null;          /* original items per template (photos of each observation) */
+function rebuildItems() {
+  if (!ORIG) { ORIG = []; for (var t0 = 0; t0 < D.templates.length; t0++) { ORIG.push(D.templates[t0].items); } }
+  var relo = (ST && ST.relo) || {};
+  for (var ti = 0; ti < D.templates.length; ti++) {
+    var T = D.templates[ti];
+    if (!T.obsList) { continue; }
+    var g = {}, i, q;
+    for (i = 0; i < T.obsList.length; i++) {
+      q = relo[ti + '|' + T.obsList[i].obs] || T.obsList[i].q;
+      (g[q] || (g[q] = [])).push(T.obsList[i]);
+    }
+    T.items = {};
+    for (q in g) {
+      var l = g[q].sort(function (a, b) { return a.obs - b.obs; }), f = l[0];
+      var it = { comment: f.comment, subject: f.subject, action: f.action, remark: '', notes: [], photos: [] };
+      for (i = 0; i < l.length; i++) {
+        if (l[i].remark) { it.remark += (it.remark ? ' ' : '') + 'Obs ' + l[i].obs + ': ' + l[i].remark; }
+        it.notes.push({ obs: l[i].obs, text: l[i].note });
+        var src = (ORIG[ti][l[i].q] || {}).photos || [];
+        for (var p = 0; p < (l[i].ph || []).length; p++) { var d = src[l[i].ph[p]]; if (d && it.photos.indexOf(d) < 0) { it.photos.push(d); } }
+      }
+      if (l.length > 1) {
+        it.extra = [];
+        for (i = 1; i < l.length; i++) { it.extra.push({ obs: l[i].obs, comment: l[i].comment, subject: l[i].subject, action: l[i].action }); }
+      }
+      T.items[q] = it;
+    }
+  }
+}
+function canMove(ti, obs) {
+  var L = D.templates[ti].obsList || [];
+  for (var i = 0; i < L.length; i++) { if (L[i].obs === obs) { return true; } }
+  return false;
+}
+function moveHtml(ti, obs) {
+  if (!canMove(ti, obs)) { return ''; }
+  return '<div class="mv"><input type="text" class="mv-q" placeholder="Q no."><button type="button" class="mv-b" data-obs="' + obs + '">Move Obs ' + obs + ' to this question</button></div>';
+}
+function obsKey(ti, q, obs) { return findObs(ti, q)[0] === obs ? q : q + '#' + obs; }
+function moveObs(ti, qOld, obs, qNew) {
+  var ts = ST.t[ti], snap = {}, qs = [qOld, qNew], k, i, o, key;
+  for (k = 0; k < 2; k++) {
+    o = findObs(ti, qs[k]);
+    for (i = 0; i < o.length; i++) {
+      key = obsKey(ti, qs[k], o[i]);
+      snap[o[i]] = { cmt: ts.cmt[key], subj: ts.subj[key], act: ts.act[key] };
+      if (key !== qs[k]) { delete ts.cmt[key]; delete ts.subj[key]; delete ts.act[key]; }
+    }
+  }
+  (ST.relo || (ST.relo = {}))[ti + '|' + obs] = qNew;
+  rebuildItems(); buildTwins();
+  for (k = 0; k < 2; k++) {
+    o = findObs(ti, qs[k]);
+    for (i = 0; i < o.length; i++) {
+      var sn = snap[o[i]];
+      if (!sn) { continue; }
+      key = obsKey(ti, qs[k], o[i]);
+      ts.cmt[key] = sn.cmt || ''; ts.subj[key] = sn.subj || ''; ts.act[key] = sn.act || '';
+    }
+  }
+  if (!findObs(ti, qOld).length) { ts.cmt[qOld] = NOT_ASSESSED; ts.subj[qOld] = ''; ts.act[qOld] = ''; ts.obs[qOld] = false; }
+  ts.obs[qNew] = true;
+  ts.removed[qOld] = []; ts.removed[qNew] = [];
+  save();
+}
+function bindMove(el, q) {
+  var bs = el.querySelectorAll('.mv-b');
+  for (var i = 0; i < bs.length; i++) {
+    bs[i].onclick = function () {
+      var obs = parseInt(this.getAttribute('data-obs'), 10), qn = trim(this.parentNode.querySelector('.mv-q').value);
+      if (!qExists(CUR, qn)) { toast('Question ' + qn + ' not found in this checklist'); return; }
+      if (qn === q) { toast('Obs ' + obs + ' is already on question ' + q); return; }
+      moveObs(CUR, q, obs, qn);
+      renderAll(); goTo(qn); toast('Obs ' + obs + ' moved to question ' + qn);
+    };
+  }
 }
 function twinSetX(ti, q, obs, f, v) {
   var l = TWINS[ti + '|' + q] || [];
   for (var i = 0; i < l.length; i++) { ST.t[l[i][0]][f][l[i][1] + '#' + obs] = v; }
 }
 function bindExtra(el, q) {
+  bindMove(el, q);
   var ts = ST.t[CUR], fx = el.querySelectorAll('.fx'), m = { 'x-cmt': 'cmt', 'x-subj': 'subj', 'x-act': 'act' };
   for (var i = 0; i < fx.length; i++) {
     var k = fx[i].getAttribute('data-k');
@@ -512,6 +594,7 @@ function qHtml(ti, q, text) {
   var showSyn = !!(it.subject || ts.subj[q] || a === 'NO' || ts.obs[q]);
   h += '<div class="syn' + (showSyn ? '' : ' hidden') + '"><div><label>Synergi subject</label><input type="text" class="f-subj" value="' + esc(ts.subj[q] || '') + '"></div>' +
     '<div><label>CTR action</label><input type="text" class="f-act" value="' + esc(ts.act[q] || '') + '"></div></div>';
+  if (findObs(ti, q).length) { h += moveHtml(ti, findObs(ti, q)[0]); }
   h += extraHtml(ti, q);
   var ph = photosOf(ti, q);
   h += '<div class="photos">';
@@ -810,11 +893,11 @@ $('selTpl').onchange = function () { CUR = parseInt(this.value, 10); renderAll()
 $('btnReset').onclick = function () {
   if (!window.confirm('Discard all answers and edits in this browser and go back to the original draft?')) { return; }
   try { localStorage.removeItem(SKEY); } catch (e) {}
-  ADDED = {}; saveAdded(); ST = freshState(); bindMeta(); renderAll();
+  ADDED = {}; saveAdded(); ST = { relo: {} }; rebuildItems(); ST = freshState(); buildTwins(); bindMeta(); renderAll();
 };
 function start(data) {
   D = data; SKEY = 'tepa-review:' + D.id; CUR = 0; ST = null; ADDED = {};
-  loadState(); buildTwins();
+  ORIG = null; ST = null; rebuildItems(); loadState(); if (ST.relo) { rebuildItems(); } buildTwins();
   var sel = $('selTpl');
   sel.innerHTML = '';
   for (var i = 0; i < D.templates.length; i++) {
