@@ -34,7 +34,7 @@ Produce **one single self-contained HTML review file containing all the requeste
 - Every question of every checklist is listed, with the ZIP observations rewritten and placed under the right question, photos included.
 - **One finding per observation**: several observations may share a question, but each observation keeps its own comment, Synergi subject and CTR action (shown as "Finding 1 - Obs N", "Finding 2 - Obs N"... under the question) and gives its own line in the Synergi Excel export. In the PDF, the question shows one single observation with all the comments.
 - When the same observation(s) are placed in an OVID checklist and in an Inspectare checklist, the two questions are **linked**: any correction of the comment, Synergi subject, CTR action, finding box or photos in one is copied to the other.
-- Every question is pre-answered **N/A**. Every question without a finding is pre-filled with the comment *"This item was not assessed within the scope of this inspection due to time constraints; no evidence was reviewed and no conclusion is drawn."*. This comment disappears automatically when the inspector clicks YES or NO.
+- Every question is pre-answered **N/A**. Every question without a finding is pre-filled with the comment *"This item was not assessed within the scope of this inspection; no evidence was reviewed and no conclusion is drawn."*. This comment disappears automatically when the inspector clicks YES or NO.
 - The inspector then sets YES / NO himself, edits the comments, and exports the PDF of each checklist and the Synergi Excel file (NO answers).
 
 ### First: ask which checklists
@@ -108,7 +108,7 @@ Two frameworks: **OVID** (all `OVID-...` templates) and **Inspectare** (all `INS
 Rules:
 
 - Everything you write is in **English**: `comment`, `subject`, `action`, `remark` and the summary table, even when the field notes are in French or Portuguese (translate them).
-- Never answer YES / NO / N/A in `mapping.json`: the defaults (N/A + comment "This item was not assessed within the scope of this inspection due to time constraints; no evidence was reviewed and no conclusion is drawn.") are set by `report_kit.py`, the inspector does the rest.
+- Never answer YES / NO / N/A in `mapping.json`: the defaults (N/A + comment "This item was not assessed within the scope of this inspection; no evidence was reviewed and no conclusion is drawn.") are set by `report_kit.py`, the inspector does the rest.
 - Never invent a fact, a figure or a reference.
 
 ### Step 4 - Build the HTML
@@ -162,7 +162,7 @@ python3 -I report_kit.py <ZIP file or working folder> mapping.json "out/YYYY MM 
 - Phone or tablet: save the file (iPhone: in Files), open https://yotolame.github.io/inspections/review.html, press "Open report file" and choose it. The file is read on the device only; nothing is sent to any server.
 - All checklists are in one file: switch with the selector at the top left. The filter "Pre-filled / commented" shows only the questions with findings.
 - A question showing "Linked with ..." is linked to the same finding in the other checklist: correct it once, the twin is updated (comment, Synergi subject, CTR action, finding box, photos). YES / NO / N/A answers are not copied: set them in each checklist.
-- Every question without a finding starts at N/A with the comment "This item was not assessed within the scope of this inspection due to time constraints; no evidence was reviewed and no conclusion is drawn." Clicking YES or NO removes that comment (only if it was not modified). Questions with a finding start at N/A with the rewritten comment.
+- Every question without a finding starts at N/A with the comment "This item was not assessed within the scope of this inspection; no evidence was reviewed and no conclusion is drawn." Clicking YES or NO removes that comment (only if it was not modified). Questions with a finding start at N/A with the rewritten comment.
 - Under each question, the raw field note is shown above the rewritten comment, to fix any dictation error.
 - A question holding several observations shows one finding per observation ("Finding 1 - Obs N", "Finding 2 - Obs N"...), each with its own comment, Synergi subject and CTR action. Answered NO, it gives one Synergi line per finding. In the PDF, the question shows one single observation with all the comments.
 - Observation not placed: type a question number and press "Move to this checklist question" (a moved observation is not linked). Moved to a question that already holds a finding, it is added as a separate finding with empty fields: fill them in.
