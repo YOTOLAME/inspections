@@ -7,6 +7,7 @@ Usage:
   CAPTURE = the Field Capture ZIP, or a folder with its unzipped files (photos may be flat, without photos/).
   python3 -I report_kit.py --questions                      list of checklist templates
   python3 -I report_kit.py --questions FORM.html [...]      questions of these templates
+  python3 -I report_kit.py --version                        kit version
   (OUT_DIR = output folder: ONE file per checklist, named "YYYY MM DD <Vessel> <Inspection type> <Initials>.html".
    A path ending in .html gives a single file with all checklists.)
 
@@ -24,8 +25,15 @@ MAPPING.json:
   "unassigned": [{"obs": 3, "reason": "..."}]
 }
 Every observation of the ZIP must appear at least once in "items" or in "unassigned".
+Rules checked: an observation is placed at most once per framework (OVID / Inspectare); questions holding the same
+observations in two frameworks are linked, so an observation must be grouped with the same observations everywhere.
+Review file: every question defaults to N/A, questions without finding get the NOT_ASSESSED comment, linked questions
+copy their edits to the twin, and a question holding several observations shows one finding per observation
+(own comment, Synergi subject and CTR action; one Synergi Excel line per observation; one block in the PDF).
 """
-import base64, datetime, json, os, re, sys, unicodedata, zipfile
+import base64, collections, datetime, json, os, re, sys, unicodedata, zipfile
+
+KIT_VERSION = '2026-10-31 one finding per observation, OVID/Inspectare linking, default N/A'
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 EMBEDDED_CHECKLISTS = None   # filled in report_kit.py
@@ -145,16 +153,42 @@ def main(zpath, mpath, src, out):
             sel = o['photos'] if idx is None else [o['photos'][n - 1] for n in idx]
         except IndexError:
             errors.append(tag + ': bad photo index'); continue
-        cur = t['items'].setdefault(it['q'], {'comment': '', 'subject': it['subject'].strip(), 'action': it['action'].strip(),
-                                              'remark': '', 'notes': [], 'photos': []})
-        cur['comment'] = (cur['comment'] + '\n' if cur['comment'] else '') + it['comment'].strip()
-        if str(it.get('remark', '')).strip():
-            cur['remark'] = (cur['remark'] + ' ' if cur['remark'] else '') + 'Obs %d: %s' % (o['no'], it['remark'].strip())
-        if not any(n['obs'] == o['no'] for n in cur['notes']):
-            cur['notes'].append({'obs': o['no'], 'text': o.get('note', '')})
-        for p in sel:
-            d = photo(p)
-            if d not in cur['photos']: cur['photos'].append(d)
+        cur = t['items'].setdefault(it['q'], [])
+        if any(x['obs'] == o['no'] for x in cur):
+            errors.append(tag + ': observation %d placed twice on %s %s' % (o['no'], t['form'], it['q'])); continue
+        cur.append({'obs': o['no'], 'note': o.get('note', ''), 'comment': it['comment'].strip(), 'subject': it['subject'].strip(),
+                    'action': it['action'].strip(), 'remark': str(it.get('remark', '')).strip(), 'photos': sel})
+    # links: same group of observations everywhere, once per framework
+    per_obs = collections.defaultdict(list)
+    for t in templates:
+        for q, lst in t['items'].items():
+            for x in lst:
+                per_obs[x['obs']].append((t['form'], q, frozenset(y['obs'] for y in lst)))
+    for o_no, places in sorted(per_obs.items()):
+        if len(set(p[2] for p in places)) > 1:
+            errors.append('observation %d is grouped differently (link broken): %s' % (o_no, '; '.join(
+                '%s %s = %s' % (f, q, sorted(g)) for f, q, g in places)))
+        fws = collections.Counter('OVID' if p[0].startswith('OVID') else 'INSPECTARE' for p in places)
+        for k, n in fws.items():
+            if n > 1:
+                errors.append('observation %d is placed %d times in %s checklists (place it once per framework)' % (o_no, n, k))
+    # one finding per observation: first observation (lowest number) is the main finding, the others are extra findings
+    for t in templates:
+        for q in list(t['items']):
+            lst = sorted(t['items'][q], key=lambda x: x['obs'])
+            first, multi = lst[0], len(lst) > 1
+            item = {'comment': first['comment'], 'subject': first['subject'], 'action': first['action'], 'remark': '',
+                    'notes': [], 'photos': []}
+            for x in lst:
+                if x['remark']:
+                    item['remark'] = (item['remark'] + ' ' if item['remark'] else '') + 'Obs %d: %s' % (x['obs'], x['remark'])
+                item['notes'].append({'obs': x['obs'], 'text': x['note']})
+                for p in x['photos']:
+                    d = photo(p)
+                    if d not in item['photos']: item['photos'].append(d)
+            if multi:
+                item['extra'] = [{'obs': x['obs'], 'comment': x['comment'], 'subject': x['subject'], 'action': x['action']} for x in lst[1:]]
+            t['items'][q] = item
     unassigned = []
     for u in mp.get('unassigned', []):
         o = obs.get(u.get('obs'))
@@ -212,7 +246,9 @@ def print_questions(src, forms):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) >= 2 and sys.argv[1] == '--questions':
+    if len(sys.argv) == 2 and sys.argv[1] == '--version':
+        print(KIT_VERSION)
+    elif len(sys.argv) >= 2 and sys.argv[1] == '--questions':
         # report_kit.py --questions [FORM.html ...]   |   build_review.py --questions INSPECTIONS_DIR [FORM.html ...]
         args = sys.argv[2:]
         if EMBEDDED_CHECKLISTS is not None:
