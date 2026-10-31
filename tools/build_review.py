@@ -30,10 +30,11 @@ observations in two frameworks are linked, so an observation must be grouped wit
 Review file: every question defaults to N/A, questions without finding get the NOT_ASSESSED comment, linked questions
 copy their edits to the twin, and a question holding several observations shows one finding per observation
 (own comment, Synergi subject and CTR action; one Synergi Excel line per observation; one block in the PDF).
+Each placed observation can be moved to another question of its checklist in the review file ("Move Obs N to this question").
 """
 import base64, collections, datetime, json, os, re, sys, unicodedata, zipfile
 
-KIT_VERSION = '2026-10-31 one finding per observation, OVID/Inspectare linking, default N/A'
+KIT_VERSION = '2026-10-31b one finding per observation, OVID/Inspectare linking, default N/A, move observation'
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 EMBEDDED_CHECKLISTS = None   # filled in report_kit.py
@@ -183,9 +184,13 @@ def main(zpath, mpath, src, out):
                 if x['remark']:
                     item['remark'] = (item['remark'] + ' ' if item['remark'] else '') + 'Obs %d: %s' % (x['obs'], x['remark'])
                 item['notes'].append({'obs': x['obs'], 'text': x['note']})
+                ph = []
                 for p in x['photos']:
                     d = photo(p)
                     if d not in item['photos']: item['photos'].append(d)
+                    ph.append(item['photos'].index(d))
+                t.setdefault('obsList', []).append({'obs': x['obs'], 'q': q, 'note': x['note'], 'comment': x['comment'],
+                    'subject': x['subject'], 'action': x['action'], 'remark': x['remark'], 'ph': ph})
             if multi:
                 item['extra'] = [{'obs': x['obs'], 'comment': x['comment'], 'subject': x['subject'], 'action': x['action']} for x in lst[1:]]
             t['items'][q] = item

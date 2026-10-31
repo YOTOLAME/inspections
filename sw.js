@@ -1,4 +1,4 @@
-var CACHE_NAME = 'inspectare-v25';
+var CACHE_NAME = 'inspectare-v26';
 var FILES = [
   '/inspections/',
   '/inspections/index.html',
