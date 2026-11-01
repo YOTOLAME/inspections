@@ -56,18 +56,20 @@ Checklist names, template files and suggested counterparts:
 | Inspectare AHTS | `INSPECTARE-AHTS-MOBILE.html` | OVID Common 1/4 to 4/4 + OVID AHTS/TUG Operations |
 | Inspectare TUG | `INSPECTARE-TUG-MOBILE.html` | OVID Common 1/4 to 4/4 + OVID AHTS/TUG Operations |
 | Inspectare Crew Boat | `INSPECTARE-CREWBOAT-MOBILE.html` | OVID Crew Transfer Vessel 1/2, 2/2 |
-| Inspectare 500m Zone Vessel | `INSPECTARE-500M-MOBILE.html` | OVID DP Operations (Ch.15) |
+| Inspectare 500m Zone Vessel | `INSPECTARE-500M-MOBILE.html` | OVID DP Operations (Ch.15), or rather Consolidated DP Inspectare & OVID (one checklist, no duplicates) |
 | Inspectare 500m Zone Asset | `INSPECTARE-500M-ASSET-MOBILE.html` | none |
 | OVID Common 1/4 to 4/4 | `OVID-COMMON-PART1-MOBILE.html` ... `OVID-COMMON-PART4-MOBILE.html` | Inspectare PSV, AHTS or TUG |
 | OVID PSV Operations | `OVID-PSV-OPERATIONS-MOBILE.html` | Inspectare PSV |
 | OVID AHTS/TUG Operations | `OVID-AHTS-TUG-OPERATIONS-MOBILE.html` | Inspectare AHTS or TUG |
 | OVID MPSV Operations | `OVID-MPSV-OPERATIONS-MOBILE.html` | none |
-| OVID DP Operations (Ch.15) | `OVID-DP-OPERATIONS-MOBILE.html` | Inspectare 500m Zone Vessel |
+| OVID DP Operations (Ch.15) | `OVID-DP-OPERATIONS-MOBILE.html` | Inspectare 500m Zone Vessel, or rather Consolidated DP Inspectare & OVID (one checklist, no duplicates) |
 | OVID Crew Transfer Vessel 1/2, 2/2 | `OVID-CREWBOAT-PART1-MOBILE.html`, `OVID-CREWBOAT-PART2-MOBILE.html` | Inspectare Crew Boat |
 | OVID Barge | `OVID-BARGE-OPERATIONS-MOBILE.html` | none |
 | Consolidated DP Inspectare & OVID (OVID DP Operations + Inspectare 500m Zone Vessel, duplicates merged) | `DP-INSPECTION-MOBILE.html` | none (already combined) |
 
 The counterparts are suggestions only: the user decides. Linking works for any combination chosen.
+
+**DP / 500m zone inspection**: when the user wants both Inspectare 500m Zone Vessel and OVID DP Operations, suggest first the Consolidated DP Inspectare & OVID checklist (`DP-INSPECTION-MOBILE.html`): it holds the OVID DP and Inspectare 500m questions in one checklist, so each finding gives one Synergi line only. Two separate checklists give two Synergi lines for each linked finding, to be removed by hand.
 
 Read the questions of the requested checklists:
 
@@ -171,6 +173,18 @@ python3 -I report_kit.py <ZIP file or working folder> mapping.json "out/YYYY MM 
 - "Export PDF" exports the checklist shown. "Export Excel (Synergi)" exports the NO answers of all the checklists of the file: one line per finding (observation) of each question answered NO; a linked finding answered NO on both sides gives two lines.
 - "Reset" goes back to the original draft (N/A everywhere, and the default comment above on every question without a finding).
 - A new version of the file starts empty: entries made in a previous version are not carried over.
+
+---
+
+## Optional - Check the Synergi export (duplicates, missing findings)
+
+Use this when the user attaches the Synergi Excel export of this report and asks to check it, or before the TEPA follow-up below.
+
+1. Keep the export format exactly: same sheet, columns, header, column widths, row heights, filter. Only delete rows or correct text; save under the same file name.
+2. **Missing**: every observation placed in `mapping.json` (or in the review table of the conversation) must have one line. List the missing ones; do not add a line without the inspector's answer (the question may have been answered YES or N/A on purpose).
+3. **Duplicates**: a linked OVID / Inspectare finding answered NO on both sides gives two lines with the same comment. Keep one line per observation: the one of the question that best matches the defect (the one without a "weak match" remark). Never merge two different observations, even when they share a question, subject and action: each one stays a separate line.
+4. **Text check**: compare each line with the comment, subject and action of the draft. Report any change that reverses or contradicts the meaning (e.g. "not" removed, comment contradicting the CTR action) and correct it only after the user agrees, or when the user asked to "correct".
+5. In the answer: lines removed (row, observation, question kept), missing observations, text corrections. Nothing else.
 
 ---
 
