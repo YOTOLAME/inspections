@@ -1,4 +1,4 @@
-var CACHE_NAME = 'inspectare-v26';
+var CACHE_NAME = 'inspectare-v28';
 var FILES = [
   '/inspections/',
   '/inspections/index.html',
@@ -21,6 +21,7 @@ var FILES = [
   '/inspections/OVID-CREWBOAT-PART1-MOBILE.html',
   '/inspections/OVID-CREWBOAT-PART2-MOBILE.html',
   '/inspections/OVID-DP-OPERATIONS-MOBILE.html',
+  '/inspections/DP-INSPECTION-MOBILE.html',
   '/inspections/OVID-MPSV-OPERATIONS-MOBILE.html',
   '/inspections/OVID-PSV-OPERATIONS-MOBILE.html'
 ];
