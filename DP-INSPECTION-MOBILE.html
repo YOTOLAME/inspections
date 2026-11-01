@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DP Inspection</title>
+<title>Consolidated DP Inspectare &amp; OVID</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, Arial, sans-serif; font-size: 14px; background: #f0f2f5; color: #1a2a3a; }
@@ -125,7 +125,7 @@ textarea { width: 100%; border: 1px solid #ddd; border-radius: 5px; padding: 7px
 </style>
 </head>
 <body>
-<div class="header"><h1>&#9881; DP Inspection</h1><p>OVID DP Operations (OVIQ4 Ch.15) + Inspectare 500m Zone Vessel, duplicates merged</p></div>
+<div class="header"><h1>&#9881; Consolidated DP Inspectare &amp; OVID</h1><p>OVID DP Operations (OVIQ4 Ch.15) + Inspectare 500m Zone Vessel, duplicates merged</p></div>
 <div id="pdf-title"></div>
 <div id="pdf-summary"></div>
 <div class="progress-bar">
@@ -2454,9 +2454,9 @@ function exportPDF() {
   var inspector = document.getElementById('m-inspector').value || '';
   var date = document.getElementById('m-insp_date').value || '';
   var initials = getInitials(inspector);
-  var fileTitle = tepaFileName(date, document.getElementById('m-vessel').value, "DP Inspection", inspector);
+  var fileTitle = tepaFileName(date, document.getElementById('m-vessel').value, "Consolidated DP Inspectare & OVID", inspector);
   document.title = fileTitle;
-  var pdfTitle = "DP Inspection" + ' | ' + vessel;
+  var pdfTitle = "Consolidated DP Inspectare & OVID" + ' | ' + vessel;
   if (initials) pdfTitle += ' | ' + initials;
   if (date) pdfTitle += ' | ' + date;
   document.getElementById('pdf-title').textContent = pdfTitle;

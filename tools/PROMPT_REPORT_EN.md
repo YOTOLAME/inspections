@@ -65,7 +65,7 @@ Checklist names, template files and suggested counterparts:
 | OVID DP Operations (Ch.15) | `OVID-DP-OPERATIONS-MOBILE.html` | Inspectare 500m Zone Vessel |
 | OVID Crew Transfer Vessel 1/2, 2/2 | `OVID-CREWBOAT-PART1-MOBILE.html`, `OVID-CREWBOAT-PART2-MOBILE.html` | Inspectare Crew Boat |
 | OVID Barge | `OVID-BARGE-OPERATIONS-MOBILE.html` | none |
-| DP Inspection (OVID DP Operations + Inspectare 500m Zone Vessel, duplicates merged) | `DP-INSPECTION-MOBILE.html` | none (already combined) |
+| Consolidated DP Inspectare & OVID (OVID DP Operations + Inspectare 500m Zone Vessel, duplicates merged) | `DP-INSPECTION-MOBILE.html` | none (already combined) |
 
 The counterparts are suggestions only: the user decides. Linking works for any combination chosen.
 
