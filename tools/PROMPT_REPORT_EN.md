@@ -164,7 +164,8 @@ Write `mapping.json` exactly as in Step 4 (same fields, same rules). Then write 
 <script>
 window.TEPA_REPORT = {
   "inspection": <the content of inspection.json, copied unchanged>,
-  "mapping": <the content of mapping.json>
+  "mapping": <the content of mapping.json>,
+  "photos": {"obs01_1.jpg": "data:image/jpeg;base64,...", "...": "..."}
 };
 </script>
 <script src="https://yotolame.github.io/inspections/review-loader.js"></script>
@@ -172,8 +173,9 @@ window.TEPA_REPORT = {
 ```
 
 - Copy `inspection.json` **unchanged** (vessel, date, observations, notes, photo file names): the page uses it to find the photos.
+- `"photos"` (optional): if you can read photo files attached in the current message, embed them as base64 data URLs, keyed by file name (e.g. `obs01_1.jpg`); reduce them to about 1200 px, JPEG quality 0.6, to keep the file small. Embedded photos make the file standalone. Photos not embedded are read from the unzipped capture folder. Never invent or re-type base64 data: embed only what you encode from a real file; otherwise leave `"photos": {}`.
 - Give the file for download. If you cannot create a file, give the full content in one code block and tell the user: copy it into Notepad, "Save as" with the name above, type "All files", encoding UTF-8.
-- Tell the user to save the file **in the unzipped capture folder** (next to `inspection.json`; the photos may stay in `photos/`) and to open it in Chrome or Edge with internet. The page builds the report and shows the photos from that folder.
+- Tell the user which photos are embedded. If any is not, tell the user to save the file **in the unzipped capture folder** (next to `inspection.json`; the photos may stay in `photos/`) and to open it in Chrome or Edge with internet. The page builds the report and shows the photos from that folder.
 - The page runs the same checks as `report_kit.py`. If it shows "The report could not be built" with a list, the user sends you the list: correct the mapping and give the file again.
 
 ### Step 5 - Check
