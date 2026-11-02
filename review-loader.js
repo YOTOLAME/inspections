@@ -11,6 +11,8 @@
   /* Same logic and checks as tools/build_review.py main() */
   function build(R) {
     var insp = R.inspection || {}, mp = R.mapping || {}, errors = [], i, k;
+    var EMB = R.photos || {};
+    function pic(p) { var b = base(p); return EMB[b] || EMB[p] || b; }
     var all = {}; for (i = 0; i < CHECKLISTS.length; i++) { all[CHECKLISTS[i].form] = CHECKLISTS[i]; }
     var obs = {}, obsNos = []; var ol = insp.observations || [];
     for (i = 0; i < ol.length; i++) { obs[ol[i].no] = ol[i]; obsNos.push(ol[i].no); }
@@ -87,7 +89,7 @@
           item.notes.push({ obs: x.obs, text: x.note });
           var ph = [];
           for (var m = 0; m < x.photos.length; m++) {
-            var d = base(x.photos[m]);
+            var d = pic(x.photos[m]);
             if (item.photos.indexOf(d) < 0) { item.photos.push(d); }
             ph.push(item.photos.indexOf(d));
           }
@@ -106,7 +108,7 @@
       var uo = obs[ua[i].obs];
       if (!uo) { errors.push('unassigned: observation ' + ua[i].obs + ' not in inspection'); continue; }
       used[uo.no] = 1;
-      var uph = []; for (k = 0; k < (uo.photos || []).length; k++) { uph.push(base(uo.photos[k])); }
+      var uph = []; for (k = 0; k < (uo.photos || []).length; k++) { uph.push(pic(uo.photos[k])); }
       unassigned.push({ obs: uo.no, note: uo.note || '', reason: ua[i].reason || '', photos: uph });
     }
     var missing = []; for (i = 0; i < obsNos.length; i++) { if (!used[obsNos[i]]) { missing.push(obsNos[i]); } }
