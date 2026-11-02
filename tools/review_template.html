@@ -731,7 +731,9 @@ function shrink(src, max, q, cb) {
     var c = document.createElement('canvas');
     c.width = Math.round(img.naturalWidth * r); c.height = Math.round(img.naturalHeight * r);
     c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-    cb(c.toDataURL('image/jpeg', q));
+    var out = src;
+    try { out = c.toDataURL('image/jpeg', q); } catch (e) { out = img.src || src; }
+    cb(out);
   };
   img.onerror = function () { cb(src); };
   img.src = src;

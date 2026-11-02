@@ -1,0 +1,1729 @@
+CHECKLIST TEMPLATES AND QUESTIONS
+Use the exact "form" file name and question number "q" in the mapping.
+
+======================================================================
+FORM: DP-INSPECTION-MOBILE.html | Consolidated DP Inspectare & OVID | short name: Consolidated DP Inspectare & OVID | 92 questions
+## OVID DP 15.1 -- General
+15.1.1  Does the vessel have on board a copy of the most recent DP FMEA (DP FMEA Desktop analysis)?
+15.1.2  Is the latest DP FMEA revision less than 5 years old and/or has there been a third party gap analysis been completed within the last 5 years stating the DP FMEA is still valid?
+15.1.3  Have any modifications been sighted/reported to the DP mission critical equipment since the last DP FMEA revision. If applicable, have any modifications been proven by testing?
+15.1.4  Is a copy of the latest DP FMEA Proving Trials (5-yearly DP FMEA verification trials) available on board and is it less than 5 years old?
+15.1.5  Are the latest revisions of the FMEA Report and DP FMEA Proving Trials approved by class?
+15.1.6  Have the findings (if any) from the latest DP FMEA Proving Trials been addressed?
+15.1.7  Does the vessel have on board a copy of the most recent DP Annual Trials report?
+15.1.8  Have the latest DP Trials been completed within the window?
+15.1.9  Have recommendations from the annual DP trial report been addressed and closed out as required?
+15.1.10  Have all personnel involved in DP operations read and understood the DP FMEA?
+15.1.11  Is there a valid software maintenance agreement(s) in place?
+15.1.12  Do the vessel procedures require a minimum of two DP operators to be on duty during DP operations?
+15.1.13  Is the bridge access restricted to only essential personnel during DP operations?
+## OVID DP 15.2 -- Operations
+15.2.1  In the last 12 months has the vessel operated without experiencing any loss of position incidents?
+15.2.2  Is the vessel without any defects which result in a reduction of DP Capability and/or redundancy?
+15.2.3  Does the vessel use the IMCA Incident reporting system?
+15.2.4  Does the vessel carry out risk assessments for specific operations (as listed in guidance)?
+15.2.5  Are Manual thruster control levers and emergency stops located within easy reach of the DPO and are each emergency stop well protected against inadvertent operation?
+15.2.6  Can the health of the position reference systems be monitored by the DPO, independently of the DP control station?
+15.2.7  Does the vessel have a vessel specific DP Operation manual on board and is there evidence that relevant DP personnel has read the document?
+15.2.8  Does the DP operations procedure include specific guidance for any DP specific operations that the vessel will conduct, e.g. Anchor Handling, Towing, Heavy Lift, Diving, Pipelay, etc?
+15.2.9  Is there a competence scheme for key DP personnel onboard?
+15.2.10  Are DP checklists in place to cover bridge, engine room and electrical systems for DP operations?
+15.2.11  Are DP Capability Plots in place to cover the normal and expected operations, and worst case failure?
+15.2.12  Are DP footprints regularly recorded and compared against previous footprints and the DP Capability Plots?
+15.2.13  Depending on vessel activity and if required, are Activity Specific Operating Guidelines (ASOG) or Well Specific Operations Guidelines (WSOG) or Field Specific Operations Guidelines (FSOG) in place and utilised?
+15.2.14  Is the DP control console located so that the DPO can also observe the controls, the external environment and the working operations of the vessel/unit?
+15.2.15  Is the DP alert triggering system in immediate reach of the DPO at console?
+## OVID DP 15.3 -- Equipment
+15.3.1  Is the Dynamic Positioning control systems in good order?
+15.3.2  Are all position reference systems in good order and are both relative and absolute position references available on the vessel for the applicable operations vessel likely to conduct?
+15.3.3  If a DP data recorder is not fitted, confirm that procedures are in place for securing relevant data in the event of a DP incident?
+15.3.4  Is there a procedure and evidence of the regular checking of the secure power supply systems (UPS Battery systems)?
+15.3.5  Does the DP system have a continuous analysis function checking that in terms of thruster and power can maintain position after the worst case failure (consequence analysis function)?
+15.3.6  Is the DP control system fitted with real time DP capability envelopes or does the vessel have procedure to do a drift off test prior to DP operation?
+15.3.7  Is the actual bus bar configuration in accordance with the FMEA and the last DP trials performed?
+15.3.8  Is the DP control system included within the Planned Maintenance System?
+15.3.9  If unit is a DP flotel fitted with a connected gangway, confirm that the gangway is used as Positioning Reference System (PRS)?
+15.3.10  If the unit is a DP flotel operating on a turret moored FPSO or any moving asset with connected gangway, confirm that DP system is fitted with "follow target" mode option?
+## OVID DP 15.4 -- Competence
+15.4.1  Are the vessels crew suitably qualified for DP Operations?
+15.4.2  Is there an Engineer and or Electronic Technician on-board with approved training on the DP system?
+15.4.3  Are DP drills included in the vessel drill matrix and performed regularly?
+## Inspectare 500m Zone Vessel 1 -- Approach passage & pre-entry
+1.1  Are the Bridge Team aware of maintaining a safe passing distance from installations and other operations when making a field transit through a multi-installation field?
+1.2  Are the Bridge Team aware of not utilising the co-ordinates of offshore installations as way points and is the final waypoint offset from the installation?
+1.3  Are the Bridge Team and Engine Room Team members suitably rested prior to 500m safety zone entry?
+1.4  Are the Master/Bridge and Engine Control Room teams aware of Company's Stop Work Authority?
+1.5  Did the crew ever perceive time or commercial pressure to commence or continue operations in 500m safety zone?
+1.6  Are the Bridge and the Engine Control Room free of distractions?
+1.7  Are the last updated installations data cards and the adverse weather working policy available to the Bridge Team?
+1.8  Does the vessel fill a pre-entry checklist and inform the installation of completion?
+1.9  Does the pre-entry checklist include the minimum requirements listed in GOMO?
+1.10  Are the Company 500m Entry Lifesaving Checks conducted?
+1.11  Is the pre-entry checklist completed in a drift-off situation?
+1.12  In case of weather side working (drift on) or at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?
+1.13  In case of working at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?
+1.14  Are the Bridge Team aware that changes of conning station are not permitted closer than 200m from the Installation?
+1.15  If station keeping in 500m zone will be done in DP, are the functional checks conducted in DP Auto Position prior to 500m entry?
+1.16  Does the vessel maintain an Engine room watch during 500m safety zone operations?
+1.17  Does the engineer on watch complete a vessel specific engine room checklist as part of the pre-entry checks?
+1.18  Is there evidence that the Bridge Team have been trained for handling the vessel?
+1.20  Can the Bridge Team demonstrate how to safely transfer between manual mode to DP mode and from DP Mode to manual mode?
+1.21  Does the Bridge Team understand when and how to utilise the DP Independent Joy Stick (IJS), and is the IJS appropriately marked?
+1.22  Does the Bridge Team understand that the DP IJS is a different joystick than the DP Control System joystick, and is the DP Control System joystick appropriately marked?
+1.23  Does the Bridge Team know what the gain setting of the joysticks (both IJS and DP) are?
+1.25  Does the Bridge Team understand the limits defined in ASOG and CAM?
+1.26  For when vessel is handled manually, are station keeping limitations defined and does the Bridge Team understand them?
+1.27  Does the Bridge Team understand the WCFDI and what to do in the event of a WCF?
+1.31  Is there any previous occurrence of consequence analysis alarms occurring and/or being ignored?
+1.32  Does the Bridge Team know and understand the environmental forces impacting the vessel at the location of operation?
+1.33  Are the vessel personnel aware that they are not permitted to undertake maintenance activities inside the 500m safety zone?
+1.34  Do vessel personnel understand that they cannot undertake 500m safety zone entry/operations with the vessels systems and equipment in a degraded state?
+1.35  Does the Bridge Team understand the limitations of utilising absolute and relative DP Position Reference Systems?
+1.36  Does the bridge team activate the "follow target" mode when approaching in DP a weathervaning floating installation or another DP installation (e.g. drilling rig)?
+1.37  Are the locations and status of the installation mounted PRS transponders/reflectors known prior to entry?
+1.38  Are escape routes defined prior to entering the 500m safety zone?
+1.39  Do Bridge Team members discuss and agree on entry and close approach actions?
+## Inspectare 500m Zone Vessel 2 -- Approach (500m - 200m approx.)
+2.1  Does the vessel transfer from 500m to 200m at a speed below 3 knots and with an offset heading?
+## Inspectare 500m Zone Vessel 3 -- Position setup
+3.1  Is the position setup controlled with a DP location setup checklist?
+3.2  Is set-up for close approach to the installation conducted at a safe distance from the installation?
+3.3  Does the vessel ensure station keeping is stable at the setup position prior to moving alongside?
+## Inspectare 500m Zone Vessel 4 -- Final approach (200m approx.) - Working position & alongside working
+4.1  Does the Bridge Team implement an incremental stepped approach and a maximum speed during final approach?
+4.2  Is the Bridge Team aware of forecast environmental conditions?
+4.3  Do the Bridge Team have situational awareness during close approach operations?
+4.4  For vessel handled manually, is the maximum time alongside defined and understood by Bridge Team?
+4.5  Is there a suitable system for handover between Bridge and Engine room watches?
+4.6  Does the Bridge Team understand that the vessel must be steered out of the 500m safety zone in the event of a yellow condition in the ASOG?
+4.7  Does the Bridge Team understand that the length of time alongside shall be minimised, and in no case vessel shall remain idle/on standby alongside more than 30 minutes?
+4.8  Do the bridge team understand that the DP rotation point shall not be changed during operations alongside?
+4.9  Does the Bridge Team return to the setup position (200m) when shifting vessel position/orientation alongside on the same side of the installation?
+4.10  Does the Bridge Team exit the 500m safety zone and re-enter the 500m safety zone when changing working faces at the installation?
+## Inspectare 500m Zone Vessel 5 -- Exiting safety zone
+5.1  Does the vessel remain in DP mode up to the 200m position when departing the installation?
+5.2  Does the vessel operate in manual mode between 200m and edge of the 500m safety zone?
+5.3  Does the vessel change the conning position only outside the 500m safety zone?
+
+======================================================================
+FORM: INSPECTARE-500M-ASSET-MOBILE.html | Inspectare -- 500m Zone Asset (Installation) | short name: Inspectare 500m Asset | 20 questions
+## 1 -- All installations
+1.1  Is there a means to identifying all scheduled in-field vessels?
+1.2  Is there a common language between the vessel and installation?
+1.3  Is an up-to-date installation data card available?
+1.4  Are DP Positioning Reference Systems (PRS) installed on the installation in the correct position and are they ready for operation?
+1.5  Are the means of communication fully operational between the installation and vessel?
+1.6  Is the radio communication operational between the vessel and crane operator or deck foreman of the installation?
+1.7  Is there an adverse weather working policy for vessel operations and entry into the 500m safety zone?
+1.8  Does the installation monitor changes to the operations and weather conditions (trigger points)?
+1.9  Are vessels required to exit the 500m safety zone if they are not being 'worked'?
+1.10  Is a risk assessment available for working vessel on the weather side of the installation?
+1.11  Is a risk assessment available for working vessel at less than 10 meters from the installation?
+1.12  If installation crane is in downgraded situation, are the defined mitigation measures implemented?
+1.13  Are bulk hoses maintained afloat during transfer operations?
+## 2 -- Company's permanent installations
+2.1  Are the vessels entry into safety zone duly managed by personnel appointed by RSES?
+2.2  Are 500m Entry Lifesaving Checks conducted?
+2.3  Are installation personnel aware of the difference between vessel drift on and drift off conditions and the risks associated?
+## 3 -- Mobile installations
+3.1  Does the installation jointly complete pre-entry check list with the vessel?
+3.2  Does the installation personnel understand the limitations of utilising absolute and relative DP Position Reference Systems?
+3.3  Do installation personnel observe vessel approach/entry to the 500m safety zone?
+3.4  Do installation personnel discuss and agree the escape route(s) from the working positions proposed by the vessel?
+
+======================================================================
+FORM: INSPECTARE-500M-MOBILE.html | Inspectare -- 500m Zone Vessel | short name: Inspectare 500m Vessel | 56 questions
+## 1 -- Approach passage & pre-entry
+1.1  Are the Bridge Team aware of maintaining a safe passing distance from installations and other operations when making a field transit through a multi-installation field?
+1.2  Are the Bridge Team aware of not utilising the co-ordinates of offshore installations as way points and is the final waypoint offset from the installation?
+1.3  Are the Bridge Team and Engine Room Team members suitably rested prior to 500m safety zone entry?
+1.4  Are the Master/Bridge and Engine Control Room teams aware of Company's Stop Work Authority?
+1.5  Did the crew ever perceive time or commercial pressure to commence or continue operations in 500m safety zone?
+1.6  Are the Bridge and the Engine Control Room free of distractions?
+1.7  Are the last updated installations data cards and the adverse weather working policy available to the Bridge Team?
+1.8  Does the vessel fill a pre-entry checklist and inform the installation of completion?
+1.9  Does the pre-entry checklist include the minimum requirements listed in GOMO?
+1.10  Are the Company 500m Entry Lifesaving Checks conducted?
+1.11  Is the pre-entry checklist completed in a drift-off situation?
+1.12  In case of weather side working (drift on) or at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?
+1.13  In case of working at a distance below 10 meters from the installation, are the mitigation measures of the specific risk assessment implemented and aligned with the installation requirements?
+1.14  Are the Bridge Team aware that changes of conning station are not permitted closer than 200m from the Installation?
+1.15  If station keeping in 500m zone will be done in DP, are the functional checks conducted in DP Auto Position prior to 500m entry?
+1.16  Does the vessel maintain an Engine room watch during 500m safety zone operations?
+1.17  Does the engineer on watch complete a vessel specific engine room checklist as part of the pre-entry checks?
+1.18  Is there evidence that the Bridge Team have been trained for handling the vessel?
+1.19  Does the vessel conduct DP drills?
+1.20  Can the Bridge Team demonstrate how to safely transfer between manual mode to DP mode and from DP Mode to manual mode?
+1.21  Does the Bridge Team understand when and how to utilise the DP Independent Joy Stick (IJS), and is the IJS appropriately marked?
+1.22  Does the Bridge Team understand that the DP IJS is a different joystick than the DP Control System joystick, and is the DP Control System joystick appropriately marked?
+1.23  Does the Bridge Team know what the gain setting of the joysticks (both IJS and DP) are?
+1.24  Does the vessel implement a vessel/operation/location specific ASOG and CAM?
+1.25  Does the Bridge Team understand the limits defined in ASOG and CAM?
+1.26  For when vessel is handled manually, are station keeping limitations defined and does the Bridge Team understand them?
+1.27  Does the Bridge Team understand the WCFDI and what to do in the event of a WCF?
+1.28  Are DP footprints periodically undertaken on board?
+1.29  Is the DP capability analysis for the area of operations available on board and is it understood by the Bridge Team?
+1.30  Is the DP Consequence Analysis function understood by the Bridge Team?
+1.31  Is there any previous occurrence of consequence analysis alarms occurring and/or being ignored?
+1.32  Does the Bridge Team know and understand the environmental forces impacting the vessel at the location of operation?
+1.33  Are the vessel personnel aware that they are not permitted to undertake maintenance activities inside the 500m safety zone?
+1.34  Do vessel personnel understand that they cannot undertake 500m safety zone entry/operations with the vessels systems and equipment in a degraded state?
+1.35  Does the Bridge Team understand the limitations of utilising absolute and relative DP Position Reference Systems?
+1.36  Does the bridge team activate the "follow target" mode when approaching in DP a weathervaning floating installation or another DP installation (e.g. drilling rig)?
+1.37  Are the locations and status of the installation mounted PRS transponders/reflectors known prior to entry?
+1.38  Are escape routes defined prior to entering the 500m safety zone?
+1.39  Do Bridge Team members discuss and agree on entry and close approach actions?
+## 2 -- Approach (500m - 200m approx.)
+2.1  Does the vessel transfer from 500m to 200m at a speed below 3 knots and with an offset heading?
+## 3 -- Position setup
+3.1  Is the position setup controlled with a DP location setup checklist?
+3.2  Is set-up for close approach to the installation conducted at a safe distance from the installation?
+3.3  Does the vessel ensure station keeping is stable at the setup position prior to moving alongside?
+## 4 -- Final approach (200m approx.) - Working position & alongside working
+4.1  Does the Bridge Team implement an incremental stepped approach and a maximum speed during final approach?
+4.2  Is the Bridge Team aware of forecast environmental conditions?
+4.3  Do the Bridge Team have situational awareness during close approach operations?
+4.4  For vessel handled manually, is the maximum time alongside defined and understood by Bridge Team?
+4.5  Is there a suitable system for handover between Bridge and Engine room watches?
+4.6  Does the Bridge Team understand that the vessel must be steered out of the 500m safety zone in the event of a yellow condition in the ASOG?
+4.7  Does the Bridge Team understand that the length of time alongside shall be minimised, and in no case vessel shall remain idle/on standby alongside more than 30 minutes?
+4.8  Do the bridge team understand that the DP rotation point shall not be changed during operations alongside?
+4.9  Does the Bridge Team return to the setup position (200m) when shifting vessel position/orientation alongside on the same side of the installation?
+4.10  Does the Bridge Team exit the 500m safety zone and re-enter the 500m safety zone when changing working faces at the installation?
+## 5 -- Exiting safety zone
+5.1  Does the vessel remain in DP mode up to the 200m position when departing the installation?
+5.2  Does the vessel operate in manual mode between 200m and edge of the 500m safety zone?
+5.3  Does the vessel change the conning position only outside the 500m safety zone?
+
+======================================================================
+FORM: INSPECTARE-AHTS-MOBILE.html | Inspectare -- AHTS | short name: Inspectare AHTS | 166 questions
+## 1 - Rob at mobilization
+1.1  If inspection takes place during vessel mobilization, inspector shall issue an ROB survey statement covering, when relevant, all bunker, dry and liquid bulk tanks.
+## 2 - Dry bulk
+2.1  Is the general condition, visual appearance and cleanliness of the dry bulk tanks satisfactory?
+2.2  Are the tank fittings in dry bulk tanks in good working condition?
+2.3  Are the dry bulk systems operational?
+## 3 - Liquid bulk
+3.1  Is the general condition, visual appearance and cleanliness of the liquid bulk tanks satisfactory?
+3.2  Are the tank fittings in liquid bulk tanks in good working condition?
+3.3  Are the liquid bulk cargo pumping systems operational?
+## 4 - Bulk transfer
+4.1  Are the bulk stations in good condition?
+4.2  Is there evidence that bulk hoses are handled and managed as per Company requirements?
+4.3  Is there evidence of a pre-transfer conference being held between the vessel and the receiving or
+4.4  Is the vessel authorized by Class and Flag to carry methanol in bulk?
+4.5  Is the methanol handling system and crew familiarization proven by wet trials?
+## 5 - Deck cargo
+5.1  Have the risks associated with deck cargo operations been analyzed?
+5.2  Has a MOPO (Matrix of Permitted Operations) been developed and implemented for deck cargo operations?
+5.3  Have escape routes for deck personnel been defined and kept free of obstruction?
+5.4  Is the deck area monitored by video cameras?
+5.5  Is a deck cargo stowage plan developed before starting deck cargo operations, using the information in the draft deck cargo manifest?
+5.6  Do the deck personnel maintain dedicated radio communication with the crane operator/lifting supervisor at all times?
+5.7  Do the bridge team always have a line of sight to the vessel crew during deck cargo operations?
+5.8  Has the lifting plan issued for the deck cargo transfer been discussed between the vessel and the installation or logistics base as applicable?
+5.9  Are cargo securing procedures implemented?
+5.10  Have the risks associated to the handling of tubulars and pipe cargo been analyzed?
+5.11  Does the crew systematically prepare the deck with rope dunnage before loading tubulars?
+5.12  Does the crew systematically use pipe posts or stanchions to protect personnel involved in tubulars handling?
+5.13  Is the main deck clear, available for cargo and in good condition?
+5.14  On "open stern" vessels, are responsible officers aware of specific risks of deck cargo operations offshore and associated limitations/mitigations?
+5.15  Is the deck cargo securing/lashing equipment in a good order?
+5.16  Are the tugger winches and wires associated with positioning cargo in good order?
+5.17  Are the reefer containers power socket in sufficient number and in good condition?
+5.18  Are officers aware of the dangers of entrapped water on deck particularly when carrying pipe cargoes?
+5.19  Does the vessel implement a "clear deck" or "hands free" lifting procedure?
+5.20  Are portable radios in sufficient number for cargo / bulk operations both in port and offshore?
+## 6 - Carriage of dangerous goods
+6.1  Does the vessel have a valid IMDG certification?
+6.2  Is the vessel provided with IMDG Code ?
+6.3  Does the vessel produce a cargo plan identifying all classes of cargo, including dangerous goods?
+6.4  Is the vessel provided with the additional safety equipment required for the carriage of dangerous goods in packaged form?
+## 7 - Stand-by duties general
+7.1  Does the vessel have procedures for standby duties and is the crew aware of them?
+7.2  Does the vessel have a clearly marked rescue zone, clear of propellers and obstructions?
+7.3  Is the vessel provided with scramble nets on both sides?
+7.4  Is the vessel equipped to perform anticollision watch duty?
+7.5  Is the vessel equipped with communication equipment meeting Company requirements?
+7.6  Is the vessel provided with required oil spill response equipment?
+7.7  Is the hospital readily available and in a hygienically satisfactory condition?
+7.8  Are MEDEVAC drills regularly conducted to ensure that roles and responsibilities between Company and Contractor are clearly known and understood by all?
+7.9  Does the vessel have their own readily and permanent access to shore-based medical advice services and is it regularly tested?
+7.10  Does the vessel’s medicine chest include an automated defibrillator and a portable medical oxygen set?
+7.11  Are the passenger’s accommodation readily available and in a hygienically satisfactory condition?
+## 8 - Stand-by duties fire fighting
+8.1  Does the vessel hold FiFi 1 class notation?
+8.2  Does the FiFi 1 equipment meet the following requirement?
+8.3  Is the crew familiar with the operation of FiFi 1 equipment?
+8.4  Does the vessel’s stability booklet include calculation proving satisfactory stability when all monitors are in operation at full capacity in the most adverse direction for the stability?
+8.5  Is the FiFi 1 equipment in good order?
+## 9 - Stand-by duties fast rescue boat
+9.1  Is the Fast Rescue Boat and associated launching and embarkation appliances (including release mechanism) compliant with LSA Code?
+9.2  Is the Fast Rescue Boat hull length of not less than 6 meters and not more than 8.5 meters?
+9.3  Is the following equipment available on board the Fast Rescue Boat?
+9.4  Is the above equipment properly secured by lashings, storage in lockers or compartments?
+9.5  Is the Fast Rescue Boat fitted with arrangements for towing and sufficiently strong to marshal or tow liferafts?
+9.6  Does the Fast Rescue Boat meet the following LSA Code requirements?
+9.7  Does the Fast Rescue Boat meet the following Company requirements?
+9.8  Is the Fast Rescue Boat equipped with a man overboard recovery kit?
+9.9  Does the Fast Rescue Boat launching appliance meet the following LSA Code requirements?
+## 10 - Stand-by duties fast rescue boat launching and recovery
+10.1  Has the launching and recovery of the fast rescue boat been witnessed?
+10.2  Is each person assigned to crew the Fast Rescue Boat provided with an immersion suit or life jacket depending on intended area of operation?
+10.3  Are weather limitations for the launching and recovery of Fast Rescue Boat clearly defined in vessel’s procedures?
+10.4  Does the crew assigned to Fast Rescue Boat meet the Company specific certification requirements?
+## 11 - Engine room section
+11.1  Are main, auxiliary and emergency plant in good order?
+11.2  Is the steering gear/steering compartment(s) free from defects?
+## 12 - General for AHT
+12.1  Does the towing and/or anchor handling equipment meet the minimum contract and project’s specific requirements?
+12.2  Is the bollard pull certificate issued or endorsed by a classification society member of IACS and dated less than ten (10) years old?
+12.3  As applicable, are responsible officers able to explain the impact on bollard pull, of power diversion to transverse thrusters or other large power consumers?
+12.4  As applicable, are the effects of shallow waters duly considered as part of operations planning and understood by responsible officers?
+12.5  Do the vessel’s standard loading conditions, stability curves, stability booklet and minimum freeboard meet the criteria defined in International Code on Intact Stability Part B – “Ships engaged in towing and escort operations” or “Ships engaged in anchor handling operations” respectively?
+12.6  Are responsible officers able to demonstrate that the stability condition calculated for the intended towing or anchor handling operations meet the International Code on Intact Stability Part B – “Ships engaged in towing and escort operations” or “Ships engaged in anchor handling operations” criteria?
+12.7  Is the vessel provided with constructional precautions and operational procedures against capsizing in compliance with International Code on Intact Stability Part B – “Ships engaged in towing and escort operations” or “Ships engaged in anchor handling operations” respectively?
+12.8  Are responsible officers able to explain the means to restrict the lead of the wire to within a safe sector (i.e. to reduce the risk of girting)?
+12.9  Does the crew clearly understand that during towing or anchor handling, all weathertight
+12.10  On working deck, are all freeing ports functional and clear of obstructions?
+12.11  Are towing and/or anchor handling winches and/or hooks fitted with quick release?
+12.12  Are towing and/or anchor handling winches, including associated hoses and brake linings, in good order?
+12.13  Are towing and/or anchor handling winches fully operational?
+12.14  Are records of inspection and service of the wires available on board?
+12.15  Have winch operators received formal training in winch operations including emergency release methods and are they able to demonstrate their knowledge?
+12.16  Are responsible officers able to explain the emergency release procedure and associated sequence on winches?
+12.17  As applicable, are towing pins, Karmforks and shark jaws fully operational and fitted with a hydraulic pressure release or emergency release system?
+12.18  Do the responsible officers understand that the use of full three axis auto DP is prohibited during anchor handling and towing operations?
+12.19  Is a clear deck policy issued and implemented during anchor handling and towing operation?
+12.20  Are safe areas beyond the crash barriers clear of obstructions and easily accessible to the crew from the working deck?
+12.21  Are deck floodlights in good working order?
+12.22  Does the vessel have a tension gauge and/or tension limiter to monitor forces and is it regularly calibrated?
+12.23  Are weather forecasts available to the vessel?
+12.24  Do all towing and anchor handling gears (e.g. wires, shackles and plates) have valid certification meeting DNV-ST-N001 standards?
+12.25  Are tow wires terminated with hard eye thimbles or closed sockets?
+12.26  Are closed socket renewed at intervals not exceeding 2,5 years, irrespective of the condition of the socket and its wire?
+## 13 - Anchor handling
+13.1  Are operation plans and procedures available for each anchor handling operation?
+13.2  Are the responsible officers able to demonstrate their understanding of the anchor handling operational plan and associated limitations?
+13.3  Is the stability instrument available on board for checking permissible tension and stability criteria during anchor handling operations compliant with the requirements of International Code on Intact Stability Part B – "Ships engaged in anchor handling operations"?
+13.4  Are the responsible officers familiar with the use of stability instrument?
+13.5  Do the Master, responsible officers and deck personnel have appropriate anchor handling training and experience?
+13.6  Are tugger winches, wires, chain and hook in a satisfactory condition?
+13.7  Where winches are not visible from the bridge, is there a system in place to enable remote monitoring?
+13.8  Does the bridge officer have good visibility of the work area from the vessel’s control station?
+13.9  Does the vessel have contingency plans for operations associated with anchor handling?
+13.10  Does the vessel have a consistent stock of consumables spares for the project’s specific anchor handling operation?
+13.11  Are there records showing that the stern roller is free to turn?
+13.12  Are pedestal fairleads and roller fairleads well-greased and free to turn?
+13.13  Is the deck sheathing free of defects?
+13.14  Are communications means between the bridge and working deck, including backup systems, in working order and in sufficient number?
+13.15  Does the vessel have lifesaving appliances that are immediately accessible on the stern?
+## 14 - Towing/Pushing
+14.1  As applicable, have Masters and officers having direct responsibility for ship handling during towing operations received formal simulation training in ship handling for non-conventional propulsion system?
+14.2  Is the vessel's fendering in good condition?
+14.3  For pushing operations, is the bow fendering and associated supporting structure of the design approved by a classification society member of IACS?
+14.4  Are the searchlight(s) fully operational?
+14.5  Does the Minimum Breaking Load (MBL) of the tow wires (main and spare) meet the DNV-STN001 standards?
+14.6  Are the towing wires fitted, less than 5 (five) years old, OR if a towing log has been maintained, less than 100,000 nautical miles of which no more than 50,000 miles have been in adverse weather conditions (> Beaufort Force 6)?
+14.7  Do the project’s specific towing arrangements include a shock/dynamic load absorption method?
+14.8  If fitted, are HMPE towing lines rigged with spring rope of a different material?
+14.9  If using HMPE, is the contact surface for the HMPE tow line clean and sufficiently smooth to avoid damage to tow line?
+14.10  If applicable is there a system for prevention of chafing of the tow-wire?
+14.11  As applicable, is the manning level of tug sufficient to board an unmanned towed object in an emergency situation and establish a new towing connection?
+14.12  Is there a sufficient number of portable radios and spare batteries available onboard?
+14.13  Does the vessel have procedures, including contingency plans, in place that address towing and pushing activities?
+14.14  Is a tow winch brake alarm fitted and audible in the bridge?
+## 15 - In service inspection
+15.1  Is the fixed fire detection and alarm systems operational and free of defect?
+15.2  Is the fixed fire extinguishing system operational and free of defect?
+15.3  Is the fixed fire fighting system certification valid?
+15.4  Are fire extinguisher annual certifications valid?
+15.5  Is the fire fighting equipment carried on board compliant with the approved fire control plan exhibited?
+15.6  Are the firemen's outfits and breathing apparatus ready for use?
+15.7  Is the crew familiar with donning firemen's outfits and breathing apparatus?
+15.8  If fitted , are EEBDs with valid inspection certificates available for immediate use?
+15.9  Are all fire flaps in good order and operational?
+15.10  Is the emergency stop of ventilation fans operational?
+15.11  Are main and emergency fire pumps, hoses and nozzles ready for immediate use?
+15.12  Are surfaces with temperatures above 220°c which may be impinged as a result of fuel or oil system failure properly insulated?
+15.13  Where insulation is installed, is it intact and free of fuel, or oil contamination?
+15.14  Are life rafts, with valid inspection certificates, available for immediate use?
+15.15  Are hydrostatic releases, where fitted, correctly attached?
+15.16  Are SOLAS type life jackets available for immediate use?
+15.17  Are escape ways clearly marked ,not obstructed and lit?
+15.18  Are PPE available and worn?
+15.19  Is the hospital clean and tidy?
+15.20  Are pyrotechnics in date and in good order?
+15.21  Is the Medevac procedure available and up to date?
+15.22  Are bilge high level alarm in good working conditions and regularly tested?
+15.23  Is emergency suction bilge operational, identified and sealed with breakable seal?
+15.24  Is emergency overboard valve operational, identified and sealed with breakable seal?
+15.25  Is emergency bilge pump operational and ready for immediate use?
+15.26  Is the crew able to demonstrate how to set up and operate the emergency bilge pumping system in case of flooding?
+15.27  Are all sea chests valves operational and watertight when closed?
+15.28  Is engine room compartment free of significant seawater leak?
+15.29  Are deck openings, including watertight doors and portholes free of defect and capable of being properly secured?
+15.30  Are spill containment arrangements provided in way of bulk transfer manifolds and savealls fitted around relevant tank vents?
+15.31  Are manifold spill containers, if provided, empty and are the drainage arrangements satisfactory?
+15.32  Are means readily available for dealing with small oil or chemical spills?
+15.33  Is the navigation equipment operational?
+15.34  Is the GMDSS station in good working conditions?
+15.35  Are nautical publications and charts, paper and/or electronic for the intended voyage, on board, current and corrected up to date?
+15.36  Is there a passage planning available and covering the intended voyage?
+15.37  If fitted , is the boat landing in good operational condition?
+15.38  Is the vessel free of any Management of Change (MoC) process opened, DGS (downgraded situation) declared, or class/statutory condition due or overdue?
+15.39  If provided on board , is the gas welding equipment in good condition?
+15.40  Are external general appearance and maintenance satisfactory (deck, superstructure, deck machinery, pipework, workspaces)?
+15.41  Are the internal general appearance and maintenance satisfactory (living spaces , galley, stores)?
+15.42  Are emergency drills conducted as per drill matrix with records available?
+15.43  Is the PMS up to date, with no overdue maintenance?
+15.44  Is there a formalized company system for recording work and rest hours?
+
+======================================================================
+FORM: INSPECTARE-CREWBOAT-MOBILE.html | Inspectare -- Crew Boat | short name: Inspectare Crew Boat | 128 questions
+## 1 -- Rob at mobilization
+1.1  If inspection takes place during vessel mobilization, inspector shall issue an ROB survey statement covering, when relevant, all bunker, dry and liquid bulk tanks. Note that ballast, lubes, bilge and sludge tanks shall not be surveyed.
+## 2 -- Hull and marking
+2.1  Are the names of vessel and home port legible?
+2.2  Are freeboard marks legible?
+2.3  Are the hull, weather decks and superstructure free from visible structural defects that warrant further investigation?
+2.4  Is hull clean without concretions?
+## 3 -- Deck and mooring
+3.1  Is bow fendering in good condition?
+3.2  Is vessel's fendering available and in good condition?
+3.3  Are mooring points in good condition?
+3.4  Are all mooring ropes, including spares in good condition?
+3.5  Are mooring chains and anchors in good condition, properly stored and readily accessible?
+3.6  Is boat hook readily available and in good condition?
+3.7  Is cargo securing equipment available, in good condition and marked as necessary?
+3.8  Is the maximum cargo load indicated on deck (dimensions and weight)?
+3.9  As required in the contract, is the deck area certified for the carriage of dangerous goods?
+3.10  Are closing and securing arrangements of all openings in good condition to prevent the ingress of water whilst at sea?
+3.11  Is deck lighting sufficient and in good working order?
+## 4 -- Transfer area
+4.1  Is the anti-slip material of the deck surface in good condition?
+4.2  Are bow access steps in good condition?
+4.3  Are bow access handrails in good condition?
+4.4  Is the passenger lifeline between passenger's cabin and transfer platform at bow in good condition?
+4.5  Is deck area for personnel transfer free from obstructions with sufficient room for A/B to provide assistance?
+4.6  Are lifebuoys available at personnel transfer area?
+## 5 -- Pollution prevention
+5.1  Is fuel bunkering system well maintained to avoid leaks and fuel contamination?
+5.2  Are fuel bunkering procedures available on board, known and understood by the crew?
+5.3  Is the oil record book properly maintained?
+5.4  If water pollutant liquid (e.g. chemical, oily water, dirty oil) is stored on deck, are jerry cans in good condition and satisfactorily fastened?
+5.5  Is garbage segregation implemented and garbage record book properly maintained?
+5.6  Is anti-pollution kit available and provided with sufficient material to manage a fuel leakage on board?
+## 6 -- Safety
+6.1  Are escape ways free of obstruction and properly labelled as per the evacuation plan?
+6.2  Are safety pictograms (e.g. muster point, firefighting equipment, PPE requirements) legible and in the correct location as per the safety plan?
+6.3  Are muster lists displayed onboard?
+6.4  Are lifebuoys in good condition and properly stored in the correct location as per the safety plan?
+6.5  Are liferafts available on board in the correct location as per the safety plan?
+6.6  Are hydrostatic releases, where fitted, correctly attached?
+6.7  Are liferafts in good order, within due date and operating instructions clearly posted?
+6.8  Is the crew able to satisfactorily demonstrate how to launch liferaft?
+6.9  As required, are liferafts embarkation ladders in good condition?
+6.10  Are lifejackets in good condition and properly stored in the correct location as per the safety plan?
+6.11  Are pyrotechnics in good condition and properly stored in the correct location as per the safety plan?
+6.12  Is the public address system operational?
+6.13  Is the general alarm operational?
+6.14  Is the fire pump and associated pipe and valves in good condition and operational?
+6.15  Are fire hoses in good condition and properly stored in the correct location as per the safety plan?
+6.16  Is the fire monitor operational and in good condition?
+6.17  As applicable, is the deluge system fitted around superstructures operational?
+6.18  Are fire extinguishers in good condition and properly stored in the correct location as per the safety plan?
+6.19  Is the ventilation emergency stop operational and known by crew?
+6.20  Are remote quick closing valves operational?
+6.21  Is the engine room fixed firefighting system fully operational, in good condition and maintained/certified as required?
+6.22  Is fire detection system fully operational with detection zones clearly identified on the system?
+6.23  Are fire detectors in good condition in all compartments?
+6.24  As applicable, are fireman's suits and Self-Contained Breathing Apparatus in good condition and properly stored in the correct location as per the safety plan?
+6.25  Are inspections/maintenance of the lifesaving and firefighting equipment done as per the established weekly and monthly schedule?
+6.26  Are emergency drills being carried out as required?
+## 7 -- Passenger area
+7.1  Are watertight doors and windows in passenger compartment in good condition?
+7.2  Is lighting in passenger area sufficient and in good condition?
+7.3  Are means for broadcasting safety video briefing on personnel transfer procedures and safety rules applying on board readily available?
+7.4  Is ventilation and/or air conditioning system in passenger area operational and blowing a clean air free from moisture and particles (dust, corrosion..)?
+7.5  Is the certified maximum number of Personnel On Board consistent with the technical requirement of the contract?
+7.6  Is maximum Personnel On Board clearly marked in passenger area?
+7.7  Are mats, curtains, ceilings and lining in passenger area in good condition?
+7.8  Are passenger seats in good condition?
+7.9  Are sickness bags available in passenger area?
+7.10  Are safety instructions leaflet, or equivalent, available at each seat?
+7.11  If fitted, are tables / shelves in good condition?
+7.12  Are there sufficient sanitary facilities for passengers, in good working and cleanliness condition?
+7.13  Are electrical cabinets closed and marked?
+7.14  Is the passenger area free of loose items and obstructions?
+7.15  As required, is a stretcher available onboard?
+7.16  Is a cardiopulmonary resuscitation (CPR) equipment available onboard?
+7.17  Is a first aid kit available on board with full inventory?
+7.18  Is the evacuation plan posted in passenger compartment?
+7.19  Are door coamings painted in high visibility color to avoid personnel tripping?
+## 8 -- Navigation
+8.1  If the vessel has restricted navigation notation in her statutory certificates, is it known and applied by crew?
+8.2  Are all bridge windows in good condition and providing sufficient visibility?
+8.3  Are seats on the bridge in good condition?
+8.4  Does the Master have direct visibility on the personnel transfer area while seated at steering position?
+8.5  Is the video camera recording system pointing the personnel transfer area operational?
+8.6  Is the bridge covered by video recording system?
+8.7  Is the procedure for retrieving video records known from the crew and regularly tested?
+8.8  Is all navigation equipment fully operational and free from defects?
+8.9  Is the crew familiar with the correct operation of the navigation equipment?
+8.10  Is there evidence of position fixing being carried out for the entire voyage?
+8.11  Is all radio communication equipment fully operational and free from defects?
+8.12  Is the crew familiar with the radio equipment?
+8.13  Are searchlight and night vision cameras in good working order?
+8.14  Does the vessel receive navigation warnings and weather forecast?
+8.15  Did the bridge watch officer complete the on-line assessment questionnaire on COLREG with a minimum result of 80%?
+8.16  Is bridge fitted with binoculars and basic navigation set?
+8.17  Is the bridge logbook correctly filled in?
+8.18  Does the vessel have up to date charts covering all operation area?
+8.19  Does the vessel have passage planning covering its operation area?
+8.20  Are machinery and propulsion information display panel operational?
+8.21  Is the echo sounder fully operational?
+8.22  Is personnel on board (POB) monitored and recorded?
+8.23  Is a crew boat provided with a computer or tablet able to support NAVIGARE?
+8.24  Is the vessel provided with a Simplified Voyage Data Recorder (S-VDR)?
+8.25  Are navigation lights in good working order?
+8.26  Are there any loose items on the upper bridge?
+## 9 -- Machinery
+9.1  Is the engine compartment access in good condition and properly labelled?
+9.2  Is lighting in the engine compartment sufficient and in good condition?
+9.3  Is emergency lighting operational and properly identified?
+9.4  Are machinery spaces clean, tidy and well maintained without oil / fuel / hydraulic oil leakage?
+9.5  Are various electrical cabinets in good condition, properly closed and marked?
+9.6  Are the two sets of propulsion fully operational and free from defects?
+9.7  Is auxiliary machinery fully operational and free from defects?
+9.8  Is the electronic fuel consumption monitoring device in good working order?
+9.9  Is the ultrasonic anti-fouling device in good working order?
+9.10  Is bilge alarm and pumping system operational in all compartments?
+9.11  Is the crew able to demonstrate how to operate the bilge pumping system in case of flooding?
+9.12  Are engine compartment gratings suitably bolted?
+9.13  Does the engineer know how to install fuel filter without causing crack on the cartridge?
+9.14  Are the engine ventilation fans in good working order and condition?
+9.15  Are batteries (starting, radio, emergency) in good condition and properly stored?
+9.16  Are maintenance records available for onboard equipment?
+9.17  Are machinery equipment operating manuals available to the crew?
+## 10 -- Operations
+10.1  Is the manning level sufficient for the vessel's operations?
+10.2  Is crew aware of the personnel transfer decision matrix?
+10.3  Is the crew able to explain the man overboard procedure and the use of recovery equipment?
+10.4  Is the A/B fully aware of his/her duty?
+10.5  Are radiocommunications established and maintained during personnel transfer operations?
+10.6  Does the vessel conduct required verifications prior to entry into the 500 meters zone?
+10.7  Does the crew know additional principles to avoid collision with the installation?
+10.8  Is the Company safety culture program known and implemented by the crew?
+10.9  Are safety observation regularly reported to Company or Contractor?
+10.10  Is the crew provided with inflatable lifejackets compliant with minimum Company requirements?
+10.11  Are the inflatable lifejackets worn only outside of the accommodation?
+10.12  Are the inflatable life jackets maintained, and history recorded in a register?
+
+======================================================================
+FORM: INSPECTARE-PSV-MOBILE.html | Inspectare -- PSV (Platform Supply Vessel) | short name: Inspectare PSV | 111 questions
+## 1 - Rob at mobilization
+1.1  If inspection takes place during vessel mobilization, inspector shall issue an ROB survey statement covering, when relevant, all bunker, dry and liquid bulk tanks.
+## 2 - Dry bulk
+2.1  Is the general condition, visual appearance and cleanliness of the dry bulk tanks satisfactory?
+2.2  Are the tank fittings in dry bulk tanks in good working condition?
+2.3  Are the dry bulk systems operational?
+## 3 - Liquid bulk
+3.1  Is the general condition, visual appearance and cleanliness of the liquid bulk tanks satisfactory?
+3.2  Are the tank fittings in liquid bulk tanks in good working condition?
+3.3  Are the liquid bulk cargo pumping systems operational?
+## 4 - Bulk transfer
+4.1  Are the bulk stations in good condition?
+4.2  Is there evidence that bulk hoses are handled and managed as per Company requirements?
+4.3  Is there evidence of a pre-transfer conference being held between the vessel and the receiving or
+4.4  Is the vessel authorized by Class and Flag to carry methanol in bulk?
+4.5  Is the methanol handling system and crew familiarization proven by wet trials?
+## 5 - Deck cargo
+5.1  Have the risks associated with deck cargo operations been analyzed?
+5.2  Has a MOPO (Matrix of Permitted Operations) been developed and implemented for deck cargo operations?
+5.3  Have escape routes for deck personnel been defined and kept free of obstruction?
+5.4  Is the deck area monitored by video cameras?
+5.5  Is a deck cargo stowage plan developed before starting deck cargo operations, using the information in the draft deck cargo manifest?
+5.6  Do the deck personnel maintain dedicated radio communication with the crane operator/lifting supervisor at all times?
+5.7  Do the bridge team always have a line of sight to the vessel crew during deck cargo operations?
+5.8  Has the lifting plan issued for the deck cargo transfer been discussed between the vessel and the installation or logistics base as applicable?
+5.9  Are cargo securing procedures implemented?
+5.10  Have the risks associated to the handling of tubulars and pipe cargo been analyzed?
+5.11  Does the crew systematically prepare the deck with rope dunnage before loading tubulars?
+5.12  Does the crew systematically use pipe posts or stanchions to protect personnel involved in tubulars handling?
+5.13  Is the main deck clear, available for cargo and in good condition?
+5.14  On "open stern" vessels, are responsible officers aware of specific risks of deck cargo operations offshore and associated limitations/mitigations?
+5.15  Is the deck cargo securing/lashing equipment in a good order?
+5.16  Are the tugger winches and wires associated with positioning cargo in good order?
+5.17  Are the reefer containers power socket in sufficient number and in good condition?
+5.18  Are officers aware of the dangers of entrapped water on deck particularly when carrying pipe cargoes?
+5.19  Does the vessel implement a "clear deck" or "hands free" lifting procedure?
+5.20  Are portable radios in sufficient number for cargo / bulk operations both in port and offshore?
+## 6 - Carriage of dangerous goods
+6.1  Does the vessel have a valid IMDG certification?
+6.2  Is the vessel provided with IMDG Code ?
+6.3  Does the vessel produce a cargo plan identifying all classes of cargo, including dangerous goods?
+6.4  Is the vessel provided with the additional safety equipment required for the carriage of dangerous goods in packaged form?
+## 7 - Stand-by duties general
+7.1  Does the vessel have procedures for standby duties and is the crew aware of them?
+7.2  Does the vessel have a clearly marked rescue zone, clear of propellers and obstructions?
+7.3  Is the vessel provided with scramble nets on both sides?
+7.4  Is the vessel equipped to perform anticollision watch duty?
+7.5  Is the vessel equipped with communication equipment meeting Company requirements?
+7.6  Is the vessel provided with required oil spill response equipment?
+7.7  Is the hospital readily available and in a hygienically satisfactory condition?
+7.8  Are MEDEVAC drills regularly conducted to ensure that roles and responsibilities between Company and Contractor are clearly known and understood by all?
+7.9  Does the vessel have their own readily and permanent access to shore-based medical advice services and is it regularly tested?
+7.10  Does the vessel’s medicine chest include an automated defibrillator and a portable medical oxygen set?
+7.11  Are the passenger’s accommodation readily available and in a hygienically satisfactory condition?
+## 8 - Stand-by duties fire fighting
+8.1  Does the vessel hold FiFi 1 class notation?
+8.2  Does the FiFi 1 equipment meet the following requirement?
+8.3  Is the crew familiar with the operation of FiFi 1 equipment?
+8.4  Does the vessel’s stability booklet include calculation proving satisfactory stability when all monitors are in operation at full capacity in the most adverse direction for the stability?
+8.5  Is the FiFi 1 equipment in good order?
+## 9 - Stand-by duties fast rescue boat
+9.1  Is the Fast Rescue Boat and associated launching and embarkation appliances (including release mechanism) compliant with LSA Code?
+9.2  Is the Fast Rescue Boat hull length of not less than 6 meters and not more than 8.5 meters?
+9.3  Is the following equipment available on board the Fast Rescue Boat?
+9.4  Is the above equipment properly secured by lashings, storage in lockers or compartments?
+9.5  Is the Fast Rescue Boat fitted with arrangements for towing and sufficiently strong to marshal or tow liferafts?
+9.6  Does the Fast Rescue Boat meet the following LSA Code requirements?
+9.7  Does the Fast Rescue Boat meet the following Company requirements?
+9.8  Is the Fast Rescue Boat equipped with a man overboard recovery kit?
+9.9  Does the Fast Rescue Boat launching appliance meet the following LSA Code requirements?
+## 10 - Stand-by duties fast rescue boat launching and recovery
+10.1  Has the launching and recovery of the fast rescue boat been witnessed?
+10.2  Is each person assigned to crew the Fast Rescue Boat provided with an immersion suit or life jacket depending on intended area of operation?
+10.3  Are weather limitations for the launching and recovery of Fast Rescue Boat clearly defined in vessel’s procedures?
+10.4  Does the crew assigned to Fast Rescue Boat meet the Company specific certification requirements?
+## 11 - Engine room section
+11.1  Are main, auxiliary and emergency plant in good order?
+11.2  Is the steering gear/steering compartment(s) free from defects?
+## 12 - In service inspection
+12.1  Is the fixed fire detection and alarm systems operational and free of defect?
+12.2  Is the fixed fire extinguishing system operational and free of defect?
+12.3  Is the fixed fire fighting system certification valid?
+12.4  Are fire extinguisher annual certifications valid?
+12.5  Is the fire fighting equipment carried on board compliant with the approved fire control plan exhibited?
+12.6  Are the firemen's outfits and breathing apparatus ready for use?
+12.7  Is the crew familiar with donning firemen's outfits and breathing apparatus?
+12.8  If fitted , are EEBDs with valid inspection certificates available for immediate use?
+12.9  Are all fire flaps in good order and operational?
+12.10  Is the emergency stop of ventilation fans operational?
+12.11  Are main and emergency fire pumps, hoses and nozzles ready for immediate use?
+12.12  Are surfaces with temperatures above 220°c which may be impinged as a result of fuel or oil system failure properly insulated?
+12.13  Where insulation is installed, is it intact and free of fuel, or oil contamination?
+12.14  Are life rafts, with valid inspection certificates, available for immediate use?
+12.15  Are hydrostatic releases, where fitted, correctly attached?
+12.16  Are SOLAS type life jackets available for immediate use?
+12.17  Are escape ways clearly marked ,not obstructed and lit?
+12.18  Are PPE available and worn?
+12.19  Is the hospital clean and tidy?
+12.20  Are pyrotechnics in date and in good order?
+12.21  Is the Medevac procedure available and up to date?
+12.22  Are bilge high level alarm in good working conditions and regularly tested?
+12.23  Is emergency suction bilge operational, identified and sealed with breakable seal?
+12.24  Is emergency overboard valve operational, identified and sealed with breakable seal?
+12.25  Is emergency bilge pump operational and ready for immediate use?
+12.26  Is the crew able to demonstrate how to set up and operate the emergency bilge pumping system in case of flooding?
+12.27  Are all sea chests valves operational and watertight when closed?
+12.28  Is engine room compartment free of significant seawater leak?
+12.29  Are deck openings, including watertight doors and portholes free of defect and capable of being properly secured?
+12.30  Are spill containment arrangements provided in way of bulk transfer manifolds and savealls fitted around relevant tank vents?
+12.31  Are manifold spill containers, if provided, empty and are the drainage arrangements satisfactory?
+12.32  Are means readily available for dealing with small oil or chemical spills?
+12.33  Is the navigation equipment operational?
+12.34  Is the GMDSS station in good working conditions?
+12.35  Are nautical publications and charts, paper and/or electronic for the intended voyage, on board, current and corrected up to date?
+12.36  Is there a passage planning available and covering the intended voyage?
+12.37  If fitted , is the boat landing in good operational condition?
+12.38  Is the vessel free of any Management of Change (MoC) process opened, DGS (downgraded situation) declared, or class/statutory condition due or overdue?
+12.39  If provided on board , is the gas welding equipment in good condition?
+12.40  Are external general appearance and maintenance satisfactory (deck, superstructure, deck machinery, pipework, workspaces)?
+12.41  Are the internal general appearance and maintenance satisfactory (living spaces , galley, stores)?
+12.42  Are emergency drills conducted as per drill matrix with records available?
+12.43  Is the PMS up to date, with no overdue maintenance?
+12.44  Is there a formalized company system for recording work and rest hours?
+
+======================================================================
+FORM: INSPECTARE-TUG-MOBILE.html | Inspectare -- TUG | short name: Inspectare TUG | 141 questions
+## 1 - Rob at mobilization
+1.1  If inspection takes place during vessel mobilization, inspector shall issue an ROB survey statement covering, when relevant, all bunker, dry and liquid bulk tanks.
+## 2 - Bulk transfer
+2.1  Are the bulk stations in good condition?
+2.2  Is there evidence that bulk hoses are handled and managed as per Company requirements?
+2.3  Is there evidence of a pre-transfer conference being held between the vessel and the receiving or discharging facility before the transfer of bulk begins?
+2.4  Is the vessel authorized by Class and Flag to carry methanol in bulk?
+2.5  Is the methanol handling system and crew familiarization proven by wet trials?
+## 3 - Deck cargo
+3.1  Have the risks associated with deck cargo operations been analyzed?
+3.2  Has a MOPO (Matrix of Permitted Operations) been developed and implemented for deck cargo operations?
+3.3  Have escape routes for deck personnel been defined and kept free of obstruction?
+3.4  Is the deck area monitored by video cameras?
+3.5  Is a deck cargo stowage plan developed before starting deck cargo operations, using the information in the draft deck cargo manifest?
+3.6  Do the deck personnel maintain dedicated radio communication with the crane operator/lifting supervisor at all times?
+3.7  Do the bridge team always have a line of sight to the vessel crew during deck cargo operations?
+3.8  Has the lifting plan issued for the deck cargo transfer been discussed between the vessel and the installation or logistics base as applicable?
+3.9  Are cargo securing procedures implemented?
+3.10  Have the risks associated to the handling of tubulars and pipe cargo been analyzed?
+3.11  Does the crew systematically prepare the deck with rope dunnage before loading tubulars?
+3.12  Does the crew systematically use pipe posts or stanchions to protect personnel involved in tubulars handling?
+3.13  Is the main deck clear, available for cargo and in good condition?
+3.14  On "open stern" vessels, are responsible officers aware of specific risks of deck cargo operations offshore and associated limitations/mitigations?
+3.15  Is the deck cargo securing/lashing equipment in a good order?
+3.16  Are the tugger winches and wires associated with positioning cargo in good order?
+3.17  Are the reefer containers power socket in sufficient number and in good condition?
+3.18  Are officers aware of the dangers of entrapped water on deck particularly when carrying pipe cargoes?
+3.19  Does the vessel implement a "clear deck" or "hands free" lifting procedure?
+3.20  Are portable radios in sufficient number for cargo / bulk operations both in port and offshore?
+## 4 - Stand-by duties general
+4.1  Does the vessel have procedures for standby duties and is the crew aware of them?
+4.2  Does the vessel have a clearly marked rescue zone, clear of propellers and obstructions?
+4.3  Is the vessel provided with scramble nets on both sides?
+4.4  Is the vessel equipped to perform anticollision watch duty?
+4.5  Is the vessel equipped with communication equipment meeting Company requirements?
+4.6  Is the vessel provided with required oil spill response equipment?
+4.7  Is the hospital readily available and in a hygienically satisfactory condition?
+4.8  Are MEDEVAC drills regularly conducted to ensure that roles and responsibilities between Company and Contractor are clearly known and understood by all?
+4.9  Does the vessel have their own readily and permanent access to shore-based medical advice services and is it regularly tested?
+4.10  Does the vessel’s medicine chest include an automated defibrillator and a portable medical oxygen set?
+4.11  Are the passenger’s accommodation readily available and in a hygienically satisfactory condition?
+## 5 - Stand-by duties fire fighting
+5.1  Does the vessel hold FiFi 1 class notation?
+5.2  Does the FiFi 1 equipment meet the following requirement?
+5.3  Is the crew familiar with the operation of FiFi 1 equipment?
+5.4  Does the vessel’s stability booklet include calculation proving satisfactory stability when all monitors are in operation at full capacity in the most adverse direction for the stability?
+5.5  Is the FiFi 1 equipment in good order?
+## 6 - Stand-by duties fast rescue boat
+6.1  Is the Fast Rescue Boat and associated launching and embarkation appliances (including release mechanism) compliant with LSA Code?
+6.2  Is the Fast Rescue Boat hull length of not less than 6 meters and not more than 8.5 meters?
+6.3  Is the following equipment available on board the Fast Rescue Boat?
+6.4  Is the above equipment properly secured by lashings, storage in lockers or compartments?
+6.5  Is the Fast Rescue Boat fitted with arrangements for towing and sufficiently strong to marshal or tow liferafts?
+6.6  Does the Fast Rescue Boat meet the following LSA Code requirements?
+6.7  Does the Fast Rescue Boat meet the following Company requirements?
+6.8  Is the Fast Rescue Boat equipped with a man overboard recovery kit?
+6.9  Does the Fast Rescue Boat launching appliance meet the following LSA Code requirements?
+## 7 - Stand-by duties fast rescue boat launching and recovery
+7.1  Has the launching and recovery of the fast rescue boat been witnessed?
+7.2  Is each person assigned to crew the Fast Rescue Boat provided with an immersion suit or life jacket depending on intended area of operation?
+7.3  Are weather limitations for the launching and recovery of Fast Rescue Boat clearly defined in vessel’s procedures?
+7.4  Does the crew assigned to Fast Rescue Boat meet the Company specific certification requirements?
+## 8 - Engine room section
+8.1  Are main, auxiliary and emergency plant in good order?
+8.2  Is the steering gear/steering compartment(s) free from defects?
+## 9 - General for AHT
+9.1  Does the towing and/or anchor handling equipment meet the minimum contract and project’s specific requirements?
+9.2  Is the bollard pull certificate issued or endorsed by a classification society member of IACS and dated less than ten (10) years old?
+9.3  As applicable, are responsible officers able to explain the impact on bollard pull, of power diversion to transverse thrusters or other large power consumers?
+9.4  As applicable, are the effects of shallow waters duly considered as part of operations planning and understood by responsible officers?
+9.5  Do the vessel’s standard loading conditions, stability curves, stability booklet and minimum freeboard meet the criteria defined in International Code on Intact Stability Part B – “Ships engaged in towing and escort operations” or “Ships engaged in anchor handling operations” respectively?
+9.6  Are responsible officers able to demonstrate that the stability condition calculated for the intended towing or anchor handling operations meet the International Code on Intact Stability Part B – “Ships engaged in towing and escort operations” or “Ships engaged in anchor handling operations” criteria?
+9.7  Is the vessel provided with constructional precautions and operational procedures against capsizing in compliance with International Code on Intact Stability Part B – “Ships engaged in towing and escort operations” or “Ships engaged in anchor handling operations” respectively?
+9.8  Are responsible officers able to explain the means to restrict the lead of the wire to within a safe sector (i.e. to reduce the risk of girting)?
+9.9  Does the crew clearly understand that during towing or anchor handling, all weathertight doors, hatches, manholes, port and windows on the weather deck shall be kept closed to prevent downflooding in the event of deck edge immersion?
+9.10  On working deck, are all freeing ports functional and clear of obstructions?
+9.11  Are towing and/or anchor handling winches and/or hooks fitted with quick release?
+9.12  Are towing and/or anchor handling winches, including associated hoses and brake linings, in good order?
+9.13  Are towing and/or anchor handling winches fully operational?
+9.14  Are records of inspection and service of the wires available on board?
+9.15  Have winch operators received formal training in winch operations including emergency release methods and are they able to demonstrate their knowledge?
+9.16  Are responsible officers able to explain the emergency release procedure and associated sequence on winches?
+9.17  As applicable, are towing pins, Karmforks and shark jaws fully operational and fitted with a hydraulic pressure release or emergency release system?
+9.18  Do the responsible officers understand that the use of full three axis auto DP is prohibited during anchor handling and towing operations?
+9.19  Is a clear deck policy issued and implemented during anchor handling and towing operation?
+9.20  Are safe areas beyond the crash barriers clear of obstructions and easily accessible to the crew from the working deck?
+9.21  Are deck floodlights in good working order?
+9.22  Does the vessel have a tension gauge and/or tension limiter to monitor forces and is it regularly calibrated?
+9.23  Are weather forecasts available to the vessel?
+9.24  Do all towing and anchor handling gears (e.g. wires, shackles and plates) have valid certification meeting DNV-ST-N001 standards?
+9.25  Are tow wires terminated with hard eye thimbles or closed sockets?
+9.26  Are closed socket renewed at intervals not exceeding 2,5 years, irrespective of the condition of the socket and its wire?
+## 10 - Towing/Pushing
+10.1  As applicable, have Masters and officers having direct responsibility for ship handling during towing operations received formal simulation training in ship handling for non-conventional propulsion system?
+10.2  Is the vessel's fendering in good condition?
+10.3  For pushing operations, is the bow fendering and associated supporting structure of the design approved by a classification society member of IACS?
+10.4  Are the searchlight(s) fully operational?
+10.5  Does the Minimum Breaking Load (MBL) of the tow wires (main and spare) meet the DNV-STN001 standards?
+10.6  Are the towing wires fitted, less than 5 (five) years old, OR if a towing log has been maintained, less than 100,000 nautical miles of which no more than 50,000 miles have been in adverse weather conditions (> Beaufort Force 6)?
+10.7  Do the project’s specific towing arrangements include a shock/dynamic load absorption method?
+10.8  If fitted, are HMPE towing lines rigged with spring rope of a different material?
+10.9  If using HMPE, is the contact surface for the HMPE tow line clean and sufficiently smooth to avoid damage to tow line?
+10.10  If applicable is there a system for prevention of chafing of the tow-wire?
+10.11  As applicable, is the manning level of tug sufficient to board an unmanned towed object in an emergency situation and establish a new towing connection?
+10.12  Is there a sufficient number of portable radios and spare batteries available onboard?
+10.13  Does the vessel have procedures, including contingency plans, in place that address towing and pushing activities?
+10.14  Is a tow winch brake alarm fitted and audible in the bridge?
+## 11 - In service inspection
+11.1  Is the fixed fire detection and alarm systems operational and free of defect?
+11.2  Is the fixed fire extinguishing system operational and free of defect?
+11.3  Is the fixed fire fighting system certification valid?
+11.4  Are fire extinguisher annual certifications valid?
+11.5  Is the fire fighting equipment carried on board compliant with the approved fire control plan exhibited?
+11.6  Are the firemen's outfits and breathing apparatus ready for use?
+11.7  Is the crew familiar with donning firemen's outfits and breathing apparatus?
+11.8  If fitted , are EEBDs with valid inspection certificates available for immediate use?
+11.9  Are all fire flaps in good order and operational?
+11.10  Is the emergency stop of ventilation fans operational?
+11.11  Are main and emergency fire pumps, hoses and nozzles ready for immediate use?
+11.12  Are surfaces with temperatures above 220°c which may be impinged as a result of fuel or oil system failure properly insulated?
+11.13  Where insulation is installed, is it intact and free of fuel, or oil contamination?
+11.14  Are life rafts, with valid inspection certificates, available for immediate use?
+11.15  Are hydrostatic releases, where fitted, correctly attached?
+11.16  Are SOLAS type life jackets available for immediate use?
+11.17  Are escape ways clearly marked ,not obstructed and lit?
+11.18  Are PPE available and worn?
+11.19  Is the hospital clean and tidy?
+11.20  Are pyrotechnics in date and in good order?
+11.21  Is the Medevac procedure available and up to date?
+11.22  Are bilge high level alarm in good working conditions and regularly tested?
+11.23  Is emergency suction bilge operational, identified and sealed with breakable seal?
+11.24  Is emergency overboard valve operational, identified and sealed with breakable seal?
+11.25  Is emergency bilge pump operational and ready for immediate use?
+11.26  Is the crew able to demonstrate how to set up and operate the emergency bilge pumping system in case of flooding?
+11.27  Are all sea chests valves operational and watertight when closed?
+11.28  Is engine room compartment free of significant seawater leak?
+11.29  Are deck openings, including watertight doors and portholes free of defect and capable of being properly secured?
+11.30  Are spill containment arrangements provided in way of bulk transfer manifolds and savealls fitted around relevant tank vents?
+11.31  Are manifold spill containers, if provided, empty and are the drainage arrangements satisfactory?
+11.32  Are means readily available for dealing with small oil or chemical spills?
+11.33  Is the navigation equipment operational?
+11.34  Is the GMDSS station in good working conditions?
+11.35  Are nautical publications and charts, paper and/or electronic for the intended voyage, on board, current and corrected up to date?
+11.36  Is there a passage planning available and covering the intended voyage?
+11.37  If fitted , is the boat landing in good operational condition?
+11.38  Is the vessel free of any Management of Change (MoC) process opened, DGS (downgraded situation) declared, or class/statutory condition due or overdue?
+11.39  If provided on board , is the gas welding equipment in good condition?
+11.40  Are external general appearance and maintenance satisfactory (deck, superstructure, deck machinery, pipework, workspaces)?
+11.41  Are the internal general appearance and maintenance satisfactory (living spaces , galley, stores)?
+11.42  Are emergency drills conducted as per drill matrix with records available?
+11.43  Is the PMS up to date, with no overdue maintenance?
+11.44  Is there a formalized company system for recording work and rest hours?
+
+======================================================================
+FORM: OVID-AHTS-TUG-OPERATIONS-MOBILE.html | OVID -- AHTS/TUG Operations (Escort Tug, Towing, Anchor Handling) | short name: OVID AHTS-TUG Ops | 83 questions
+## 8.23 -- Ship Assist Escort Tug
+8.23.1  Does the vessel Operator have an adequate replacement policy with valid certificates for the towing line(s) in use?
+8.23.2  If using HMPE, is the contact surface for the HMPE tow line clean and sufficiently smooth to avoid damage to tow line?
+8.23.3  Is the vessel’s fendering in good condition and suitable for ship assist work?
+8.23.4  Does the Operator have good visibility of the work area from the vessel’s control station?
+8.23.5  If there are visibility limitations caused by physical vessel design, are there risk mitigations employed to address them such as radios and talk back devices and are they in good working order?
+8.23.6  Does the operator have a procedure in place covering the use of recessed bitts?
+8.23.7  If the vessel has a STAPLE, is the SWL for the staple and the angles of operability known to the vessel master and deck officers?
+8.23.8  Are the calculated indirect towing forces available to the Master and deck officers?
+8.23.9  Are any operational limitations for towing arrangements (both fwd and aft) available and known to the master and officers?
+8.23.10  If fitted are the tension monitors calibrated and in good working order?
+8.23.11  Is there a document readily available that clearly states vessel stability criteria and limitations and is there evidence to suggest master is familiar with the document?
+8.23.12  Are the vessel’s winch(s) in good working order?
+8.23.13  Is the ship assist winch fitted with an emergency release system and is it regularly tested?
+## 8.7 -- Towing/pushing
+8.7.1  Is the vessel classed/certified for Towing and/or Pushing operations?
+8.7.2  Is the vessel's fendering in good condition?
+8.7.3  Is tow winch, including associated hoses and brake linings, in good order?
+8.7.4  Is the towing gear visually in good condition?
+8.7.5  Are certificates for the towing wire and anchor handling wire including sockets available onboard?
+8.7.6  Is there a formal, time-based retirement/replacement policy for the towing assembly?
+8.7.7  Does the vessel maintain a towing log in accordance with IMO guidelines?
+8.7.8  Does the vessel adhere to the IMO guidelines with regard to the minimum breaking load (MBL) of the towline?
+8.7.9  Does the vessel have procedures, including contingency plans, in place that address towing and pushing activities?
+8.7.10  Does the vessel have a searchlight that can be directed from the vessel's main steering station and is it in good working order?
+8.7.11  Does the vessel carry a spare towline, stretchers, shackles and associated equipment that meet all the requirements for the main gear?
+8.7.12  Are all wire rope terminations on board made with hard eyes with evidence that socketing has been done by a competent person?
+8.7.13  Is the winch fitted with equipment to measure the tension of the towline and is the information displayed in the wheelhouse?
+8.7.14  Is a tow winch brake alarm fitted and audible in the wheelhouse?
+8.7.15  Does the vessel have a tension gauge and/or tension limiter to monitor bollard pull and is it regularly calibrated?
+8.7.16  Are records of inspection and service of the towline available on board?
+8.7.17  Does the vessel Operator have an adequate replacement policy with valid certificates for the towing line(s) in use?
+8.7.18  If using High Modulus Polyethylene (HMPE), is the contact surface for the HMPE tow line clean and sufficiently smooth to avoid damage to tow line?
+8.7.19  If applicable is there a system for prevention of chafing of the tow-wire?
+8.7.20  If applicable, does the vessel have a suitable towing wire arrangement to prevent girting?
+8.7.21  Are emergency release systems regularly tested and records maintained?
+8.7.22  If towline is not provided with quick release capability, does the vessel have cutting gear readily available?
+8.7.23  If used, do shock lines and/or towing stretchers have the capability to deal with the expected dynamic loads?
+8.7.24  Has the Master appropriate experience of towing/pushing operations on this particular type of vessel?
+8.7.25  If applicable, have the Master and/or any officers with direct responsibility for ship handling received appropriate formal training in ship handling for non-conventional propulsion system?
+8.7.26  Are risk assessments carried out for all towing/pushing operations?
+8.7.27  Is the vessel fitted with necessary towing navigation lights for compliance with Collision Regulations?
+8.7.28  Are the Master and officers aware of vessel performance capabilities and limitations?
+8.7.29  Are deck officers aware of the stability conditions during towing operations and understand limitations associated?
+8.7.30  Are the calculated indirect towing forces available to the Master and deck officers?
+8.7.31  Does the Operator have good visibility of the work area from the vessel’s control station?
+8.7.32  If there are visibility limitations caused by physical vessel design, are there risk mitigations employed to address them such as radios and talk back devices and are they in good working order?
+8.7.33  Is there a sufficient number of portable VHF or UHF and spare batteries available on board?
+8.7.34  Is there a notice posted on the bridge giving instructions for emergency release procedures?
+8.7.35  Are bollard pull figures available for when power is diverted to transverse thrusters or other large power consumers?
+8.7.36  Does the operator have a policy in place covering the use of recessed bitts?
+8.7.37  If the vessel has a STAPLE, is the SWL for the staple and the angles of operability known to the vessel master and deck officers?
+8.7.38  Does the vessel have bow towing capability when conducting static tow operations?
+8.7.39  For vessels engaged in static towing operations, does the towing assembly comply with the recommendations of OCIMF Static Towing Assembly Guidelines (STAG)?
+## 8.6 -- Anchor handling
+8.6.1  Is the vessel classed for anchor handling operations?
+8.6.2  Does the vessel have a Bollard Pull certificate?
+8.6.3  Are certificates for the towing wire and anchor handling wire including sockets available onboard?
+8.6.4  Are all work, tow and anchor handling wires inspected and tested on a periodic basis?
+8.6.5  Does the vessel carry out risk assessments for each specific operation?
+8.6.6  Does the vessel have contingency plans for operations associated with anchor handling?
+8.6.7  Does the vessel have displayed on the bridge a document to show the acceptable vertical and horizontal transverse force/tensions to which the vessel can be exposed?
+8.6.8  Is there a notice posted on the bridge giving instructions for emergency release procedures?
+8.6.9  Are emergency release systems regularly tested and records maintained?
+8.6.10  Does the vessel operating manual have a written procedure for safe anchor handling operations in differing water depths?
+8.6.11  Does the vessel operating manual include written procedures for SIMOPS and tandem vessel operations?
+8.6.12  Is all anchor handling equipment secured when not in use?
+8.6.13  Does the vessel's operating procedure define a minimum of two deck officers capable of taking control of the vessel to be on the bridge throughout anchor handling operations?
+8.6.14  Has the effect of slack tanks been addressed within the stability manual?
+8.6.15  Do documented procedures address the use of anti-roll tanks during anchor handling?
+8.6.16  Is there recorded evidence of regular testing, inspection and maintenance of all anchor handling equipment including emergency release functionality included in vessel maintenance management system?
+8.6.17  Does the vessel have a tension gauge and/or tension limiter to monitor bollard pull and is it regularly calibrated?
+8.6.18  Are bollard pull figures available for when power is diverted to transverse thrusters or other large power consumers?
+8.6.19  Where towing winch render or emergency release systems are not fitted, is the vessel provided with readily available emergency wire cutting equipment?
+8.6.20  Are tugger winches and wires in a satisfactory condition?
+8.6.21  Does the Master, Bridge Officers and Deck Personnel have appropriate anchor handling training and experience?
+8.6.22  Are records available confirming the training of winch operators?
+8.6.23  Where winches are not visible from the bridge, is there a system in place to enable remote monitoring?
+8.6.24  Is there evidence of anchor handling operations planning?
+8.6.25  Are communications between the bridge and working deck, including backup systems, in working order?
+8.6.26  Are anchor handling winch, towing pins and wire/chain stopper in good order and reported to be fully operational?
+8.6.27  Are safe areas beyond the crash barriers clear of obstructions and easily accessible to the crew from the working deck?
+8.6.28  Is the vessel provided with a stability instrument compliant with the requirements of international code on intact stability part B - ship engaged in anchor handling operations?
+8.6.29  Is vessel provided with preventive measures to mitigate the risk of water ingress through the inspection openings on the anchor handling systems?
+8.6.30  Are appropriate instructions available for application of silicone sealant and/or installation of gasket available to ensure the watertightness of the anchor handling system housing?
+8.6.31  Are appropriate instructions available for testing the watertightness of the anchor handling system after completion of any works and installation of the inspection covers?
+
+======================================================================
+FORM: OVID-BARGE-OPERATIONS-MOBILE.html | OVID -- Barge Operations | short name: OVID Barge | 50 questions
+## 2.1 -- Certification
+2.1.1  Are all the Class statutory certificates or flag state equivalent listed in the guidance, where applicable, valid and have the annual and intermediate surveys been carried out within the required range dates?
+## 2.2 -- Safety management
+2.2.1  Does the vessel/unit have a formal safety management system?
+2.2.3  Does an operator's representative visit the vessel/unit at least twice annually?
+2.2.4  Is a recent operator's audit report available and is a close-out system in place for dealing with non-conformities?
+## 2.3 -- Class documentation and surveys
+2.3.1  Was last drydocking/underwater survey scheduled?
+2.3.2  Is the vessel/unit free of conditions of class?
+## 2.4 -- Publications
+2.4.1  In the last 12 months has the vessel been Laid-up?
+2.4.2  If applicable, was the lay up and reactivation covered by a Management of Change (MOC) process and did the technical operator follow the Classification Society recommendations
+## 5.8 -- Lifting equipment (barge)
+5.8.1  Does the vessel/unit have a system in place for the quarantine of damaged or uncertified lifting equipment?
+## 7.1 -- General
+7.1.1  Is the hull, weather decks and superstructure free from visible structural defects that warrant further investigation?
+7.1.2  Where deck sheathing exists, check the condition and make an observation if there is a potential risk to personnel and operation?
+7.1.3  Are internal spaces free from visible structural defects that warrant further investigation?
+7.1.4  If there has been any significant structural damage to the vessel/unit, have repairs been undertaken to the satisfaction of an attending Class surveyor?
+7.1.5  If the vessel has any through-hull penetrations (eg, HiPAP, Moonpools, etc), are they in good order and subject to Class approval?
+## 7.3 -- Structural modifications
+7.3.1  Has the vessel/unit's Classification society or certifying authority been involved in assessing/approving any structural modifications to the vessel/unit?
+7.3.2  Is there evidence that the vessel/unit's stability information has been updated when structural or mission specific equipment modifications have taken place?
+7.3.4  If structural modifications have been undertaken, do they agree with the details recorded on the OVPQ?
+## 8.19 -- Barge
+8.19.1  Are the towing bridle and/or tow pads in satisfactory condition, regularly inspected and certified?
+8.19.2  If fitted is the Surge Protection gear in Satisfactory condition?
+8.19.3  Is an emergency towing gear rigged on the barge, is it regularly inspected and certified?
+8.19.4  If fitted with a loading ramp is the ramp marked with a SWL?
+8.19.5  If fitted, is the emergency anchoring equipment in good condition?
+8.19.6  Is the barge fitted with at least four mooring bollards/stag horns on each side?
+8.19.7  Are the Mooring fittings marked with SWL ?
+8.19.8  Is the vessel fitted with necessary Towing Navigation Lights for compliance with Collision Regulations?
+8.19.9  If fitted, is the bridle recovery winch and recovery line in good condition?
+8.19.10  Are towline connections capable of quick release under adverse conditions?
+8.19.11  Where towing connections can be released from the brackets, does the fairlead design allow all the released parts to pass through the fairlead?
+8.19.12  Are access ladders in good condition?
+8.19.13  Are towing brackets and fairleads part of planned maintenance system?
+8.19.14  Are there suitable handrails, or deck markings, in place to prevent personnel falling overboard?
+8.19.15  Where fitted with generator or battery supply, is the power system properly functioning and in good condition?
+## 12.1 -- Hull, superstructure and external weather decks
+12.1.1  Is the general condition, visual appearance and cleanliness of the hull satisfactory?
+12.1.2  Is all loose gear on deck, in stores and in internal spaces properly secured?
+12.1.3  Are hull markings clearly indicated and correctly placed?
+12.1.5  Does the structure include arrangements designed to minimise hazards associated with falls from heights?
+12.1.6  Is the general condition of service pipework satisfactory and is it free from significant corrosion and pitting and soft patches or other temporary repairs?
+12.1.7  Is all powered deck machinery (including mooring winches and deck cranes), free from obvious oil leaks?
+12.1.8  Are all deck openings (including watertight doors, weathertight doors and portholes), in a satisfactory condition and capable of being properly secured?
+12.1.9  Are there documented procedures for the operation of powered watertight doors which require doors to be left in the normally closed position?
+12.1.10  Are records available to demonstrate that all personnel has received training / induction related to powered watertight door operation?
+12.1.11  Are all watertight doors included in the planned maintenance system?
+12.1.12  If fitted are all watertight door position indicators operating correctly?
+12.1.13  Are all cable transits and bulkhead penetrations correctly assembled?
+12.1.14  Is a programme in place that covers the periodic inspection of all tanks, void spaces, chain lockers and cofferdams, and their coatings?
+12.1.15  Are fuel, ballast and other space vents and air pipes in a satisfactory condition, marked to indicate the spaces they serve and does visual evidence indicate regular maintenance?
+## 12.2 -- Electrical equipment
+12.2.1  Is deck lighting adequate?
+12.2.2  Is the general condition of electrical equipment, including light fittings, conduits and wiring, satisfactory?
+## 12.3 -- Internal spaces
+12.3.1  Are internal spaces and storerooms clean and tidy?
+12.3.2  Are the forecastle space, rope stores and after stores free of water?
+
+======================================================================
+FORM: OVID-COMMON-PART1-MOBILE.html | OVID -- Commun 1/4 (Certification, Crew, Navigation) | short name: OVID Common 1-4 | 68 questions
+## 2.1 -- Certification
+2.1.1  Are all the Class statutory certificates or flag state equivalent listed in the guidance, where applicable, valid and have the annual and intermediate surveys been carried out within the required range dates?
+2.1.2  Name of Classification Society
+## 2.2 -- Safety management
+2.2.1  Does the vessel/unit have a formal safety management system?
+2.2.2  Where appropriate, is there objective evidence that the safety management system complies with the requirements of the ISM Code?
+2.2.3  Does an operator's representative visit the vessel/unit at least twice annually?
+2.2.4  Is a recent operator's audit report available and is a close-out system in place for dealing with non-conformities?
+2.2.5  Does the Master review the safety management system and report to the operator on any deficiencies?
+## 2.3 -- Class documentation and surveys
+2.3.1  Was last drydocking/underwater survey scheduled?
+2.3.2  Is the vessel/unit free of conditions of class?
+## 2.4 -- Publications
+2.4.1  In the last 12 months has the vessel been Laid-up?
+2.4.2  If applicable, was the lay-up and reactivation covered by a Management of Change (MOC) process and did the technical operator follow the Classification Society recommendations?
+## 3.1 -- General
+3.1.1  Are both crew and contractors required to comply with the vessel/unit's safety management systems in full?
+3.1.2  Is there a process in place to ensure that any proposed bridging documents integrate effectively with the vessel/unit's safety management system?
+3.1.3  Are both crew and contractors required to comply with the vessel/unit's drug and alcohol policy and testing regime?
+3.1.4  Is the drug and alcohol policy based on 'zero tolerance' (requiring zero Blood Alcohol Content (BAC) and zero drug content) for all on board the vessel/unit?
+3.1.5  Do incident investigation procedure include guidance on post incident testing
+3.1.6  Does the operator have a policy for unannounced drug and alcohol testing?
+3.1.7  Does the operator have a policy and/or procedures in place to support prevention, reporting and response to bullying and harassment, including sexual assault and/or sexual harassment (SASH), including bystanders and bystander intervention?
+3.1.8  Is there a process in place to ensure prompt and effective confidential reporting of bullying, harassment, and assault?
+3.1.9  Is there a common language stipulated and is the safety management system documentation in this common language?
+3.1.10  Is there a system for ensuring communications between contractors, the vessel/unit's crew and third parties?
+## 3.2 -- Crew-specific
+3.2.1  Does the manning level meet or exceed that required by the Minimum Safe Manning Document?
+3.2.2  Does the crew matrix posted for the vessel on the OVID website accurately reflect the information relating to the officers on board at the time of the inspection?
+## 3.3 -- Crew-specific (non barge)
+3.3.1  Are the crew members and project crew appropriately qualified for the operations and equipment on board?
+3.3.2  For vessels operating on LNG or other alternative fuel types. Has personnel with special duties received specific training as per IGF code?
+3.3.3  For vessel equipped with hybrid power solutions including energy storage systems (ESS), are crew trained in the operation of the ESS?
+3.3.4  Does the company operate a formal appraisal system for marine crew?
+3.3.5  Do all personnel maintain hours of rest records and are the hours of rest in compliance with MLC or STCW requirements?
+3.3.6  Have the Master and/or any officers with direct responsibility for ship handling received appropriate formal training in ship handling for the type of vessel/unit?
+3.3.7  If the Master has been newly hired within the last 12 months, did he receive appropriate pre- command training, including documented understanding of the Company's expectations?
+3.3.8  Are the company medical procedures implemented on board?
+3.3.9  Are Food handlers trained?
+## 3.5 -- Vessels routinely carrying contractors
+3.5.1  Is there evidence of training contractors in the content of the vessel/unit's safety management system?
+3.5.2  Is there evidence of all contractors being familiarised with the vessel/unit's emergency procedures and requirements?
+3.5.3  Are contractors encouraged to be involved in the vessel/unit's safety management processes, such as safety meetings?
+3.5.4  Is there evidence that contractor staff have appropriate training, rules of engagement and operational procedures for their plant, equipment and work scope onboard?
+3.5.5  Is there evidence that operator verify the adequacy of contractor's equipment prior first use?
+3.5.6  Have any additional hazards associated with contractor's operations and equipment been identified and risk assessed, and appropriate control measures put in place?
+3.5.7  Do contractors supply appropriate PPE?
+## 4.1 -- Navigation
+4.1.1  Is there evidence that operator's navigation instructions and procedures are implemented on board?
+4.1.2  Have all the deck officers received documented training and competence assessment for the navigational equipment fitted on board?
+4.1.3  Do the vessel operating procedures require a minimum of 2 STCW certified navigational officers to be on the bridge throughout operations alongside an installation or within 500-meter zone?
+4.1.4  Is there evidence that the 500 meters safety zone entry procedure is applied on board?
+4.1.5  Are check lists, such as those for pre-arrival, pre-departure, 500 m zone, watch handover and pilot-Master interchange being completed?
+4.1.6  Does the vessel documented procedures clearly identify the actions to be followed when changing the manoeuvring position on the bridge, taking into account the physical location of the vessel in relation to the platform and/or the engine/generator status?
+4.1.7  Is operator's guidance on minimum under keel clearance and squat implemented on board?
+4.1.8  Are deck logbooks correctly maintained and is an adequate record being kept of all the navigational activities both at Sea and in Port?
+4.1.9  Are records maintained of preventive fire and security rounds completed after each watch?
+4.1.10  Are the vessel/unit’s manoeuvring characteristics displayed on the bridge?
+4.1.11  Are there documented and clearly identified steering mode change over procedure, including emergency steering, in place?
+4.1.12  Do vessel/unit's officers demonstrate a full understanding of steering changeover practices?
+4.1.13  Has the Master written his own standing orders and if applicable night orders?
+4.1.14  Have the deck officers countersigned the Master’s standing and night orders as being read and understood?
+4.1.15  Are the Standard Magnetic and/or Gyro compasses in good order?
+4.1.16  Has a system been established to ensure that nautical publications and charts, paper and/or electronic, for the intended voyage are on board, current and corrected up to date?
+4.1.17  If fitted, are Master and deck officers familiar with the operation of the ECDIS on board?
+4.1.18  If the vessel is equipped with an Electronic Chart Display and Information System (ECDIS) are the Master and deck officers able to produce appropriate documentation that generic training and type-specific familiarisation has been undertaken?
+4.1.19  If the vessel is provided with an Electronic Chart Display and Information System (ECDIS) does it meet the requirements of SOLAS and is an approved backup system provided?
+4.1.20  Is a lookout maintained at all times when the vessel/unit is at sea?
+4.1.21  Are use of manual fixes (bearing and range) implemented and documented at appropriate interval on ECDIS or paper charts?
+4.1.22  Was a comprehensive passage plan available for the previous voyage and did it cover the full voyage from berth to berth utilising appropriate charts and publications?
+4.1.23  Is the echo sounder fully functional, showing correct reading, and included in PMS for navigation equipment?
+4.1.24  Do documented procedures clearly prohibit the use of offshore installations as way points?
+4.1.25  During Port Entry and Departure, was the position of the vessel/unit monitored?
+4.1.26  Is there a system for dealing with navigation warnings?
+4.1.27  Is all navigation equipment in good order?
+4.1.28  Are navigation lights in good order?
+4.1.29  Are procedures in place and evidence available to ensure the Master / Chief Engineer has a documented handover?
+
+======================================================================
+FORM: OVID-COMMON-PART2-MOBILE.html | OVID -- Commun 2/4 (Safety and Security) | short name: OVID Common 2-4 | 115 questions
+## 5.1 -- General
+5.1.1  Is contact details of the Designated Person Ashore (DPA) or appropriate shore-based contact clearly posted onboard?
+5.1.2  Has a vessel/unit safety officer been designated and trained to undertake this role?
+5.1.3  Is personal protective equipment provided and available spares on board?
+5.1.4  Are the PPE requirements for tasks clearly defined and worn as required?
+5.1.5  Are regular safety meetings held, are the minutes recorded and does the operator provide shore management responses?
+5.1.6  Are there records on board showing that accidents, incidents, non-conformities, including breaches of regulations and near misses are reported, investigated and closed out?
+5.1.7  Have officers responsible for incident investigation on board received incident investigation training?
+5.1.8  Are smoking restrictions in place and are they being adhered to?
+5.1.9  Is there a risk Assessment System in place for the carriage and handling of chemicals?
+5.1.10  Does the safety management system contain procedures to address the control of hazardous substances used on board the vessel/unit?
+5.1.11  Does the Vessel/Unit Safety Officer undertake periodic inspection of all areas?
+5.1.12  If there a safety observation programme implemented on board?
+## 5.2 -- Medical
+5.2.1  Is the hospital clean and tidy and ready for immediate use?
+5.2.2  Is an alarm system fitted in the hospital and is it regularly tested?
+5.2.3  Is there an appropriately qualified individual designated to provide medical care on board?
+5.2.4  Is there a system for verifying and checking medical stores?
+5.2.5  Are first aid kits readily available and subjected to regular inspection to confirm their contents?
+5.2.6  If cardiopulmonary resuscitation (CPR) equipment is carried, including oxygen resuscitators and/or defibrillators, is it regularly tested?
+5.2.7  Are personnel familiar with CPR equipment carried on board?
+5.2.8  Is medical advice available 24hrs a day?
+5.2.9  Is there a formal medical evacuation plan in place?
+5.2.10  Are medical drills carried out at periodic intervals?
+## 5.3 -- Management of change
+5.3.1  Is there a documented procedure in place for the management of change?
+5.3.2  Is there evidence to demonstrate that the MoC process is being properly applied?
+5.3.3  If any equipment required by operations is retro-fitted or temporarily installed, is there a formal process for assessing the integrity of connections to the vessel/unit's systems?
+## 5.4 -- Drills, training and familiarisation
+5.4.1  Is there evidence that all personnel, including contractors and project personnel, receive safety induction and familiarisation?
+5.4.2  Are emergency drills being carried out regularly?
+5.4.3  Does the vessel/unit have documented procedures for Man Overboard scenarios?
+5.4.4  Is regular training in the use of life-saving equipment being undertaken and are appropriate records maintained for each person on board?
+5.4.5  For vessel equipped with hybrid power solutions including energy storage systems (ESS), are the crew familiar with the fire extinguishing system for the battery room, have they received additional training in the risk related to exposure from gases from a fire in batteries?
+## 5.5 -- Ship security
+5.5.1  Does the vessel/unit have an approved Ships Security Plan (SSP)?
+5.5.2  Is security threat and risk assessment an integral part of voyage planning, and did the passage plan contain security related information for each leg of the voyage?
+5.5.3  Are Master and officers familiar with the company procedures for hardening the vessel when entering areas of increased security risk, and was there a Vessel Hardening Plan (VHP) available?
+5.5.4  Are the Master, officers and ratings familiar with the company procedures to control access to the vessel in port and to ensure the safety of visitors, and were these procedures effectively implemented?
+5.5.5  Are the Master and officers familiar with regional maritime security reporting requirements and operation of the ship security alert system (SSAS) and has this equipment been regularly tested?
+5.5.6  Does the Ship Security Officer (SSO) have a valid Certificate of Proficiency and a full understanding of their role, and are ship security records of port calls being maintained as required by SOLAS?
+5.5.7  Are the Master and officers familiar with the company procedures for cyber security risk management, and have these procedures been fully implemented?
+## 5.6 -- Control of work
+5.6.1  Does the vessel/unit operate a documented permit to work (PTW) system?
+5.6.2  Does the PTW system specify roles and responsibilities?
+5.6.3  Is there a register recording permits issued and isolations performed?
+5.6.4  Are the period of validity and requirements for revalidation specified on the permit?
+5.6.5  Do personnel receive formal induction in the use of the PTW system?
+5.6.6  Does the PTW system include an audit process?
+5.6.7  Does the PTW or SMS include a "Stop the Job" policy or statement?
+5.6.8  Is there evidence that an effective isolation process is implemented on board as part of the PTW system?
+5.6.9  Are documented procedures in place to ensure safe work on high voltage systems and do they address appropriate access arrangements?
+5.6.10  If the vessel/unit has high voltage equipment, are staff suitably trained to perform maintenance on it?
+5.6.11  Is there evidence that hot work procedures are implemented on board?
+5.6.12  If electric welding equipment is provided, is it in good order, inspected regularly and are written safety guidelines available on site?
+5.6.13  If gas welding and burning equipment is provided, is it inspected regularly and in good order?
+5.6.14  Are spare oxygen and acetylene cylinders stored apart in a dedicated storage and is the storage in a clearly marked, well-ventilated position outside the accommodation and machinery spaces?
+5.6.15  Are there documented procedures in place covering the use of portable electrical equipment on deck?
+5.6.16  Is there an effective inspection and testing programme in place to ensure that all portable electrical equipment used on board is maintained in a satisfactory condition and included in the vessel PMS?
+5.6.17  Are all spaces that are classed as 'enclosed spaces' identified and clearly marked?
+5.6.18  Is there evidence that enclosed space entry procedures are implemented on board?
+5.6.19  Are portable gas and oxygen analysers provided appropriate to the vessel/unit's operations and are they calibrated and in good order?
+5.6.20  Are personnel onboard trained in the use and calibration of portable oxygen and gas analysers?
+5.6.21  Is there evidence that working at height or overside work procedures are implemented on board?
+## 5.7 -- Lifting equipment
+5.7.1  Are all cranes in a satisfactory condition?
+5.7.2  Are up to date records maintained for the regular inspection, maintenance and testing of all lifting equipment/devices?
+5.7.3  Has the vessel/unit undergone annual survey of the crane(s) within last 12 months?
+5.7.4  Has proof load testing and examination been completed by certifying authority within last 5 years?
+5.7.5  Are all cranes covered under planned maintenance system (PMS)?
+5.7.6  Has the vessel/unit undergone any major modifications, upgrades or repairs to the crane(s)?
+5.7.7  Are test certificates available onboard for all items of loose lifting equipment and are they subject to inspection and maintenance programme?
+5.7.8  Are safety devices associated with lifting appliances fully operational?
+5.7.9  Are cranes, derricks, pad eyes and other securing points clearly marked with their SWL?
+5.7.10  Are all items of lifting gear marked with a unique identification?
+5.7.11  Is a colour-coding or alternative system in use to identify inspected lifting equipment?
+5.7.12  Is there a programme for routine testing, i.e. start-up, daily, weekly and monthly checks of lifting equipment?
+5.7.13  Is there a documented procedure requiring that all lifting operations are properly planned?
+5.7.14  Does the vessel/unit have a system in place for the quarantine of damaged or uncertified lifting equipment?
+## 5.9 -- Offshore personnel transfer
+5.9.1  Does the vessel/unit have documented procedures for transfer of personnel offshore?
+5.9.2  Are all personnel transfer equipment subject to an inspection and certification regime?
+5.9.3  Have all personnel involved in lifting/man riding operations been trained and certified to carry out such operations?
+5.9.4  Where fitted, is the offshore personnel gangway certified and subject to an inspection programme?
+5.9.5  Is there a formal check system for confirming who crosses the gangway, and is there an effective back up check system to ensure discrepancies are raised and addressed?
+5.9.6  If the gangway is stabilised, does the control function use a dedicated crew?
+5.9.7  Are effective documented procedures in place for the use of small boats that include working from them, personnel transfer and the launch and recovery?
+## 5.10 -- Life saving appliances
+5.10.1  Are vessel/unit-specific life-saving equipment training manuals available?
+5.10.2  Are vessel/unit-specific life-saving equipment maintenance instructions available and are weekly and monthly inspections being carried out?
+5.10.3  Are muster lists displayed onboard?
+5.10.4  Is there a maintenance and test schedule for lifeboat, Rescue boat on-load release gear, davit launched liferaft automatic release hooks, and free-fall lifeboat release systems, where fitted?
+5.10.5  If vessel/unit has lifeboats, are the lifeboats, including their equipment and launching mechanisms, in good order?
+5.10.6  If fitted, are lifeboat operating instructions clearly displayed?
+5.10.7  If vessel/unit has a rescue boat, is the rescue boat, including its equipment and launching arrangement available for use and in good order?
+5.10.8  Are liferafts in good order, within due date and operating instructions clearly posted?
+5.10.9  Are hydrostatic releases, where fitted, correctly attached?
+5.10.10  Are survival craft portable VHF radios and Search and Rescue Radar Transponders (SART’s) in good order and charged?
+5.10.11  Are lifebuoys, lights, buoyant lines, quick release mechanisms and self-activating smoke floats in good order?
+5.10.12  Are lifejackets in good order?
+5.10.13  Are lifejacket donning instructions displayed?
+5.10.14  If vessel is outfitted with immersion suits, are the immersion suits available for use and free of defects?
+5.10.15  Are pyrotechnics, including line throwing apparatus, in date and in good order?
+5.10.16  Are the locations of life saving appliances marked with IMO or equivalent certifying authority symbols?
+5.10.17  Is the LSA plan seen to be up to date and represent the current arrangements on the Vessel/Unit?
+5.10.18  If the vessel has been retrofitted with hybrid power solutions, such as energy storage systems (ESS), have relevant safety documentation been updated?
+## 5.11 -- Fire-fighting
+5.11.1  Are vessel/unit-specific fire training manuals available?
+5.11.2  Are vessel/unit-specific fire fighting equipment maintenance instructions available and are weekly and monthly inspections being carried out?
+5.11.3  Are records available to show that samples of foam compound have been tested at regular intervals?
+5.11.4  Is a fire control plan exhibited within the accommodation, is a copy available externally and is equipment correctly marked on it?
+5.11.5  Are fire mains, pumps, hoses and nozzles in good order and available for immediate use?
+5.11.6  Is the International shore fire connection readily available externally and is the location clearly marked?
+5.11.7  Are fixed fire detection and alarm systems, if fitted, in good order and tested regularly?
+5.11.8  Are fixed fire extinguishing systems, where fitted, in good order and are clear operating instructions posted?
+5.11.9  Is the emergency fire pump in full operational condition and are starting instructions clearly displayed?
+5.11.10  Are portable fire extinguishers in good order with operating instructions clearly marked?
+5.11.11  Are firemen's outfits and breathing apparatus in good order, provided with fully charged cylinders and ready for immediate use?
+5.11.12  If fitted, are emergency escape breathing devices in good order and ready for immediate use?
+5.11.13  Are accommodation and ventilation fan emergency stops in good order and clearly marked to indicate the spaces they serve?
+5.11.14  Are fire flaps in good order and clearly marked to indicate the spaces they serve?
+5.11.15  If vessel has FiFi notation, is the associated equipment in good order?
+5.11.16  Are Fire Doors Operational and part of a planned maintenance and inspection regime?
+## 5.12 -- Access
+5.12.1  Is a safe means of access provided, including, where appropriate, the provision of a gangway, accommodation ladder, pilot ladder, safety net, lifebuoy and line?
+5.12.2  Where the vessel/unit is not fitted with a helideck, and Chapter 14 is not applicable, does the vessel/unit have a set of procedures/guidance for helicopter winching operations in the event that they may need to be enacted?
+
+======================================================================
+FORM: OVID-COMMON-PART3-MOBILE.html | OVID -- Commun 3/4 (Stability, Mooring, Anchoring, Hull, Electrical, Accommodation) | short name: OVID Common 3-4 | 85 questions
+## 7.1 -- General
+7.1.1  Is the hull, weather decks and superstructure free from visible structural defects that warrant further investigation?
+7.1.2  Where deck sheathing exists, check the condition and make an observation if there is a potential risk to personnel and operation?
+7.1.3  Are internal spaces free from visible structural defects that warrant further investigation?
+7.1.4  If there has been any significant structural damage to the vessel/unit, have repairs been undertaken to the satisfaction of an attending Class surveyor?
+7.1.5  If the vessel has any through-hull penetrations (eg, HiPAP, Moonpools, etc), are they in good order and subject to Class approval?
+## 7.2 -- Stability
+7.2.1  Is there a designated person responsible for cargo and/or ballast operations?
+7.2.2  Are stability records maintained on board in line with the operators procedures?
+7.2.3  Is an approved stability book available onboard?
+7.2.4  Is a class/flag approved loading stability computer/software package in use?
+7.2.5  Are there records indicating that the operational accuracy of the stability computer/software package is tested regularly?
+7.2.6  Are responsible personnel (for ballast control and stability operations) aware of the limitations, if any, as noted in stability booklet?
+7.2.7  Is there a system of verifying accuracy of tank gauging systems and level alarms?
+7.2.8  Do documented procedures require checking of differences between actual and calculated displacements and are records maintained?
+## 7.3 -- Structural modifications
+7.3.1  Has the vessel/unit's Classification society or certifying authority been involved in assessing/approving any structural modifications to the vessel/unit?
+7.3.2  Is there evidence that the vessel/unit's stability information has been updated when structural or mission specific equipment modifications have taken place?
+7.3.3  If applicable, are the vessel/unit's Master and Officers fully aware of the changes to stability information as a result of the structural or plant modifications?
+7.3.4  If structural modifications have been undertaken, do they agree with the details recorded on the OVPQ?
+## 9.1 -- General
+9.1.1  Are certificates available for all mooring ropes, wires, chains, shackles, etc.?
+9.1.2  Is there a maintenance system for the mooring equipment on board?
+9.1.3  Are there sufficient marine crew to conduct safe mooring operations?
+9.1.4  Is there a means of communication (primary and backup) to support mooring operations?
+## 9.2 -- Mooring procedures
+9.2.1  Are alongside (Jetty/Dock) mooring procedures available?
+9.2.2  Are mooring lines secured to bitts turned up correctly?
+9.2.3  Are all powered mooring lines correctly reeled on drums?
+9.2.4  If fitted are all powered mooring lines secured on brakes and are the winches out of gear?
+9.2.5  Have mooring winches undergone periodic brake rendering test and suitably marked?
+9.2.6  Are all mooring lines stowed neatly to minimise tripping hazards and are mooring areas clear and unobstructed?
+9.2.7  If the vessel/unit is equipped with fenders for mooring alongside, are they in good condition and properly secured?
+## 9.3 -- Equipment
+9.3.1  If fitted, are all mooring winches and foundations in good order?
+9.3.2  Are mooring wires and ropes in good order?
+9.3.3  If fitted are pedestal fairleads, roller fairleads and other rollers well greased and free to turn and are bitts and chocks free of grooving?
+9.3.4  Are appropriate stoppers available and in good condition?
+## 9.4 -- Anchoring equipment
+9.4.1  Are windlasses, anchors, locking bars and cables in a good order condition and operating effectively?
+9.4.2  If fitted, are spurling pipes normally secured to prevent water ingress?
+## 9.5 -- Spread mooring
+9.5.1  Does the vessel/unit have procedures for spread mooring with anchors?
+9.5.2  Has an FME(C)A been carried out on spread moored systems?
+9.5.3  Is certification available for mooring chains, wires and ancillaries for each leg?
+9.5.4  Is there a system for monitoring and recording of mooring line tension and lineout/scope of spread moored systems and are records maintained?
+9.5.5  Is there a system for maintenance and calibration of lineout, scope and tension meters and are records maintained?
+9.5.6  Are the controls for local and, if applicable, remote winch/windlass operation in good order?
+9.5.7  Are the emergency stops, if fitted, for winches/windlasses routinely tested and records maintained?
+9.5.8  Is a defined contingency matrix in place to cover weather limits and the cessation of operations for spread moored vessels?
+9.5.9  Are crew familiar with spread mooring contingency plans and emergency operation of mooring equipment?
+## 10.1 -- General
+10.1.1  Are instructions for operating the digital selective calling and satellite communications equipment in an emergency clearly displayed?
+10.1.2  Can officers demonstrate a satisfactory understanding of how to operate communications equipment in an emergency?
+10.1.3  Has the AIS been programmed with up-to-date voyage information?
+10.1.4  Are periodical tests of communications equipment carried out and recorded as required?
+10.1.5  Is the Radio Log being maintained correctly?
+10.1.6  If applicable, are radio emergency batteries in a satisfactory fully charged condition and the battery log completed up to date?
+10.1.7  Are arrangements in place to ensure the availability of the radio equipment?
+## 10.2 -- Equipment
+10.2.1  Is the communications equipment in good order?
+10.2.2  Is the satellite EPIRB fitted, armed and labelled correctly and inspected in accordance with the manufacturer’s requirements?
+10.2.3  Is the vessel/unit equipped with sufficient portable radios for use on deck?
+10.2.4  Are there documented procedures for the use of communications equipment within 500 m/ safety zones?
+## 12.1 -- Hull, superstructure and external weather decks
+12.1.1  Is the general condition, visual appearance and cleanliness of the hull satisfactory?
+12.1.2  Is all loose gear on deck, in stores and in internal spaces properly secured?
+12.1.3  Are hull markings clearly indicated and correctly placed?
+12.1.4  Is the general condition, visual appearance and cleanliness of the external decks satisfactory including non-slip surfaces in working areas and access routes?
+12.1.5  Does the structure include arrangements designed to minimise hazards associated with falls from heights?
+12.1.6  Is the general condition of service pipework satisfactory and is it free from significant corrosion and pitting and soft patches or other temporary repairs?
+12.1.7  Is all powered deck machinery (including mooring winches and deck cranes), free from obvious oil leaks?
+12.1.8  Are all deck openings (including watertight doors, weathertight doors and portholes), in a satisfactory condition and capable of being properly secured?
+12.1.9  Are there documented procedures for the operation of powered watertight doors which require doors to be left in the normally closed position?
+12.1.10  Are records available to demonstrate that all personnel has received training / induction related to powered watertight door operation?
+12.1.11  Are all watertight doors included in the planned maintenance system?
+12.1.12  If fitted are all watertight door position indicators operating correctly?
+12.1.13  Are all cable transits and bulkhead penetrations correctly assembled?
+12.1.14  Is a programme in place that covers the periodic inspection of all tanks, void spaces, chain lockers and cofferdams, and their coatings?
+12.1.15  Are fuel, ballast and other space vents and air pipes in a satisfactory condition, marked to indicate the spaces they serve and does visual evidence indicate regular maintenance?
+12.1.16  Is the general condition, visual appearance and cleanliness of the superstructure satisfactory?
+## 12.2 -- Electrical equipment
+12.2.1  Is deck lighting adequate?
+12.2.2  Is the general condition of electrical equipment, including light fittings, conduits and wiring, satisfactory?
+## 12.3 -- Internal spaces
+12.3.1  Are internal spaces and storerooms clean and tidy?
+12.3.2  Are the forecastle space, rope stores and after stores free of water?
+## 12.4 -- Accommodation Areas
+12.4.1  Is the accommodation clean and tidy?
+12.4.2  Are alleyways free of obstructions and exits clearly marked?
+12.4.3  Are public spaces, including smoke rooms, mess rooms, sanitary areas, food storerooms, food handling spaces, refrigerated spaces, galleys and pantries clean, tidy and in a hygienically satisfactory condition?
+12.4.4  Are laundries and drying rooms free of accumulations of flammable materials that could constitute a fire hazard?
+12.4.5  Is the level of accommodation lighting satisfactory?
+12.4.6  Is the condition of electrical equipment in the accommodation satisfactory?
+12.4.7  Are personnel alarms in refrigerated spaces in good order and regularly tested?
+12.4.8  Do the food storage areas appear to be kept in good order?
+12.4.9  Are food handlers wearing correct clothing?
+12.4.10  Are fridge, freezer and dry store areas being maintained at suitable temperature?
+12.4.11  Are tests undertaken of the potable water system and is regular maintenance carried out and recorded for both domestic and supplied potable water?
+
+======================================================================
+FORM: OVID-COMMON-PART4-MOBILE.html | OVID -- Commun 4/4 (Machinery & Pollution Prevention) | short name: OVID Common 4-4 | 82 questions
+## 11.1 -- Policies, procedures and documentation
+11.1.1  Is the vessel/unit provided with operator’s instructions and documented procedures?
+11.1.2  Are the duties of the watch-standing officers and ratings clearly defined?
+11.1.3  Is the engine logbook fully maintained?
+11.1.4  Is the unmanned operation system (E0) for the machinery space fully operational and certified?
+11.1.5  If the machinery space is being operated manned, are there sufficient engineers on board?
+11.1.6  Are the engineers demonstrating knowledge and understanding of the chief engineers standing orders and instructions, and are the standing orders posted and signed by all engineers?
+11.1.7  Are there procedures to prevent uncontrolled entry into the engine compartment and machinery spaces?
+11.1.8  Are there procedures in place to ensure the safety of engineers entering the engine compartment alone?
+11.1.9  Are there documented procedures to restart critical equipment?
+11.1.10  Does the operator subscribe to a lubricating and hydraulic oil testing programme and is there a procedure in place to take into account the results?
+11.1.11  Is there a system implemented to verify the quality of fuel oil?
+11.1.12  Is there evidence that bunker transfer is done as per operator's procedures and best industry practices?
+11.1.13  If the vessel use LNG as fuel, are specific procedures and training in place?
+11.1.14  Is the dead man alarm system, where fitted, in good order and used as required?
+## 11.3 -- Planned maintenance
+11.3.1  Is a planned maintenance system in place, being followed and is it up to date?
+11.3.2  Are items of critical equipment identified in the planned maintenance system?
+11.3.3  Is an accurate and up to date inventory of spare parts being maintained?
+## 11.4 -- Safety management
+11.4.1  Is an engineer’s call alarm fitted and is it in good order and tested regularly and the results recorded?
+11.4.2  Are emergency escape routes clearly marked, unobstructed and lit?
+11.4.3  Is the level of lighting in all areas of the machinery spaces satisfactory and are the lights covered?
+11.4.4  Are vessel/unit’s engine/boiler exhausts fitted with spark arresters or are other means (e.g., built-in silencer) in place for safe operation?
+11.4.5  Do records indicate the regular testing of emergency equipment?
+11.4.6  Are machinery emergency stops and shut offs clearly marked and do records indicate that they have been regularly tested?
+11.4.7  Are diesel engine fuel delivery pipes adequately jacketed or screened, exhaust lines and hot surfaces protected from spray and surrounding areas free from fuel or lube oil leakage?
+11.4.8  Are fuel and lubricating oil handling areas, including purifier rooms, if applicable, ventilated and clean?
+11.4.9  Are main engine bearing temperature monitors, or the crankcase oil mist detector, in good order?
+11.4.10  Where hydraulic aggregate pumps (hydraulic power units -HP/Hydraulic Power Packs- HPP) are located within the main engine compartment, is an oil mist detector fitted?
+11.4.11  Are the main switchboard, alternators and other electrical equipment satisfactorily protected from water spray?
+11.4.12  Is deck insulation provided to the front and rear of medium power (i.e. 220V to 1000V) electrical switchboards and is it in a satisfactory condition?
+11.4.13  For vessel equipped with hybrid power solutions including energy storage systems (ESS), is the battery room dry, ventilated and clear of any indications from seawater ingress?
+11.4.14  If fitted, are gauge glass closing devices on oil tanks of a self-closing, fail-safe type and not inhibited?
+11.4.15  If fitted, are self-closing sounding devices to double bottom tanks in good order, closed and capped?
+11.4.16  Are all items of moving machinery which may present a hazard provided with guards?
+11.4.17  Are workshop machine tools in a safe condition and is eye protection available?
+11.4.18  Is all loose gear in the machinery spaces, stores and steering compartment properly secured?
+11.4.19  Are machinery spaces and steering compartments (where applicable) clean and free from obvious leaks and is the overall standard of housekeeping and lagging maintenance satisfactory?
+11.4.20  Are all tripping hazards identified and managed?
+11.4.21  Are bilge systems operational and bilges free of oil, rubbish and sediment?
+11.4.22  Are bilge high level alarm systems regularly tested and are records maintained?
+11.4.23  Are seawater pumps, sea chests and associated pipework in a satisfactory condition and free of hard rust and temporary repairs, particularly outboard of the ship-side valves?
+11.4.24  Are valves and pipework marked or colour coded?
+## 11.5 -- Machinery status
+11.5.1  Are all items of main, auxiliary and emergency plant in good order and reported to be fully operational?
+11.5.2  If applicable is the Engine Room local Engine control station in good order and are engineers familiar with the procedure for taking control from the bridge in an emergency?
+11.5.3  For vessel equipped with hybrid power solutions including energy storage systems (ESS), is the system fully operational without any warnings on the ESS monitoring system?
+11.5.4  Are concise starting instructions for the emergency generator, where fitted, clearly displayed?
+11.5.5  Where applicable, is the emergency generator fuel tank provided with sufficient fuel?
+11.5.6  Where an emergency generator is not fitted, are engine room emergency batteries in good order and fully charged?
+11.5.7  Is all electrical equipment including junction boxes and cable runs in good order?
+11.5.8  Are switchboards free of significant earth faults?
+## 11.6 -- Emergency steering
+11.6.1  If applicable is the steering gear/steering compartment(s) free from defects?
+11.6.2  If applicable are emergency steering changeover procedures clearly displayed locally and in the wheelhouse?
+11.6.3  If applicable are officers familiar with the operation of the steering arrangement in the emergency mode?
+11.6.4  If applicable, is the steering gear emergency reserve tank fully charged?
+11.6.5  If applicable are the arrangements for the provision of heading information adequate?
+11.6.6  If applicable are communication arrangements with the bridge satisfactory?
+11.6.7  If applicable is there a means for indicating the rudder angle or thruster direction at the emergency steering position?
+11.6.8  If applicable is access to the emergency steering controls unobstructed?
+11.6.9  If applicable in steering compartments, are suitable handrails, gratings or other non-slip surfaces provided?
+## 6.1 -- Pollution prevention
+6.1.1  Is the Engine Room (Part I) Oil Record Book (ORB) and, if applicable, Part 2, correctly completed?
+6.1.2  Are controls in place to manage ozone depleting substances in compliance with MARPOL or local requirements?
+6.1.3  Are controls in place to manage fluorinated refrigerant gases in compliance with local requirements?
+6.1.4  Do the sludge and bilge tanks designated in Form A or Form B of the IOPP Certificate and those listed in the Oil Record Book Part I, agree?
+6.1.5  Are thruster seals free of hydraulic leaks?
+6.1.6  Are containment arrangements fitted around hydraulic machinery permanent, in case of leaks, and well maintained?
+6.1.7  Does the vessel have a system to manage hydraulic hoses within planned maintenance system?
+6.1.8  Is there evidence that the oily water separator control system and engine room bilge oily water separator/filtering system is maintained in good working order and is taper proof?
+6.1.9  Are emergency bilge pumping arrangements ready for immediate use; is the emergency bilge suction clearly identified and, where fitted, is the emergency overboard discharge valve provided with a notice warning against accidental opening?
+6.1.10  Are there any bilge spaces pumped directly overboard and are appropriate arrangements in place to monitor and prevent "contaminants" being discharged overboard?
+6.1.11  Is an approved MARPOL Ship Energy Efficiency Management Plan (SEEMP) provided?
+6.1.12  Were the documents and records required by MARPOL Annex VI Regulation 13 for the control of NOx and associated emissions in good order?
+## 6.2 -- Shipboard oil and marine pollution emergency plans
+6.2.1  Is an approved MARPOL Shipboard Oil Pollution Emergency Plan (SOPEP) or Shipboard Marine Pollution Emergency Plan (SMPEP) provided?
+6.2.2  Is there evidence that contents of the SOPEP/SMPEP Manual have been reviewed on regular basis?
+6.2.3  Is there evidence that regular SOPEP/SMPEP drills being carried out?
+## 6.3 -- Bulk liquid transfers
+6.3.1  Are spill containment arrangements provided in way of bulk transfer manifolds and savealls fitted around relevant tank vents?
+6.3.2  Are manifold spill containers, if provided, empty and are the drainage arrangements satisfactory?
+6.3.3  Are means readily available for dealing with small oil or chemical spills?
+## 6.4 -- Ballast water management
+6.4.1  Does the vessel/unit have an approved ballast water and sediments management plan?
+6.4.2  Does the vessel / unit have a ballast water management treatment system and are records being maintained of all ballast water exchanges?
+6.4.3  Is Ballast Water Treatment System included in planned maintenance system and are crew familiar with operation of the system?
+## 6.5 -- Waste management
+6.5.1  Does the vessel/unit have a garbage management plan and has garbage been handled and disposed of in accordance with MARPOL?
+6.5.2  Has the Garbage Record Book been correctly completed?
+6.5.3  Are controls in place to ensure that sewage treatment plant discharges comply with MARPOL or local requirements?
+
+======================================================================
+FORM: OVID-CREWBOAT-PART1-MOBILE.html | OVID -- Crew Transfer Vessel (1/2) | short name: OVID CTV 1-2 | 90 questions
+## 2.1 -- Certification
+2.1.1  Where applicable, are all the statutory and trading certificates listed in the guidance valid?
+2.1.2  Name of Classification society, if applicable
+2.1.3  Does the vessel have any predefined limitations for operation?
+## 2.2 -- Safety management
+2.2.1  Does the vessel/unit have a documented safety management system?
+2.2.2  Where appropriate, is there objective evidence that the safety management system complies with the requirements of the ISM Code?
+2.2.3  Is a recent operator's audit report available and is a close-out system in place for dealing with non-conformities?
+2.2.4  Does the Master review the safety management system and report to the operator on any deficiencies?
+## 2.3 -- Class documentation and surveys
+2.3.1  Was last drydocking/underwater survey scheduled?
+2.3.2  If applicable, is the vessel/unit free of conditions of class or recommendations, visas, memoranda or notations?
+2.3.3  Does the person in command or his delegate have knowledge of the vessel's stability calculations / condition?
+## 3.1 -- General
+3.1.1  Are both crew and contractors required to comply with the vessel/unit's drug and alcohol policy and testing regime?
+## 3.2 -- Crew-specific
+3.2.1  Does the manning level meet or exceed that required by the operations the vessel is engaged in?
+## 3.3 -- Crew-specific (non barge)
+3.3.1  Do all crewmembers hold appropriate and valid certification and is this verified on joining vessel?
+3.3.2  Does the crew matrix posted for the vessel on the OVID website accurately reflect the information relating to the crew on board at the time of the inspection?
+3.3.3  Are Personnel hours of rest records completed in compliance with applicable regulations and are the records retained?
+3.3.4  If the Master has been newly-hired within the last 12 months, did he receive appropriate pre-command briefing, including documented understanding of the Company's expectations?
+3.3.5  Have all the deck officers received documented training for the navigational equipment fitted on board?
+3.3.6  Have the crew member(s) received Medical First Aid training?
+## 4.1 -- Navigation
+4.1.1  Is the vessel provided with operator instructions and procedures with regard to safe navigation?
+4.1.2  Are navigation check lists being completed?
+4.1.3  If applicable, does the vessel's documented procedures clearly identify the actions to be followed when changing the manoeuvring position on the bridge, taking into account the physical location of the vessel in relation to the platform and/or the engine/generator status?
+4.1.4  Is the deck logbook maintained up to date?
+4.1.5  Do vessel/unit's officers demonstrate a full understanding of steering changeover practices?
+4.1.6  Does the vessel have the relevant nautical charts and publications for the proposed area of operation and are they maintained up to date?
+4.1.7  If fitted, are Master and deck officers familiar with the operation of the ECDIS system on board?
+4.1.8  If the vessel is equipped with a chart plotter in use, are the passage planning waypoints entered and is there evidence that the vessel has been navigated accordingly?
+4.1.9  If the vessel is equipped with a chart plotter in use, is there a procedure in place to ensure that it is updated?
+4.1.10  Is there a passage plan prepared for routes that the vessel navigates?
+4.1.11  Are up-to-date navigation warnings and weather forecasts available?
+4.1.12  Is all navigation equipment in good order?
+4.1.13  Are navigation lights, day signals and flags adequate in number as required by flag state and in good operational condition?
+4.1.14  Are all sound signals in good operational condition?
+4.1.15  Is there a fixed or portable search light fitted and is it in good operating condition?
+4.1.16  Are the clear view screen and window wipers in good order?
+## 5.1 -- General
+5.1.1  Is contact details of the Designated Person Ashore (DPA) or appropriate shore-based contact clearly posted onboard?
+5.1.2  Are instructions available for the operation of Life Saving Appliances (LSA), Fire Fighting Equipment (FFE) and other emergency equipment on board and are the crew familiar with these?
+5.1.3  Are sufficient personal protective equipment provided on board?
+5.1.4  Are the following documents available for review: HSSE Meetings, Tool Box Talk, Job Safety Analysis, Risk Assessment?
+5.1.5  Is there at least one boat hook available for recovering lines or to assist in rescuing personnel who fall overboard?
+5.1.6  Does the vessel/unit have documented procedures for Man Overboard scenarios?
+5.1.7  Are there records on board showing that accidents, incidents, non-conformities, including breaches of regulations and near misses are reported, investigated and closed out?
+5.1.8  Are smoking restrictions in place and are they being adhered to?
+5.1.9  Is all loose gear on deck, in stores and in internal spaces as applicable, properly secured?
+5.1.10  Is there a risk assessment system in place for the carriage and handling of hazardous substances/chemicals?
+## 5.2 -- Medical
+5.2.1  Are first aid kits readily available and subjected to regular inspection to confirm their contents?
+5.2.2  Is medical advice available 24hrs a day?
+## 5.4 -- Drills, training and familiarisation
+5.4.1  Is there evidence that new personnel, including contractors, receive safety induction?
+5.4.2  Are emergency drills carried out as required and are records maintained?
+## 5.5 -- Ship security
+5.5.1  If the vessel/unit is NOT required to have an approved Ships Security Plan (SSP) because of vessel/unit's tonnage or trading area, are there Security Procedures in place?
+5.5.2  Are the Master and officers familiar with the company procedures for cyber security risk management, and have these procedures been fully implemented?
+## 5.6 -- Control of work
+5.6.1  Does the vessel/unit operate a documented permit to work (PTW) system?
+5.6.2  Do personnel receive formal training in the use of the PTW system?
+5.6.3  If electric welding equipment is provided, is it in good order, inspected regularly and are written safety guidelines available on site?
+5.6.4  If gas welding and burning equipment is provided, is it inspected regularly and in good order?
+5.6.5  Where applicable, are all spaces that are classed as 'enclosed spaces' identified and clearly marked?
+5.6.6  Are portable gas and oxygen analysers available and, where provided, appropriate to the vessel/unit's operations, calibrated and in good order?
+## 5.7 -- Lifting equipment
+5.7.1  Are up to date records maintained for the regular inspection, maintenance and testing of all lifting equipment/devices?
+5.7.2  Are safety devices associated with lifting appliances fully operational?
+5.7.3  Is a colour-coding or alternative system in use to identify inspected lifting equipment?
+## 5.9 -- Offshore personnel transfer
+5.9.1  Does the vessel/unit have documented procedures for transfer of personnel offshore?
+5.9.2  Are there records of inspection and maintenance of life saving appliances?
+## 5.10 -- Life saving appliances
+5.10.1  Are muster lists displayed onboard?
+5.10.2  Are liferafts, where fitted, in good order and within due date?
+5.10.3  Are hydrostatic releases, where fitted, correctly attached?
+5.10.4  If fitted, are survival craft portable VHF radios and Search and Rescue Radar Transponders (SART's) in good order and charged?
+5.10.5  Are lifebuoys, lights, and buoyant lines in good order?
+5.10.6  Are lifejackets in good order?
+5.10.7  Are lifejacket donning instructions displayed?
+5.10.8  If vessel is outfitted with immersion suits, are the immersion suits available for use and free of defects?
+5.10.9  Are pyrotechnics, including line throwing apparatus, in date and in good order?
+5.10.10  Are the locations of life saving and fire fighting appliances marked with IMO or equivalent certifying authority symbols?
+5.10.11  Are LSA & FFE plans, where applicable, available and conspicuously posted?
+## 5.11 -- Fire-fighting
+5.11.1  Are there records of inspection and maintenance of Fire Fighting Appliances?
+5.11.2  Are fire mains, pumps, hoses and nozzles in good order and available for immediate use?
+5.11.3  If fitted, are fixed fire detection and alarm systems in good order and tested regularly?
+5.11.4  If fitted, are fixed fire extinguishing systems in good order and are clear operating instructions posted?
+5.11.5  If fitted, is the emergency fire pump in full operational condition and are starting instructions clearly displayed?
+5.11.6  Are portable fire extinguishers in good order with operating instructions clearly marked?
+5.11.7  If applicable, are firemen's outfits and breathing apparatus in good order, provided with fully charged cylinders and ready for immediate use?
+5.11.8  Are accommodation and ventilation fan emergency stops and fire flaps in good order and clearly marked to indicate the spaces they serve?
+## 5.12 -- Access
+5.12.1  Is there a safe means of access to the vessel?
+## 6.1 -- Pollution prevention
+6.1.1  Does vessel carry a spill kit to address operational spills (e.g. bunkering)?
+6.1.2  Are there containment arrangements fitted around machineries, fuel manifolds and vents to control spills in case of leaks?
+6.1.3  Are there arrangements in place for the handling and monitoring of oily waste and to prevent contaminants discharge overboard?
+## 6.5 -- Waste management
+6.5.1  Are arrangements in place for collecting, storing, and disposing of garbage?
+6.5.2  Are there adequate arrangements in place for handling and discharge of sewage in accordance with local requirements?
+## 7.1 -- General
+7.1.1  Are the hull, weather decks, internal compartments and superstructure free from visible structural defects that warrant further investigation?
+7.1.2  If there has been any significant structural damage to the vessel/unit, have repairs been undertaken to the satisfaction of an attending Class surveyor or relevant authority?
+## 7.2 -- Stability
+7.2.1  Are stability conditions periodically checked in accordance with operators' procedures?
+7.2.2  Is an approved stability book available onboard?
+
+======================================================================
+FORM: OVID-CREWBOAT-PART2-MOBILE.html | OVID -- Crew Transfer Vessel (2/2) | short name: OVID CTV 2-2 | 58 questions
+## 8.18 -- Crew Transfer Vessel
+8.18.1  Is the vessel registered as a High Speed Craft (HSC) as defined in SOLAS or other Code?
+8.18.2  If registered as a High Speed Craft, does the vessel have a copy of the company's 'Permit to Operate High-Speed Craft'?
+8.18.3  Have noise levels been assessed?
+8.18.4  Are crew specifically trained for crew boat operations?
+8.18.5  Are effective security documented procedures in place?
+8.18.6  Do documented procedures exist for personnel transfer and transit operations and define safe access routes?
+8.18.7  Is there a gated bulwark in way of personnel transfer areas?
+8.18.8  Are there lifebuoys and a formal system to alert in case of man-overboard, on the personnel transfer deck?
+8.18.9  Are sufficient immersion suits or thermal protective aids carried?
+8.18.10  Are passengers given a pre-embarkation and pre-disembarkation briefing?
+8.18.11  If a Passenger Evacuation System is fitted, is it in good order?
+8.18.12  Has a passenger evacuation exercise been conducted?
+8.18.13  Are emergency alarms audible in the passenger accommodation areas?
+8.18.14  Do all crewmembers have dedicated bunks in the vessel accommodation cabins?
+8.18.15  Are passenger safety briefings carried out?
+8.18.16  Are passenger areas clean and maintained in good order?
+8.18.17  Are searchlight(s) available and in good order?
+## 9.1 -- General
+9.1.1  Are the ropes, wires and equipment in good order and are there records of the inspection and maintenance available?
+## 9.2 -- Mooring procedures
+9.2.1  Are mooring lines secured to bitts turned up correctly?
+9.2.2  Are all mooring lines stowed neatly to minimise tripping hazards and are mooring areas clear and unobstructed?
+9.2.3  Is the general condition of fixed and temporary fenders on hull satisfactory with no metal protrusion on the ship side?
+## 9.3 -- Equipment
+9.3.1  If fitted, are all mooring winches in good order?
+9.3.2  Are all bollards, fairleads and chocks maintained in good order, free of grooving and marked with SWL?
+9.3.3  Does the vessel have an anchor and is there sufficient anchor cable for the proposed area of operation?
+## 10.1 -- General
+10.1.1  Can crew demonstrate a satisfactory understanding of how to operate communications equipment in an emergency?
+10.1.2  Is a continuous listening watch maintained on VHF channel 16?
+## 10.2 -- Equipment
+10.2.1  Is the communications equipment in good order?
+10.2.2  Is the vessel/unit equipped with sufficient portable radios for use?
+10.2.3  If applicable, are there documented procedures for the use of communications equipment within 500 m safety zones?
+## 11.1 -- Policies, procedures and documentation
+11.1.1  Is the vessel/unit provided with operator's instructions, documented procedures and operating manuals for machinery onboard?
+11.1.2  If applicable, is the engine logbook maintained up to date?
+## 11.3 -- Planned maintenance
+11.3.1  Is a planned maintenance system in place, being followed and is it up to date?
+11.3.2  Is an up to date inventory of critical spare parts being maintained?
+## 11.4 -- Safety management
+11.4.1  Are emergency escape routes, where applicable, clearly marked, unobstructed and lit?
+11.4.2  Is the level of lighting in the machinery spaces satisfactory?
+11.4.3  Is the engine exhaust in good condition and where applicable, fitted with spark arrestors?
+11.4.4  Do records indicate the regular testing of emergency equipment?
+11.4.5  Are machinery emergency stops and shut offs clearly marked and do records indicate that they have been regularly tested?
+11.4.6  Are diesel engine exhausts and other hot surfaces in the vicinity of fuel, diesel, lubricating and hydraulic oil pipes protected against spray?
+11.4.7  Are the main switchboard, alternators and other electrical equipment satisfactorily protected from water spray?
+11.4.8  Are all items of moving machinery which may present a hazard provided with guards?
+11.4.9  Is all loose gear in the machinery spaces, stores and steering compartment properly secured?
+11.4.10  Are chemicals properly stowed and are Safety Data Sheets (SDS) available?
+11.4.11  Are machinery spaces clean and free from obvious leaks and is the overall standard of housekeeping satisfactory?
+11.4.12  Are bilges free of oil, rubbish and sediment and is the pumping system operational?
+11.4.13  If fitted, are bilge high level alarm systems operational, regularly tested and are records maintained?
+## 11.5 -- Machinery status
+11.5.1  Are all items of main, auxiliary and emergency plant in good order and reported to be fully operational?
+11.5.2  Where applicable, is the emergency generator fuel tank provided with sufficient fuel?
+11.5.3  Where an emergency generator is not fitted, are engine room emergency batteries in good order and fully charged?
+## 11.6 -- Emergency steering
+11.6.1  If applicable, is the emergency steering system in good order, tested periodically and are crews familiar with its operation?
+## 12.1 -- Hull, superstructure and external weather decks
+12.1.1  Is the general condition, visual appearance and cleanliness of the hull, superstructure and weather decks including non-slip surfaces in working areas satisfactory?
+12.1.2  Where applicable, are hull markings clearly indicated and correctly placed?
+12.1.3  Is the general condition of service pipework satisfactory and is it free from significant corrosion and pitting and soft patches or other temporary repairs?
+12.1.4  Are all deck openings (including watertight doors, weathertight doors and portholes) in a satisfactory condition and capable of being properly secured?
+12.1.5  Are all the vent pipes for fuel tanks protected against flame ingress by a suitable gauze diaphragm and protected against water ingress by a goose neck or other efficient means?
+## 12.2 -- Electrical equipment
+12.2.1  Is the level of lighting in accommodation spaces and working areas on main deck satisfactory?
+12.2.2  Is the general condition of electrical equipment, including light fittings, conduits and wiring, satisfactory?
+## 12.4 -- Accommodation Areas
+12.4.1  Where applicable, are public spaces, including smoke rooms, common toilets, mess rooms, sanitary areas, storerooms, food handling spaces, refrigerated spaces, galleys and pantries clean and in a hygienic condition?
+
+======================================================================
+FORM: OVID-DP-OPERATIONS-MOBILE.html | OVID -- DP Operations (OVIQ4 Ch.15) | short name: OVID DP Ops | 41 questions
+## 15.1 -- General
+15.1.1  Does the vessel have on board a copy of the most recent DP FMEA (DP FMEA Desktop analysis)?
+15.1.2  Is the latest DP FMEA revision less than 5 years old and/or has there been a third party gap analysis been completed within the last 5 years stating the DP FMEA is still valid?
+15.1.3  Have any modifications been sighted/reported to the DP mission critical equipment since the last DP FMEA revision. If applicable, have any modifications been proven by testing?
+15.1.4  Is a copy of the latest DP FMEA Proving Trials (5-yearly DP FMEA verification trials) available on board and is it less than 5 years old?
+15.1.5  Are the latest revisions of the FMEA Report and DP FMEA Proving Trials approved by class?
+15.1.6  Have the findings (if any) from the latest DP FMEA Proving Trials been addressed?
+15.1.7  Does the vessel have on board a copy of the most recent DP Annual Trials report?
+15.1.8  Have the latest DP Trials been completed within the window?
+15.1.9  Have recommendations from the annual DP trial report been addressed and closed out as required?
+15.1.10  Have all personnel involved in DP operations read and understood the DP FMEA?
+15.1.11  Is there a valid software maintenance agreement(s) in place?
+15.1.12  Do the vessel procedures require a minimum of two DP operators to be on duty during DP operations?
+15.1.13  Is the bridge access restricted to only essential personnel during DP operations?
+## 15.2 -- Operations
+15.2.1  In the last 12 months has the vessel operated without experiencing any loss of position incidents?
+15.2.2  Is the vessel without any defects which result in a reduction of DP Capability and/or redundancy?
+15.2.3  Does the vessel use the IMCA Incident reporting system?
+15.2.4  Does the vessel carry out risk assessments for specific operations (as listed in guidance)?
+15.2.5  Are Manual thruster control levers and emergency stops located within easy reach of the DPO and are each emergency stop well protected against inadvertent operation?
+15.2.6  Can the health of the position reference systems be monitored by the DPO, independently of the DP control station?
+15.2.7  Does the vessel have a vessel specific DP Operation manual on board and is there evidence that relevant DP personnel has read the document?
+15.2.8  Does the DP operations procedure include specific guidance for any DP specific operations that the vessel will conduct, e.g. Anchor Handling, Towing, Heavy Lift, Diving, Pipelay, etc?
+15.2.9  Is there a competence scheme for key DP personnel onboard?
+15.2.10  Are DP checklists in place to cover bridge, engine room and electrical systems for DP operations?
+15.2.11  Are DP Capability Plots in place to cover the normal and expected operations, and worst case failure?
+15.2.12  Are DP footprints regularly recorded and compared against previous footprints and the DP Capability Plots?
+15.2.13  Depending on vessel activity and if required, are Activity Specific Operating Guidelines (ASOG) or Well Specific Operations Guidelines (WSOG) or Field Specific Operations Guidelines (FSOG) in place and utilised?
+15.2.14  Is the DP control console located so that the DPO can also observe the controls, the external environment and the working operations of the vessel/unit?
+15.2.15  Is the DP alert triggering system in immediate reach of the DPO at console?
+## 15.3 -- Equipment
+15.3.1  Is the Dynamic Positioning control systems in good order?
+15.3.2  Are all position reference systems in good order and are both relative and absolute position references available on the vessel for the applicable operations vessel likely to conduct?
+15.3.3  If a DP data recorder is not fitted, confirm that procedures are in place for securing relevant data in the event of a DP incident?
+15.3.4  Is there a procedure and evidence of the regular checking of the secure power supply systems (UPS Battery systems)?
+15.3.5  Does the DP system have a continuous analysis function checking that in terms of thruster and power can maintain position after the worst case failure (consequence analysis function)?
+15.3.6  Is the DP control system fitted with real time DP capability envelopes or does the vessel have procedure to do a drift off test prior to DP operation?
+15.3.7  Is the actual bus bar configuration in accordance with the FMEA and the last DP trials performed?
+15.3.8  Is the DP control system included within the Planned Maintenance System?
+15.3.9  If unit is a DP flotel fitted with a connected gangway, confirm that the gangway is used as Positioning Reference System (PRS)?
+15.3.10  If the unit is a DP flotel operating on a turret moored FPSO or any moving asset with connected gangway, confirm that DP system is fitted with "follow target" mode option?
+## 15.4 -- Competence
+15.4.1  Are the vessels crew suitably qualified for DP Operations?
+15.4.2  Is there an Engineer and or Electronic Technician on-board with approved training on the DP system?
+15.4.3  Are DP drills included in the vessel drill matrix and performed regularly?
+
+======================================================================
+FORM: OVID-MPSV-OPERATIONS-MOBILE.html | OVID -- MPSV Operations (ROV, Well Servicing, Helicopter) | short name: OVID MPSV Ops | 69 questions
+## 8.14 -- ROV operations
+8.14.1  Is there evidence that risk assessments are carried out for all specific tasks related to ROV operations?
+8.14.2  If the vessel has been modified to carry out ROV Operations, have the additional weights been included in the vessel's stability information?
+8.14.3  If obstructions exist that impact on the views of ongoing operations from the vessels bridge, have CCTV cameras been installed?
+8.14.4  Is there a system, including back-up, to ensure effective verbal communication between the navigating bridge and ROV control station?
+8.14.5  Are protection rails fitted around the ROV work site?
+8.14.6  Are operational procedures for ROV operations included in the vessel's SMS or specific operations manual?
+8.14.7  Does the vessel/unit have a crew competence/training matrix that addresses ROV operations?
+8.14.8  Does the vessel/unit have a competence matrix that addresses maintenance activities associated with the ROV equipment?
+8.14.9  Does the vessel have contingency plans in place that address ROV operations?
+8.14.10  Are sea state limits clearly specified for the launching and recovery of ROV equipment?
+8.14.11  Do the operational procedures address ROV operations within anchor patterns, during diving operations or close to subsea obstructions?
+8.14.12  Is the ROV system integrated and/or connected with vessel/unit's bridge to show the ROV position in relation to the vessel/unit?
+8.14.13  Are suitable safety arrangements in place on ROV spread around moving machinery and high voltage equipment?
+8.14.14  Are local emergency stops for the ROV system available, in good order and regularly tested?
+8.14.15  Are ROV Umbilical excursion charts available on the bridge at the conning position, are they used within the risk assessment process of operational planning of vessel station keeping?
+## 8.16 -- Well servicing and sub-sea operations
+8.16.1  Are there documented procedures and general safety arrangements in place for activities on the exposed working decks, including moonpools if fitted?
+8.16.2  Where a moonpool is fitted, is a gas detection system available to cover this area?
+8.16.3  Are risk assessments carried out for all subsea operations?
+8.16.4  Are communications, including backup systems, suitable for operations on the working deck?
+8.16.5  Does the vessel/unit have a competence/training matrix that addresses well servicing and sub- sea operations?
+8.16.6  Does the vessel/unit have a competence/training matrix that addresses maintenance activities associated with the well servicing and sub-sea equipment?
+8.16.7  Do the emergency procedures cover additional risks associated with the vessel/unit's operations?
+8.16.8  Do all overboard cable and umbilical chutes appear in good order and are they properly secured?
+8.16.9  If carried, are deck generators and/or gas and chemical tanks secured on suitable decks with appropriate secondary containment in place?
+8.16.10  Is there a person in charge of ballast control and stability calculations?
+8.16.11  Can the Ballast Control Operators (BCO's) demonstrate knowledge of the vessel/unit's ballast system, the control of free surface effects and the consequences of inadvertent ballast shift?
+8.16.12  Is the stress and stability information included with the plan for current operations; have stability and where applicable, stress calculations been performed for the current operation and do the BCO's understand any limitations?
+8.16.13  Is there an inclinometer located near the ballast control panel?
+8.16.14  If fitted, are draft gauges operating correctly?
+8.16.15  Is there a system for managing manual inputs into the stability programme?
+8.16.16  Is there a system for recording changes to the vessel/unit's lightweight condition?
+8.16.17  Are the ballast and bilge systems covered by an FME(C)A?
+8.16.18  Is there a system for controlling the override of bilge and ballast system alarms?
+8.16.19  Is access to the ballast control panel restricted?
+8.16.20  Is the ballast control position attended continuously during sub-sea operations?
+8.16.21  Are all watertight doors, hatches and other openings in good order?
+8.16.22  Is there a system for monitoring crane status during use and when stowed?
+8.16.23  If Column Stabilised unit are there at least two ballast pumps available to pump out each ballast tank?
+8.16.24  Are pumproom emergency bilge suction valves clearly marked, fitted with a position indicator and capable of remote operation?
+8.16.25  Is the vessel/unit equipped with service cranes covering all anticipated operations?
+8.16.26  Are all cement silos and associated valves, pumps, vents and air supplies fully tested and in good order?
+8.16.27  Are all mud and brine tanks, pumps, valves and pipeline systems in good order and fully tested?
+8.16.28  Is all deck mounted equipment, control skids and storage containers in good order and provided with appropriate cautionary signage?
+8.16.29  Are all connections and deck pipework for bulk products, such as water and fuel, colour coded and clearly marked at loading stations?
+8.16.30  If carried, are hydrocarbon and/or chemical hoses fitted with dry break couplings?
+8.16.31  Are Material Safety Data Sheets (MSDS) on board for all the products being carried and are all officers familiar with their content?
+8.16.32  If carried, are the hoses and connections used for the transfer of bulk liquids free of defects?
+8.16.33  If carried, are all transfer hoses routinely tested?
+8.16.34  Are transfer hoses fitted with lifting saddles and stowed in racks?
+8.16.35  If carried on board, are transfer hoses fitted with flotation collars?
+## 14.1 -- General
+14.1.1  Is there documentary evidence to confirm that the helideck meets the requirements of CAP437?
+14.1.2  If the vessel/unit has re-fuelling facilities, are they certified?
+14.1.3  Are appropriate publications for helicopter operations available on board?
+## 14.2 -- Operational procedures
+14.2.1  Do on-board marine operations procedures address helicopter operations?
+14.2.2  Do helideck crew have appropriate PPE?
+14.2.3  Are documented procedures in place for checking helideck, net tension, and inspecting helideck for debris prior to aircraft arriving?
+14.2.4  Are documented procedures in place for controlling passenger access/egress at helideck?
+## 14.3 -- Crew training
+14.3.1  Are formally qualified Helicopter Landing Officers (HLOs) available on board as required?
+14.3.2  Are formally qualified Helideck Assistants (HDAs) available on board as required?
+14.3.3  Are all heli-ops radio users trained and appropriately certificated?
+14.3.4  Is the helideck monitoring system fully operational?
+## 14.4 -- Emergency response
+14.4.1  Is the vessel/unit equipped with dedicated airband transceivers?
+14.4.2  Does the vessel/unit have dedicated flight following/watch personnel & procedures?
+14.4.3  Is the helideck firefighting and emergency equipment in good order and available for immediate use?
+## 14.5 -- Passenger/cargo management
+14.5.1  Is there a formal documented procedure for briefing passengers?
+14.5.2  Are baggage scales formally calibrated and fully operational?
+14.5.3  Is there a secure area for handling/storing checked freight/baggage?
+14.5.4  Are all helideck lights functioning?
+14.5.5  Are wind sock(s) provided?
+
+======================================================================
+FORM: OVID-PSV-OPERATIONS-MOBILE.html | OVID -- PSV Operations (Supply, Oil Recovery) | short name: OVID PSV Ops | 47 questions
+## 8.8 -- Supply
+8.8.1  Is the vessel provided with operator’s policy statements, guidance and documented procedures with regard to safe supply boat operations?
+8.8.2  Does the vessel carry out risk assessments for specific supply operations?
+8.8.3  Are officers aware of maximum deck load capacity and deck strength?
+8.8.4  Has a formal risk assessment been completed for all cargo operations that the vessel is likely to perform offshore?
+8.8.5  Does the vessel have a clear deck policy and is it implemented onboard?
+8.8.6  Does the operating manual include documented procedures for restoring stability in case unstable conditions develop during cargo operations and are the officers aware of corrective action to be taken?
+8.8.7  Are officers aware of the dangers of entrapped water on deck particularly when carrying pipe cargoes?
+8.8.8  Are officers aware of the effects of free surface particularly when transferring liquids at sea?
+8.8.9  Has the deck area been marked to identify areas where cargo must not be loaded?
+8.8.10  Are Material Safety Data Sheets (MSDS) on board for all the products being handled and are all officers familiar with their content?
+8.8.11  Is there a system, including back-up, to ensure effective verbal communication between the vessel deck, vessel bridge and installation?
+8.8.12  Are the emergency stops for bulk transfer pumps tested and are records available?
+8.8.13  Is there evidence of formal pre-transfer checks being held between the vessel/unit and the receiving/discharging facility before the transfer of Bulk Liquids begins?
+8.8.14  Are all bulk cargo tanks, pumps, valves and pipeline systems in good order and fully tested as appropriate?
+8.8.15  Are there established routines to monitor ventilation from tanks containing hazardous or flammable materials, including oil based muds?
+8.8.16  Are safe areas beyond the crash barriers clear of obstructions and easily accessible to the crew from the working deck?
+8.8.17  Are tugger winches and wires associated with positioning cargo in a in good order?
+8.8.18  Is the deck cargo securing/lashing equipment in a good order?
+8.8.19  Are bulwarks, cargo stanchions and the deck sheathing free of defects?
+8.8.20  Does the 500 meters zone pre-entry check list require vessel propulsion and machinery to be set up in such a way as to ensure redundancy whilst carrying out supply operations?
+8.8.21  Has the vessel station keeping remained incident free within last 12 months?
+8.8.22  Are hose connections and coupling colour codes compatible with Industry Guidelines?
+8.8.23  Are Data Cards available on board for visited offshore installations?
+8.8.24  Does the vessel have a 500m entry check list and is it in line with Industry guidelines?
+8.8.25  Is there evidence that 500m Safety Zone pre-entry checks have been carried out in conjunction with the installation?
+8.8.26  Has the bulk cargo pumping and dry bulk systems been verified as operational?
+8.8.27  Is there evidence that bulk backload are carried as per operator's procedures and industry best practices?
+8.8.28  Have all potential hose snagging points been identified and suitable precautions put in place?
+8.8.29  Are hazardous cargoes are carried in compliance with the IMDG code segregation requirements?
+8.8.30  Is there evidence that bulk hoses are handled as per operator's procedures and best industry practices?
+8.8.31  If carried, are the hoses and connections used for the transfer of bulk liquids free of defects?
+8.8.32  If carried, are all transfer hoses routinely tested?
+8.8.33  If carried, are transfer hoses fitted with lifting saddles and stowed in racks?
+8.8.34  If carried on board, are transfer hoses fitted with flotation collars?
+8.8.35  If vessel/unit is classified to carry Methanol or other alcohol based substances, are items listed in guideline adhered to?
+## 8.4 -- Oil recovery
+8.4.1  Is the vessel certified for oil recovery operations?
+8.4.2  Has the Classification society approved an Oil Recovery Operations (ORO) Manual?
+8.4.3  Are tanks for recovered oil ready for immediate use?
+8.4.4  Is cabinet for electric supply to oil recovery equipment easily accessible and placed in a protected area?
+8.4.5  If fitted, is equipment such as booms, skimmers, air hoses for inflating boom, etc. well maintained?
+8.4.6  If oil recovery equipment is not permanently fitted, are attachments for equipment or doubling plates welded to steel deck maintained and in good condition?
+8.4.7  If fitted, are liquid dispersant systems in good condition and are the crew familiar with the documented procedures for the use and operation of the system?
+8.4.8  Have personnel been trained in oil recovery operations?
+8.4.9  Are safety arrangements relating to the recovery and handling of hydrocarbons in place?
+8.4.10  Are recovered oil tanks (fixed and portable) provided with suitable ventilation arrangements?
+8.4.11  Has the oil recovery equipment been tested in exercises regularly?
+8.4.12  Are risk assessments carried out for all Oil Recovery operations?

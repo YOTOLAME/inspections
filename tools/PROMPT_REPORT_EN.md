@@ -1,7 +1,7 @@
 # Inspection report from a Field Capture ZIP
 
 Prompt to paste into your AI assistant, with the capture ZIP attached.
-If your AI does not open ZIP files: unzip it and attach the files themselves (`inspection.json`, `report_kit.py` and all photos; photos can be sent in several messages).
+If your AI does not open ZIP files (e.g. Copilot): unzip it on your PC and attach `inspection.json`, `checklists.txt` and all photos (photos can be sent in several messages). Keep the unzipped folder: the report file will be saved in it.
 
 ## Fill in before sending
 
@@ -21,7 +21,8 @@ The attached files were exported by the Field Capture app (https://yotolame.gith
 
 - `inspection.json`: vessel, date, location, inspector, checklist(s) selected, and the field observations (dictated note + photo file names).
 - `photos/` (or loose `obsNN_N.jpg` files): the photos of each observation.
-- `report_kit.py`: self-contained tool with all checklist templates and the report builder. **No internet or GitHub access is needed.**
+- `report_kit.py`: self-contained tool with all checklist templates and the report builder (method A, AI able to run Python on attached files).
+- `checklists.txt`: all checklist templates and questions as plain text (method B).
 - `inspection_details.txt`, `AI_PROMPT.md`: for information.
 - `audio/`: voice memos. Do not use them.
 
@@ -43,10 +44,17 @@ The user chooses the checklists; it is not always the same vessel type. If the "
 
 ### Step 0 - Tools
 
-- Normal case: use `report_kit.py` from the attachments. Put all attached files (unzipped) in one working folder; photos may be loose, without the `photos/` folder.
+Two methods. Choose before starting:
+
+- **Method A - you can run Python on the attached files** (they are real files in your working folder, not only text extracts or image previews): use `report_kit.py` as below. The photos are embedded in the HTML.
+- **Method B - you cannot** (e.g. Microsoft Copilot: attached files are only text extracts and the photos are image previews in the chat): do NOT try to run anything and do not ask for the files again. Read the questions in `checklists.txt`, look at the photos in the conversation, and write the report file yourself as described in Step 4 B. The photos are not embedded: the file shows them from the unzipped capture folder.
+
+Method A:
+
+- Use `report_kit.py` from the attachments. Put all attached files (unzipped) in one working folder; photos may be loose, without the `photos/` folder.
 - Check the kit version: `python3 -I report_kit.py --version` must print a version dated 2026-10-31 or later.
 - If `report_kit.py` is missing or `--version` fails (old export): get the current `report_kit.py` from GitHub, https://github.com/YOTOLAME/inspections (file `report_kit.py` at the root; archive: https://github.com/YOTOLAME/inspections/archive/refs/heads/main.zip). If you cannot download, ask the user to attach that file.
-- If you cannot run Python at all: say so in one line and stop. Do not try to write the HTML by hand.
+- If you cannot run Python on the attached files: use Method B.
 
 Checklist names, template files and suggested counterparts:
 
@@ -76,6 +84,8 @@ Read the questions of the requested checklists:
 ```
 python3 -I report_kit.py --questions INSPECTARE-PSV-MOBILE.html OVID-PSV-OPERATIONS-MOBILE.html
 ```
+
+Method B: read them in `checklists.txt` (one block per `FORM:`; use the exact form file name and question number).
 
 ### Step 1 - Read everything
 
@@ -144,6 +154,28 @@ python3 -I report_kit.py <ZIP file or working folder> mapping.json "out/YYYY MM 
 - The output path **must end with `.html`**: this gives ONE file with all the checklists. Name it like `2026 10 26 ENERGY CRAFT 02 OVID CTV + Inspectare Crew Boat GC.html` (date of inspection, vessel, checklist short names joined by " + ", inspector initials).
 - `report_kit.py` rejects an unknown checklist or question, a forgotten observation, empty fields, an observation placed twice in the same framework and an observation grouped differently in the two frameworks (broken link): fix `mapping.json` (Step 3) and run again until it prints `OK`.
 
+### Step 4 B - Build the HTML without running code (Method B)
+
+Write `mapping.json` exactly as in Step 4 (same fields, same rules). Then write ONE text file, named `YYYY MM DD <Vessel> <Type 1> + <Type 2> <Initials>.html` (same name rule as Step 4), with exactly this content:
+
+```html
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Inspection report</title></head><body>
+<script>
+window.TEPA_REPORT = {
+  "inspection": <the content of inspection.json, copied unchanged>,
+  "mapping": <the content of mapping.json>
+};
+</script>
+<script src="https://yotolame.github.io/inspections/review-loader.js"></script>
+</body></html>
+```
+
+- Copy `inspection.json` **unchanged** (vessel, date, observations, notes, photo file names): the page uses it to find the photos.
+- Give the file for download. If you cannot create a file, give the full content in one code block and tell the user: copy it into Notepad, "Save as" with the name above, type "All files", encoding UTF-8.
+- Tell the user to save the file **in the unzipped capture folder** (next to `inspection.json`; the photos may stay in `photos/`) and to open it in Chrome or Edge with internet. The page builds the report and shows the photos from that folder.
+- The page runs the same checks as `report_kit.py`. If it shows "The report could not be built" with a list, the user sends you the list: correct the mapping and give the file again.
+
 ### Step 5 - Check
 
 - Every observation of the ZIP is placed or listed in `unassigned`.
@@ -155,13 +187,14 @@ python3 -I report_kit.py <ZIP file or working folder> mapping.json "out/YYYY MM 
 
 ### Step 6 - Deliver
 
-- Give the single HTML file for download.
+- Give the single HTML file for download (Method B: with the instructions of Step 4 B).
 - In the answer, a short table: Obs | OVID question | Inspectare question | Comment | Remark. Then the observations not placed. Nothing else.
 - Then repeat the user guide below in one short paragraph.
 
 ## User guide for the HTML review file
 
 - PC: open the file in Chrome or Edge (double-click). Entries are saved automatically in the browser.
+- File made with Method B (e.g. Copilot): it must be in the unzipped capture folder and needs internet; the photos are read from that folder. Keep the folder with the file.
 - Phone or tablet: save the file (iPhone: in Files), open https://yotolame.github.io/inspections/review.html, press "Open report file" and choose it. The file is read on the device only; nothing is sent to any server.
 - All checklists are in one file: switch with the selector at the top left. The filter "Pre-filled / commented" shows only the questions with findings.
 - A question showing "Linked with ..." is linked to the same finding in the other checklist: correct it once, the twin is updated (comment, Synergi subject, CTR action, finding box, photos). YES / NO / N/A answers are not copied: set them in each checklist.
