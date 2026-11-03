@@ -83,6 +83,7 @@ textarea { min-height: 70px; resize: vertical; }
   .pv-qh .t { flex: 1; }
   .pv-qh .a { font-weight: bold; min-width: 40px; text-align: right; }
   .pv-c { margin: 3px 0 0 50px; font-style: italic; white-space: pre-wrap; }
+  .pv-list { font-size: 9.5pt; line-height: 1.5; }
   .pv-ph { margin: 4px 0 0 50px; }
   .pv-ph img { width: 150px; height: 112px; object-fit: cover; margin: 0 6px 6px 0; border: 1px solid #ccc; }
 }
@@ -741,27 +742,65 @@ function shrink(src, max, q, cb) {
 $('btnPdf').onclick = function () {
   var T = D.templates[CUR], ts = ST.t[CUR], M = ST.meta;
   var y = 0, n = 0, na = 0, chips = [], body = '', imgs = [];
+  var yesList = [], naGroups = {}, naOrder = [], full = [];
   for (var s = 0; s < T.sections.length; s++) {
-    var S = T.sections[s];
-    body += '<div class="pv-sec">' + esc(S.title) + '</div>';
+    var S = T.sections[s], secItems = [];
     for (var k = 0; k < S.questions.length; k++) {
       var q = S.questions[k].q, a = ts.ans[q] || '';
       if (a === 'YES') { y++; } else if (a === 'NO') { n++; } else if (a === 'NA') { na++; }
       if (ts.obs[q]) { chips.push(q); }
-      body += '<div class="pv-q' + (ts.obs[q] ? ' f' : '') + '"><div class="pv-qh"><span class="n">' + esc(q) + '</span><span class="t">' + esc(S.questions[k].text) +
-        '</span><span class="a">' + (a === 'NA' ? 'N/A' : a) + '</span></div>';
       var kp = findKeys(CUR, q), cp = [];
-      if (trim(ts.cmt[q])) { cp.push(esc(trim(ts.cmt[q]))); }
-      for (var xp = 0; xp < kp.length; xp++) { if (trim(ts.cmt[kp[xp].key])) { cp.push(esc(trim(ts.cmt[kp[xp].key]))); } }
-      if (cp.length) { body += '<div class="pv-c">' + cp.join('<br>') + '</div>'; }
+      if (trim(ts.cmt[q])) { cp.push(trim(ts.cmt[q])); }
+      for (var xp = 0; xp < kp.length; xp++) { if (trim(ts.cmt[kp[xp].key])) { cp.push(trim(ts.cmt[kp[xp].key])); } }
       var ph = photosOf(CUR, q);
-      if (ph.length) {
+      if (a === 'YES' && !ts.obs[q]) { yesList.push(q); continue; }
+      if (a === 'NA' && !ts.obs[q] && !ph.length) {
+        var key = cp.join('\n');
+        if (!naGroups.hasOwnProperty(key)) { naGroups[key] = []; naOrder.push(key); }
+        naGroups[key].push({ q: q, text: S.questions[k].text, sec: S.title });
+        continue;
+      }
+      secItems.push({ q: q, text: S.questions[k].text, a: a, cp: cp, ph: ph, f: !!ts.obs[q] });
+    }
+    full.push({ title: S.title, items: secItems });
+  }
+  /* N/A answers sharing the same comment are listed by number; a single one keeps its full line */
+  var naShared = [];
+  for (var g = 0; g < naOrder.length; g++) {
+    var G = naGroups[naOrder[g]];
+    if (G.length > 1) { naShared.push({ cmt: naOrder[g], qs: G }); continue; }
+    for (var fs = 0; fs < full.length; fs++) {
+      if (full[fs].title === G[0].sec) { full[fs].items.push({ q: G[0].q, text: G[0].text, a: 'NA', cp: naOrder[g] ? naOrder[g].split('\n') : [], ph: [], f: false }); }
+    }
+  }
+  function qOrd(x) { return x.split('.').map(function (v) { return ('0000' + v).slice(-4); }).join('.'); }
+  for (var fi = 0; fi < full.length; fi++) {
+    var FI = full[fi];
+    if (!FI.items.length) { continue; }
+    FI.items.sort(function (u, v) { return qOrd(u.q) < qOrd(v.q) ? -1 : 1; });
+    body += '<div class="pv-sec">' + esc(FI.title) + '</div>';
+    for (var ii = 0; ii < FI.items.length; ii++) {
+      var IT = FI.items[ii];
+      body += '<div class="pv-q' + (IT.f ? ' f' : '') + '"><div class="pv-qh"><span class="n">' + esc(IT.q) + '</span><span class="t">' + esc(IT.text) +
+        '</span><span class="a">' + (IT.a === 'NA' ? 'N/A' : IT.a) + '</span></div>';
+      if (IT.cp.length) { var ce = []; for (var cc = 0; cc < IT.cp.length; cc++) { ce.push(esc(IT.cp[cc])); } body += '<div class="pv-c">' + ce.join('<br>') + '</div>'; }
+      if (IT.ph.length) {
         body += '<div class="pv-ph">';
-        for (var p = 0; p < ph.length; p++) { imgs.push(ph[p].src); body += '<img data-i="' + (imgs.length - 1) + '" alt="">'; }
+        for (var p = 0; p < IT.ph.length; p++) { imgs.push(IT.ph[p].src); body += '<img data-i="' + (imgs.length - 1) + '" alt="">'; }
         body += '</div>';
       }
       body += '</div>';
     }
+  }
+  var lists = '';
+  function nums(arr) { var o = []; for (var z = 0; z < arr.length; z++) { o.push(esc(arr[z].q || arr[z])); } return o.join(', '); }
+  if (yesList.length) {
+    lists += '<div class="pv-block"><h3>Questions answered YES (' + yesList.length + ')</h3><div class="pv-list">' + nums(yesList) + '</div></div>';
+  }
+  for (var ns = 0; ns < naShared.length; ns++) {
+    var NS = naShared[ns];
+    lists += '<div class="pv-block"><h3>Questions answered N/A (' + NS.qs.length + ')' + (NS.cmt ? ' - same comment' : ' - no comment') + '</h3>' +
+      '<div class="pv-list">' + nums(NS.qs) + '</div>' + (NS.cmt ? '<div class="pv-c" style="margin-left:0">' + esc(NS.cmt).replace(/\n/g, '<br>') + '</div>' : '') + '</div>';
   }
   var ini = initials(M.inspector);
   var head = '<div class="pv-title">' + esc(T.title) + ' | ' + esc(M.vessel) + (ini ? ' | ' + esc(ini) : '') + (M.date ? ' | ' + esc(M.date) : '') + '</div>' +
@@ -775,7 +814,7 @@ $('btnPdf').onclick = function () {
   } else { head += 'No observations / findings recorded.'; }
   head += '</div>';
   var pv = $('printView');
-  pv.innerHTML = head + body;
+  pv.innerHTML = head + lists + body;
   var budget = imgs.length ? Math.floor(3500000 / imgs.length) : 0, left = imgs.length;
   var tags = pv.querySelectorAll('img[data-i]');
   function go() {
