@@ -52,6 +52,7 @@ textarea { min-height: 70px; resize: vertical; }
 .un { border: 1.5px solid #b9a57a; }
 .un h2 { font-size: 15px; margin: 0 0 8px; color: #6b4a1f; }
 .unitem { border-top: 1px solid #e3dccb; padding: 8px 0; }
+.unitem textarea { margin-top: 6px; }
 .assign { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
 .assign input { width: 90px; font-size: 13px; padding: 5px; }
 .assign button, .smallbtn { font-size: 13px; padding: 5px 10px; border-radius: 6px; border: 1px solid #003B6E; background: #fff; color: #003B6E; cursor: pointer; }
@@ -235,7 +236,7 @@ function toast(m) { var t = $('toast'); t.textContent = m; t.className = 'toast'
 
 /* ---------- state ---------- */
 function freshState() {
-  var s = { meta: { vessel: D.meta.vessel || '', date: D.meta.date || '', inspector: D.meta.inspector || '', location: D.meta.location || '', tag: D.meta.tag || 'TEPA DP NAV-DP1' }, t: [], moved: {}, relo: {} };
+  var s = { meta: { vessel: D.meta.vessel || '', date: D.meta.date || '', inspector: D.meta.inspector || '', location: D.meta.location || '', tag: D.meta.tag || 'TEPA DP NAV-DP1' }, t: [], moved: {}, relo: {}, v2: true };
   for (var i = 0; i < D.templates.length; i++) {
     var T = D.templates[i], ts = { ans: {}, cmt: {}, obs: {}, subj: {}, act: {}, removed: {} };
     for (var s0 = 0; s0 < T.sections.length; s0++) { for (var k0 = 0; k0 < T.sections[s0].questions.length; k0++) { var q0 = T.sections[s0].questions[k0].q; ts.ans[q0] = 'NA'; if (!T.items[q0]) { ts.cmt[q0] = NOT_ASSESSED; } } }
@@ -254,6 +255,21 @@ function freshState() {
 function loadState() {
   try { ST = JSON.parse(localStorage.getItem(SKEY)); } catch (e) { ST = null; }
   if (!ST || !ST.t || ST.t.length !== D.templates.length) { ST = freshState(); }
+}
+/* observations placed with an older version: empty comment and N/A answer */
+function fixMoved() {
+  if (ST.v2) { return; }
+  ST.v2 = true;
+  for (var key in ST.moved) {
+    var ti = parseInt(key.split('|')[0], 10), q = key.substr(key.indexOf('|') + 1), ts = ST.t[ti];
+    if (!ts) { continue; }
+    for (var i = 0; i < ST.moved[key].length; i++) {
+      var u = D.unassigned[ST.moved[key][i]];
+      if (!u) { continue; }
+      var k = obsKey(ti, q, u.obs), c = trim(ts.cmt[k]);
+      if (!c || c === NOT_ASSESSED) { ts.cmt[k] = u.note || ''; asFinding(ti, q); }
+    }
+  }
 }
 var saveT = null;
 function save() {
@@ -470,7 +486,7 @@ function moveObs(ti, qOld, obs, qNew) {
     }
   }
   if (!findObs(ti, qOld).length) { ts.cmt[qOld] = NOT_ASSESSED; ts.subj[qOld] = ''; ts.act[qOld] = ''; ts.obs[qOld] = false; }
-  ts.obs[qNew] = true;
+  asFinding(ti, qNew);
   ts.removed[qOld] = []; ts.removed[qNew] = [];
   save();
 }
@@ -541,22 +557,53 @@ function renderUnassigned() {
     h += '<div class="unitem"><div class="note"><b>Obs ' + esc(u.obs) + ' (field note):</b> ' + esc(u.note) + '</div>' +
       (u.reason ? '<div class="remark">' + esc(u.reason) + '</div>' : '') + '<div class="photos">';
     for (var p = 0; p < (u.photos || []).length; p++) { h += '<div class="ph"><img src="' + u.photos[p] + '" alt=""></div>'; }
-    h += '</div><div class="assign"><input type="text" placeholder="Q no." id="as' + i + '"><button type="button" data-un="' + i + '">Move to this checklist question</button></div></div>';
+    var uf = unF(i);
+    h += '</div><textarea class="u-cmt" data-u="' + i + '" placeholder="Comment / Evidence (English)...">' + esc(uf.cmt) + '</textarea>' +
+      '<div class="syn"><div><label>Synergi subject</label><input type="text" class="u-subj" data-u="' + i + '" value="' + esc(uf.subj) + '"></div>' +
+      '<div><label>CTR action</label><input type="text" class="u-act" data-u="' + i + '" value="' + esc(uf.act) + '"></div></div>' +
+      '<div class="assign"><input type="text" placeholder="Q no." id="as' + i + '"><button type="button" data-un="' + i + '">Move to this checklist question</button></div></div>';
   }
-  box.innerHTML = any ? '<div class="card un"><h2>Observations not placed</h2>' + h + '</div>' : '';
+  box.innerHTML = any ? '<div class="card un"><h2>Observations not placed</h2><div class="remark">Not linked to a checklist question: exported as general findings in the PDF and the Synergi Excel unless moved to a question.</div>' + h + '</div>' : '';
+  var uin = box.querySelectorAll('[data-u]'), um = { 'u-cmt': 'cmt', 'u-subj': 'subj', 'u-act': 'act' };
+  for (var ui = 0; ui < uin.length; ui++) {
+    uin[ui].oninput = function () { unF(parseInt(this.getAttribute('data-u'), 10))[um[this.className]] = this.value; save(); };
+  }
   var bs = box.querySelectorAll('button[data-un]');
   for (var b = 0; b < bs.length; b++) {
     bs[b].onclick = function () {
       var idx = parseInt(this.getAttribute('data-un'), 10), qn = trim($('as' + idx).value);
       if (!qExists(CUR, qn)) { toast('Question ' + qn + ' not found in this checklist'); return; }
-      var key = CUR + '|' + qn;
-      (ST.moved[key] || (ST.moved[key] = [])).push(idx);
-      ST.t[CUR].obs[qn] = true;
-      save(); renderAll(); goTo(qn);
+      placeUn(idx, qn);
+      save(); renderAll(); goTo(qn); toast('Obs ' + D.unassigned[idx].obs + ' moved to question ' + qn + ' (answer set to NO)');
     };
   }
   var im = box.querySelectorAll('img');
   for (var m = 0; m < im.length; m++) { im[m].onclick = zoom; }
+}
+function unF(i) {
+  var U = ST.un || (ST.un = {}), u = D.unassigned[i];
+  if (!U[i]) { U[i] = { cmt: u.note || '', subj: '', act: '' }; }
+  return U[i];
+}
+function asFinding(ti, q) {
+  var ts = ST.t[ti];
+  ts.obs[q] = true;
+  if (ts.ans[q] !== 'YES' && ts.ans[q] !== 'NO') { ts.ans[q] = 'NO'; }
+  if (trim(ts.cmt[q]) === NOT_ASSESSED) { ts.cmt[q] = ''; }
+}
+function placeUn(idx, qn) {
+  var ts = ST.t[CUR], u = D.unassigned[idx], f = unF(idx), key = CUR + '|' + qn;
+  (ST.moved[key] || (ST.moved[key] = [])).push(idx);
+  asFinding(CUR, qn);
+  var k = obsKey(CUR, qn, u.obs);
+  if (!trim(ts.cmt[k])) { ts.cmt[k] = f.cmt; }
+  if (!trim(ts.subj[k])) { ts.subj[k] = f.subj; }
+  if (!trim(ts.act[k])) { ts.act[k] = f.act; }
+}
+function unplaced() {
+  var o = [];
+  for (var i = 0; i < (D.unassigned || []).length; i++) { if (!isMoved(i)) { o.push(i); } }
+  return o;
 }
 function isMoved(i) {
   for (var k in ST.moved) { if (ST.moved[k].indexOf(i) >= 0) { return true; } }
@@ -792,7 +839,20 @@ $('btnPdf').onclick = function () {
       body += '</div>';
     }
   }
-  var lists = '';
+  var lists = '', unp = unplaced();
+  for (var uu = 0; uu < unp.length; uu++) {
+    var UO = D.unassigned[unp[uu]], UF = unF(unp[uu]);
+    chips.push('Obs ' + UO.obs);
+    if (!uu) { body += '<div class="pv-sec">General findings (not linked to a checklist question)</div>'; }
+    body += '<div class="pv-q f"><div class="pv-qh"><span class="n">Obs ' + esc(UO.obs) + '</span><span class="t">' + esc(trim(UF.subj) || 'General finding') + '</span><span class="a"></span></div>';
+    if (trim(UF.cmt)) { body += '<div class="pv-c">' + esc(trim(UF.cmt)) + '</div>'; }
+    if ((UO.photos || []).length) {
+      body += '<div class="pv-ph">';
+      for (var up = 0; up < UO.photos.length; up++) { imgs.push(UO.photos[up]); body += '<img data-i="' + (imgs.length - 1) + '" alt="">'; }
+      body += '</div>';
+    }
+    body += '</div>';
+  }
   function nums(arr) { var o = []; for (var z = 0; z < arr.length; z++) { o.push(esc(arr[z].q || arr[z])); } return o.join(', '); }
   if (yesList.length) {
     lists += '<div class="pv-block"><h3>Questions answered YES (' + yesList.length + ')</h3><div class="pv-list">' + nums(yesList) + '</div></div>';
@@ -864,6 +924,15 @@ $('btnXls').onclick = function () {
           date: excelSerial(M.date), inspector: M.inspector || '', finding: fx });
       }
     }
+  }
+  var unp = unplaced(), T0 = D.templates[0];
+  for (var ui = 0; ui < unp.length; ui++) {
+    var UO = D.unassigned[unp[ui]], UF = unF(unp[ui]), su = trim(UF.subj).replace(/[\s.]+$/, '');
+    su = (su || 'General finding') + ' (Obs ' + UO.obs + ')';
+    var fu = su + '. > ' + dsp + ' - ' + (trim(M.tag) || 'TEPA DP NAV-DP1') + ' COMMENT: ' + trim(String(UF.cmt || '').replace(/\s*\n+\s*/g, ' '));
+    if (trim(UF.act)) { fu += ' --> ' + trim(UF.act); }
+    rows.push({ vessel: vessel, type: T0.synergiType, subject: T0.synergiLabel + ' - ' + dsp + ' - ' + vessel,
+      date: excelSerial(M.date), inspector: M.inspector || '', finding: fu });
   }
   if (!rows.length) { toast('No NO answer in any checklist'); return; }
   var H = ['Vessel', 'Inspection Type', 'Subject / Reference', 'Inspection Date', 'Inspector', 'Finding', 'Owner Response', 'Closure Date', 'Finding Status'];
@@ -938,7 +1007,7 @@ $('btnReset').onclick = function () {
 };
 function start(data) {
   D = data; SKEY = 'tepa-review:' + D.id; CUR = 0; ST = null; ADDED = {};
-  ORIG = null; ST = null; rebuildItems(); loadState(); if (ST.relo) { rebuildItems(); } buildTwins();
+  ORIG = null; ST = null; rebuildItems(); loadState(); if (ST.relo) { rebuildItems(); } buildTwins(); fixMoved();
   var sel = $('selTpl');
   sel.innerHTML = '';
   for (var i = 0; i < D.templates.length; i++) {
