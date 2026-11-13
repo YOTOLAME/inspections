@@ -238,7 +238,7 @@ function toast(m) { var t = $('toast'); t.textContent = m; t.className = 'toast'
 
 /* ---------- state ---------- */
 function freshState() {
-  var s = { meta: { vessel: D.meta.vessel || '', date: D.meta.date || '', inspector: D.meta.inspector || '', location: D.meta.location || '', tag: D.meta.tag || 'TEPA DP NAV-DP1' }, t: [], moved: {}, relo: {}, v2: true };
+  var s = { meta: { vessel: D.meta.vessel || '', date: D.meta.date || '', inspector: D.meta.inspector || '', location: D.meta.location || '', tag: D.meta.tag || 'TEPA DP NAV-DP1' }, t: [], moved: {}, relo: {}, v2: true, v3: true };
   for (var i = 0; i < D.templates.length; i++) {
     var T = D.templates[i], ts = { ans: {}, cmt: {}, obs: {}, subj: {}, act: {}, removed: {} };
     for (var s0 = 0; s0 < T.sections.length; s0++) { for (var k0 = 0; k0 < T.sections[s0].questions.length; k0++) { var q0 = T.sections[s0].questions[k0].q; ts.ans[q0] = 'NA'; if (!T.items[q0]) { ts.cmt[q0] = NOT_ASSESSED; } } }
@@ -246,6 +246,7 @@ function freshState() {
       var it = T.items[q];
       ts.cmt[q] = it.comment || '';
       ts.obs[q] = true;
+      ts.ans[q] = 'NO';
       ts.subj[q] = it.subject || '';
       ts.act[q] = it.action || '';
       for (var x0 = 0; x0 < (it.extra || []).length; x0++) { var k0 = q + '#' + it.extra[x0].obs; ts.cmt[k0] = it.extra[x0].comment || ''; ts.subj[k0] = it.extra[x0].subject || ''; ts.act[k0] = it.extra[x0].action || ''; }
@@ -260,6 +261,13 @@ function loadState() {
 }
 /* observations placed with an older version: empty comment and N/A answer */
 function fixMoved() {
+  if (!ST.v3) {
+    ST.v3 = true;
+    for (var t3 = 0; t3 < ST.t.length; t3++) {
+      for (var q3 in ST.t[t3].obs) { if (ST.t[t3].obs[q3] && ST.t[t3].ans[q3] !== 'YES' && ST.t[t3].ans[q3] !== 'NO') { ST.t[t3].ans[q3] = 'NO'; } }
+    }
+    save();
+  }
   if (ST.v2) { return; }
   ST.v2 = true;
   for (var key in ST.moved) {
@@ -748,7 +756,15 @@ function bindQ(el) {
       };
     })(rs[i].value);
   }
-  el.querySelector('.f-obs').onchange = function () { ts.obs[q] = this.checked; twinSet(CUR, q, 'obs', this.checked); save(); refreshQ(el); };
+  el.querySelector('.f-obs').onchange = function () {
+    ts.obs[q] = this.checked; twinSet(CUR, q, 'obs', this.checked);
+    if (this.checked && ts.ans[q] !== 'YES' && ts.ans[q] !== 'NO') {
+      ts.ans[q] = 'NO'; twinSet(CUR, q, 'ans', 'NO');
+      if (trim(ts.cmt[q]) === NOT_ASSESSED) { ts.cmt[q] = ''; twinSet(CUR, q, 'cmt', ''); }
+      renderStats();
+    }
+    save(); refreshQ(el);
+  };
   el.querySelector('.f-cmt').oninput = function () { ts.cmt[q] = this.value; twinSet(CUR, q, 'cmt', this.value); save(); };
   el.querySelector('.f-subj').oninput = function () { ts.subj[q] = this.value; twinSet(CUR, q, 'subj', this.value); save(); };
   el.querySelector('.f-act').oninput = function () { ts.act[q] = this.value; twinSet(CUR, q, 'act', this.value); save(); };
