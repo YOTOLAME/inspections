@@ -40,6 +40,8 @@ textarea { min-height: 70px; resize: vertical; }
 .note b { color: #6b4a1f; }
 .remark { font-size: 13px; color: #8a2b1f; margin-bottom: 8px; }
 .obsrow { font-size: 13px; margin: 6px 0; }
+.delrow { margin-top: 6px; text-align: right; }
+.del-b, .del-u { font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid #8a8a8a; background: #fff; color: #444; cursor: pointer; }
 .syn { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; margin-top: 8px; }
 .syn label { font-size: 11px; font-weight: bold; color: #666; display: block; margin-bottom: 2px; }
 .syn input { font-size: 13px; padding: 6px; }
@@ -331,7 +333,7 @@ function basePhotos(ti, q) {
   var mv = ST.moved[ti + '|' + q] || [];
   for (var i = 0; i < mv.length; i++) {
     var u = D.unassigned[mv[i]];
-    if (u) { list = list.concat(u.photos || []); }
+    if (u && !isDel(ti, u.obs)) { list = list.concat(u.photos || []); }
   }
   return list;
 }
@@ -399,7 +401,7 @@ function findObs(ti, q) {
   if (it && it.notes) { for (i = 0; i < it.notes.length; i++) { o.push(it.notes[i].obs); } }
   o.sort(function (a, b) { return a - b; });
   var mv = ST.moved[ti + '|' + q] || [];
-  for (i = 0; i < mv.length; i++) { var u = D.unassigned[mv[i]]; if (u && o.indexOf(u.obs) < 0) { o.push(u.obs); } }
+  for (i = 0; i < mv.length; i++) { var u = D.unassigned[mv[i]]; if (u && !isDel(ti, u.obs) && o.indexOf(u.obs) < 0) { o.push(u.obs); } }
   return o;
 }
 function findKeys(ti, q) {
@@ -419,7 +421,7 @@ function extraHtml(ti, q) {
       '<textarea class="x-cmt" placeholder="Comment / Evidence...">' + esc(ts.cmt[k] || '') + '</textarea>' +
       '<div class="syn"><div><label>Synergi subject</label><input type="text" class="x-subj" value="' + esc(ts.subj[k] || '') + '"></div>' +
       '<div><label>CTR action</label><input type="text" class="x-act" value="' + esc(ts.act[k] || '') + '"></div></div>' +
-      moveHtml(ti, ks[i].obs) + '</div>';
+      moveHtml(ti, ks[i].obs) + '<div class="delrow">' + delBtn(ks[i].obs) + '</div></div>';
   }
   return h;
 }
@@ -433,6 +435,7 @@ function rebuildItems() {
     if (!T.obsList) { continue; }
     var g = {}, i, q;
     for (i = 0; i < T.obsList.length; i++) {
+      if (isDel(ti, T.obsList[i].obs)) { continue; }
       q = relo[ti + '|' + T.obsList[i].obs] || T.obsList[i].q;
       (g[q] || (g[q] = [])).push(T.obsList[i]);
     }
@@ -490,6 +493,45 @@ function moveObs(ti, qOld, obs, qNew) {
   ts.removed[qOld] = []; ts.removed[qNew] = [];
   save();
 }
+/* ---------- delete a finding ---------- */
+function isDel(ti, obs) { return !!(ST && ST.del && ST.del[ti + '|' + obs]); }
+function resetQ(ts, q) { ts.cmt[q] = NOT_ASSESSED; ts.subj[q] = ''; ts.act[q] = ''; ts.obs[q] = false; ts.ans[q] = 'NA'; ts.removed[q] = []; }
+function delFinding(ti, q, obs) {
+  var ts = ST.t[ti], snap = {}, o = findObs(ti, q), i, key;
+  if (obs === null || !o.length) { resetQ(ts, q); ADDED[ti + '|' + q] = []; save(); saveAdded(); return; }
+  for (i = 0; i < o.length; i++) {
+    key = obsKey(ti, q, o[i]);
+    snap[o[i]] = { cmt: ts.cmt[key], subj: ts.subj[key], act: ts.act[key] };
+    if (key !== q) { delete ts.cmt[key]; delete ts.subj[key]; delete ts.act[key]; }
+  }
+  (ST.del || (ST.del = {}))[ti + '|' + obs] = true;
+  rebuildItems(); buildTwins();
+  o = findObs(ti, q);
+  for (i = 0; i < o.length; i++) {
+    var sn = snap[o[i]];
+    key = obsKey(ti, q, o[i]);
+    ts.cmt[key] = sn.cmt || ''; ts.subj[key] = sn.subj || ''; ts.act[key] = sn.act || '';
+  }
+  ts.removed[q] = [];
+  if (!o.length) { resetQ(ts, q); ADDED[ti + '|' + q] = []; saveAdded(); }
+  save();
+}
+function delBtn(obs) {
+  return '<button type="button" class="del-b" data-obs="' + (obs === null ? '' : obs) + '">Delete finding' + (obs === null ? '' : ' (Obs ' + obs + ')') + '</button>';
+}
+function bindDel(el, q) {
+  var bs = el.querySelectorAll('.del-b');
+  for (var i = 0; i < bs.length; i++) {
+    bs[i].onclick = function () {
+      var a = this.getAttribute('data-obs'), obs = a === '' ? null : parseInt(a, 10);
+      if (!window.confirm('Delete this finding' + (obs === null ? '' : ' (Obs ' + obs + ')') + ' from question ' + q + '? Its comment, Synergi fields and photos will no longer be exported.')) { return; }
+      var tw = (TWINS[CUR + '|' + q] || []).slice(0);
+      delFinding(CUR, q, obs);
+      for (var t = 0; t < tw.length; t++) { delFinding(tw[t][0], tw[t][1], obs); }
+      renderAll(); goTo(q); toast('Finding deleted');
+    };
+  }
+}
 function bindMove(el, q) {
   var bs = el.querySelectorAll('.mv-b');
   for (var i = 0; i < bs.length; i++) {
@@ -507,7 +549,7 @@ function twinSetX(ti, q, obs, f, v) {
   for (var i = 0; i < l.length; i++) { ST.t[l[i][0]][f][l[i][1] + '#' + obs] = v; }
 }
 function bindExtra(el, q) {
-  bindMove(el, q);
+  bindMove(el, q); bindDel(el, q);
   var ts = ST.t[CUR], fx = el.querySelectorAll('.fx'), m = { 'x-cmt': 'cmt', 'x-subj': 'subj', 'x-act': 'act' };
   for (var i = 0; i < fx.length; i++) {
     var k = fx[i].getAttribute('data-k');
@@ -523,13 +565,13 @@ function bindExtra(el, q) {
 function answerOf(ti, q) { return ST.t[ti].ans[q] || ''; }
 function isPre(ti, q) {
   var ts = ST.t[ti];
-  return !!(D.templates[ti].items[q] || ts.obs[q] || (trim(ts.cmt[q]) && trim(ts.cmt[q]) !== NOT_ASSESSED) || ST.moved[ti + '|' + q]);
+  return !!(D.templates[ti].items[q] || ts.obs[q] || (trim(ts.cmt[q]) && trim(ts.cmt[q]) !== NOT_ASSESSED) || findObs(ti, q).length);
 }
 function notesOf(ti, q) {
   var it = D.templates[ti].items[q], out = [];
   if (it && it.notes) { out = out.concat(it.notes); }
   var mv = ST.moved[ti + '|' + q] || [];
-  for (var i = 0; i < mv.length; i++) { var u = D.unassigned[mv[i]]; if (u) { out.push({ obs: u.obs, text: u.note }); } }
+  for (var i = 0; i < mv.length; i++) { var u = D.unassigned[mv[i]]; if (u && !isDel(ti, u.obs)) { out.push({ obs: u.obs, text: u.note }); } }
   return out;
 }
 function renderHeader() {
@@ -552,7 +594,7 @@ function renderStats() {
 function renderUnassigned() {
   var box = $('unBox'), h = '', any = false;
   for (var i = 0; i < (D.unassigned || []).length; i++) {
-    if (isMoved(i)) { continue; }
+    if (isMoved(i) || isDel('u', D.unassigned[i].obs)) { continue; }
     var u = D.unassigned[i]; any = true;
     h += '<div class="unitem"><div class="note"><b>Obs ' + esc(u.obs) + ' (field note):</b> ' + esc(u.note) + '</div>' +
       (u.reason ? '<div class="remark">' + esc(u.reason) + '</div>' : '') + '<div class="photos">';
@@ -561,7 +603,7 @@ function renderUnassigned() {
     h += '</div><textarea class="u-cmt" data-u="' + i + '" placeholder="Comment / Evidence (English)...">' + esc(uf.cmt) + '</textarea>' +
       '<div class="syn"><div><label>Synergi subject</label><input type="text" class="u-subj" data-u="' + i + '" value="' + esc(uf.subj) + '"></div>' +
       '<div><label>CTR action</label><input type="text" class="u-act" data-u="' + i + '" value="' + esc(uf.act) + '"></div></div>' +
-      '<div class="assign"><input type="text" placeholder="Q no." id="as' + i + '"><button type="button" data-un="' + i + '">Move to this checklist question</button></div></div>';
+      '<div class="assign"><input type="text" placeholder="Q no." id="as' + i + '"><button type="button" data-un="' + i + '">Move to this checklist question</button><button type="button" class="del-u" data-du="' + i + '">Delete finding</button></div></div>';
   }
   box.innerHTML = any ? '<div class="card un"><h2>Observations not placed</h2><div class="remark">Not linked to a checklist question: exported as general findings in the PDF and the Synergi Excel unless moved to a question.</div>' + h + '</div>' : '';
   var uin = box.querySelectorAll('[data-u]'), um = { 'u-cmt': 'cmt', 'u-subj': 'subj', 'u-act': 'act' };
@@ -575,6 +617,15 @@ function renderUnassigned() {
       if (!qExists(CUR, qn)) { toast('Question ' + qn + ' not found in this checklist'); return; }
       placeUn(idx, qn);
       save(); renderAll(); goTo(qn); toast('Obs ' + D.unassigned[idx].obs + ' moved to question ' + qn + ' (answer set to NO)');
+    };
+  }
+  var du = box.querySelectorAll('.del-u');
+  for (var d = 0; d < du.length; d++) {
+    du[d].onclick = function () {
+      var u = D.unassigned[parseInt(this.getAttribute('data-du'), 10)];
+      if (!window.confirm('Delete Obs ' + u.obs + '? It will no longer be exported.')) { return; }
+      (ST.del || (ST.del = {}))['u|' + u.obs] = true;
+      save(); renderAll(); toast('Obs ' + u.obs + ' deleted');
     };
   }
   var im = box.querySelectorAll('img');
@@ -602,7 +653,7 @@ function placeUn(idx, qn) {
 }
 function unplaced() {
   var o = [];
-  for (var i = 0; i < (D.unassigned || []).length; i++) { if (!isMoved(i)) { o.push(i); } }
+  for (var i = 0; i < (D.unassigned || []).length; i++) { if (!isMoved(i) && !isDel('u', D.unassigned[i].obs)) { o.push(i); } }
   return o;
 }
 function isMoved(i) {
@@ -642,7 +693,9 @@ function qHtml(ti, q, text) {
   var showSyn = !!(it.subject || ts.subj[q] || a === 'NO' || ts.obs[q]);
   h += '<div class="syn' + (showSyn ? '' : ' hidden') + '"><div><label>Synergi subject</label><input type="text" class="f-subj" value="' + esc(ts.subj[q] || '') + '"></div>' +
     '<div><label>CTR action</label><input type="text" class="f-act" value="' + esc(ts.act[q] || '') + '"></div></div>';
-  if (findObs(ti, q).length) { h += moveHtml(ti, findObs(ti, q)[0]); }
+  var fo = findObs(ti, q);
+  if (fo.length) { h += moveHtml(ti, fo[0]); }
+  if (fo.length || ts.obs[q] || (trim(ts.cmt[q]) && trim(ts.cmt[q]) !== NOT_ASSESSED)) { h += '<div class="delrow">' + delBtn(fo.length ? fo[0] : null) + '</div>'; }
   h += extraHtml(ti, q);
   var ph = photosOf(ti, q);
   h += '<div class="photos">';
@@ -1003,11 +1056,11 @@ $('selTpl').onchange = function () { CUR = parseInt(this.value, 10); renderAll()
 $('btnReset').onclick = function () {
   if (!window.confirm('Discard all answers and edits in this browser and go back to the original draft?')) { return; }
   try { localStorage.removeItem(SKEY); } catch (e) {}
-  ADDED = {}; saveAdded(); ST = { relo: {} }; rebuildItems(); ST = freshState(); buildTwins(); bindMeta(); renderAll();
+  ADDED = {}; saveAdded(); ST = { relo: {}, del: {} }; rebuildItems(); ST = freshState(); buildTwins(); bindMeta(); renderAll();
 };
 function start(data) {
   D = data; SKEY = 'tepa-review:' + D.id; CUR = 0; ST = null; ADDED = {};
-  ORIG = null; ST = null; rebuildItems(); loadState(); if (ST.relo) { rebuildItems(); } buildTwins(); fixMoved();
+  ORIG = null; ST = null; rebuildItems(); loadState(); if (ST.relo || ST.del) { rebuildItems(); } buildTwins(); fixMoved();
   var sel = $('selTpl');
   sel.innerHTML = '';
   for (var i = 0; i < D.templates.length; i++) {
