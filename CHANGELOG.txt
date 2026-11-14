@@ -1,0 +1,19 @@
+INSPECTIONS APP - VERSION HISTORY
+Version shown at the bottom of each page. Newest first.
+
+v1.15 (2026-11-14)  Version numbering on every page and in the capture ZIP; CHANGELOG.txt
+v1.14 (2026-11-13)  Review: answer NO by default when there is an observation
+v1.13 (2026-11-13)  Review: delete a finding
+v1.12 (2026-11-10)  Review: fix observations moved to a question or not placed (now exported to PDF and Excel)
+v1.11 (2026-11-03)  Review PDF: YES questions listed by number, N/A with same comment grouped
+v1.10 (2026-11-02)  Copilot loader: optional embedded photos
+v1.9  (2026-11-02)  Method B for Copilot: review-loader.js
+v1.8  (2026-11-01)  Prompt: Consolidated DP suggestion + Synergi export check
+v1.7  (2026-11-01)  Consolidated DP Inspectare & OVID checklist
+v1.6  (2026-10-31)  Review: move an observation to another question
+v1.5  (2026-10-31)  Default N/A comment reworded
+v1.4  (2026-10-31)  Unused French prompt removed
+v1.3  (2026-10-31)  French prompt aligned with English prompt
+v1.2  (2026-10-31)  Report kit: linking, default N/A, one finding per observation
+v1.1  (2026-10-31)  Prompt: one finding per observation
+v1.0  (2026-10-25)  Checklists, field capture, report kit and review page in one app
