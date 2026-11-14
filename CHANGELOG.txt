@@ -1,6 +1,7 @@
 INSPECTIONS APP - VERSION HISTORY
-Version shown at the bottom of each page. Newest first.
+Version shown under the title of each page. Newest first.
 
+v1.16 (2026-11-14)  Version number under the page title; banner when a newer version is online
 v1.15 (2026-11-14)  Version numbering on every page and in the capture ZIP; CHANGELOG.txt
 v1.14 (2026-11-13)  Review: answer NO by default when there is an observation
 v1.13 (2026-11-13)  Review: delete a finding

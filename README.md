@@ -22,6 +22,6 @@ Open once with network in Safari (iPhone) or Chrome (Android) and reload twice: 
 
 ## Versions
 
-The version is shown at the bottom of every page and written in the capture ZIP (inspection_details.txt). History: [CHANGELOG.txt](CHANGELOG.txt).
+The version is shown under the title of every page and written in the capture ZIP (inspection_details.txt). History: [CHANGELOG.txt](CHANGELOG.txt).
 
 Release: `python3 -I tools/release.py . "short description"` (bumps version, sw.js cache, footers, changelog; regenerates review.html, report_kit.py, review-loader.js).

@@ -2515,6 +2515,30 @@ function tepaFileName(ymd, vessel, type, inspector) {
 }
 </script>
 <!-- FILENAME-END -->
-<style>@media print { .app-version { display: none !important; } }</style><div class="app-version" style="text-align:center;font-size:11px;color:#888;margin:18px 0 26px">Version 1.15 - 2026-11-14 - <a href="https://yotolame.github.io/inspections/CHANGELOG.txt" style="color:#888">changes</a></div>
+<!--APPVER--><style>@media print { .app-version, .app-version-new { display: none !important; } } .app-version { font-size: 12px; font-weight: normal; opacity: .8; margin: 2px 0 0; } .app-version-new { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999; background: #003a70; color: #fff; text-align: center; padding: 12px; font: 14px -apple-system, Segoe UI, Arial, sans-serif; cursor: pointer; }</style><script>
+(function () {
+  var V = '1.16', D = '2026-11-14', i, h = document.getElementsByTagName('h1');
+  function lab() { var d = document.createElement('div'); d.className = 'app-version'; d.appendChild(document.createTextNode('Version ' + V + ' - ' + D)); return d; }
+  if (h.length) { for (i = 0; i < h.length; i++) { h[i].parentNode.insertBefore(lab(), h[i].nextSibling); } }
+  else { document.body.insertBefore(lab(), document.body.firstChild); }
+  if (location.protocol.indexOf('http') !== 0) { return; }
+  try {
+    var x = new XMLHttpRequest();
+    x.open('GET', '/inspections/version.txt?t=' + new Date().getTime(), true);
+    x.onload = function () {
+      var n = String(x.responseText || '').replace(/\s+/g, '');
+      if (x.status !== 200 || !/^\d+\.\d+$/.test(n) || n === V) { return; }
+      var b = document.createElement('div'); b.className = 'app-version-new';
+      b.appendChild(document.createTextNode('New version ' + n + ' available - tap here to update'));
+      b.onclick = function () {
+        function go() { location.reload(); }
+        if (window.caches && caches.keys) { caches.keys().then(function (k) { var p = []; for (var j = 0; j < k.length; j++) { p.push(caches['delete'](k[j])); } return Promise.all(p); }).then(go, go); } else { go(); }
+      };
+      document.body.appendChild(b);
+    };
+    x.send();
+  } catch (e) {}
+})();
+</script><!--/APPVER-->
 </body>
 </html>
