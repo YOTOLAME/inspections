@@ -197,6 +197,8 @@ a.btn { text-decoration: none; }
 <div id="toast" class="toast hidden"></div>
 
 <script>
+var APP_VERSION = '1.15';
+
 /* Field Capture - TEPA. ES5 only, ASCII strings only. */
 var LS_KEY = 'tepa-capture-v1';
 var LS_PREF = 'tepa-capture-prefs';
@@ -770,8 +772,9 @@ $('btnExport').onclick = function () {
   function finish2() {
     var txt = 'Vessel: ' + s.vesselName + '\r\nInspection date: ' + fmtD(s.date) + '\r\nInspector: ' + (s.inspector || '') +
       '\r\nLocation: ' + (s.location || '') + '\r\nChecklist: ' + typeLabel(s) + '\r\nObservations: ' + s.observations.length +
-      '\r\nExported: ' + fmtDT(meta.exported) + '\r\n';
+      '\r\nExported: ' + fmtDT(meta.exported) + '\r\nApp version: ' + APP_VERSION + '\r\n';
     entries.unshift({ name: 'inspection_details.txt', data: utf8Bytes(txt) });
+    meta.appVersion = APP_VERSION;
     entries.unshift({ name: 'inspection.json', data: utf8Bytes(JSON.stringify(meta, null, 2)) });
     var blob;
     try { blob = buildZip(entries); } catch (e) { toast('Export failed'); resetExport(); return; }
@@ -1117,5 +1120,6 @@ function init() {
 }
 init();
 </script>
+<style>@media print { .app-version { display: none !important; } }</style><div class="app-version" style="text-align:center;font-size:11px;color:#888;margin:18px 0 26px">Version 1.15 - 2026-11-14 - <a href="https://yotolame.github.io/inspections/CHANGELOG.txt" style="color:#888">changes</a></div>
 </body>
 </html>
